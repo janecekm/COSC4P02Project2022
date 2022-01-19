@@ -7,7 +7,7 @@ The goal of this project to develop a web-based chatbot application. This chatbo
 ### Team Members:
 - Greg Pogue 4583993 (Team Leader)
 - Joel Jacob 6603245
-- Madeleine Janecek 6436620
+- Madeline Janecek 6436620
 - Sam Langdon 6180137
 - Brendan Park 6541288
 - Kylee Schram 6131726
