@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import "./feed.css"
 
-function Burger (){
+function Feed (){
     return (
         <div className='feed'>
             first asdf asdf
@@ -41,4 +41,6 @@ function Burger (){
         </div>
     )
 }
-export default Burger;
+
+
+export default Feed;

@@ -11,9 +11,10 @@ function Chatbox(){
         <div className='Chatbox'>
 
             <Feed />
-            <Form />
+            
             <div className='Buttons'>
                  <ClearButton/>
+                 <Form />
                  <EnterButton/>
 
             </div>
