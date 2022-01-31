@@ -2,16 +2,22 @@ import React, {useState} from 'react';
 import "./feed.css"
 import ReactDOM from "react-dom";
 
-const Message = () => {
-  return (
-    <div>Message</div>
-  );
+class Message extends React.Component {
+  render() {
+    return (
+      <div>{this.props.text}</div>
+    );
+  }
 };
 
 const Feed = () => {
   const [inputList, setInputList] = useState([]);
   const onAddBtnClick = event => {
-    setInputList(inputList.concat(<Message key={inputList.length} />));
+    var query = document.getElementById("inputField").value;
+    if (query != "") {
+      setInputList(inputList.concat(<Message key={inputList.length} text = {query} />));
+      clearInput();
+    }
   };
   const clearInput = () => {
     document.getElementById("inputField").value = "";
