@@ -4,3 +4,6 @@
   right: 0;
   position: fixed;
 }
+:root{
+  --text-size:70px;
+}
