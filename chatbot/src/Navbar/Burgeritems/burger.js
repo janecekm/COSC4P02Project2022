@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import "./burgerstyle.css"
-import Dropdownmenu from '../dropdown/dropdownmenu';
+import "./burgerstyle.css";
 
 function Burger (){
     const [open, setopen] = useState(false);
@@ -11,7 +10,26 @@ function Burger (){
             <div className='bar2'></div>
             <div className='bar3'></div>
         </div>
-        <Dropdownmenu state = {open}/>
+        {open && <Dropdownmenu />}
+        </>
+    );
+}
+
+function Dropdownmenu(props){
+    function DropdownItem(props){
+        return(
+            <div className="menuitem">
+                {props.children}
+            </div>
+        )
+    }
+
+    return (
+        <>
+        <div className='dropdown'>
+            <DropdownItem >help me</DropdownItem>
+            <DropdownItem>everybody</DropdownItem>
+        </div>
         </>
     );
 }
