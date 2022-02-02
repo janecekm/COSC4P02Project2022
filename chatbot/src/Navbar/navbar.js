@@ -4,7 +4,6 @@ import Burger from './Burgeritems/burger';
 import Backarrowbutton from './backarrow/backarrowbutton';
 
 function Navbar(){
-    const [open,setOpen] = useState(false);
     return(
         
         <div className='Navbar'>
@@ -16,10 +15,10 @@ function Navbar(){
                     Chatbotname here
             </div>
             <div className= 'BurgerMenu'>
-                <Burger open = {open} setOpen={setOpen}/>
+                <Burger />       
             </div>
             
-            </div>
+        </div>
     )
 }
 
