@@ -29,7 +29,7 @@
     padding: 1rem;
     overflow: hidden;
     transition: 5s;
-    background-color: blue;
+    background-color: rgb(100, 25, 25);
     text-align: left;
     border-color: purple;
     border-radius: 20px;
@@ -40,9 +40,10 @@
     height: 50px;
     border-radius: 20px;
     border-color: chartreuse;
-    background-color: orange;
+    background-color: rgb(113, 121, 12);
     display: flex;
     align-items: center;
+    size: var(--text-size)+"px";
   }
   .menuitem:hover{
     background-color :chocolate;

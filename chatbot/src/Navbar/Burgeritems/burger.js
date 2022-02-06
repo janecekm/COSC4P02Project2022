@@ -27,8 +27,8 @@ function Dropdownmenu(props){
     return (
         <>
         <div className='dropdown'>
-            <DropdownItem >help me</DropdownItem>
-            <DropdownItem>everybody</DropdownItem>
+            <DropdownItem >item1</DropdownItem>
+            <DropdownItem>item2</DropdownItem>
         </div>
         </>
     );

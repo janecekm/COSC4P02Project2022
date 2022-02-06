@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import "./feed.css"
 import ReactDOM from "react-dom";
 import { useRef } from 'react';
-
 class Message extends React.Component {
   render() {
     return (
@@ -15,6 +14,7 @@ const Feed = () => {
   const [messagesList, setMessagesList] = useState([]);
   const poseQuery = ()  => {
     var query = document.getElementById("inputField").value;
+    console.log(query);
     if (query !== "") {
       setMessagesList( prevMessages =>
         prevMessages.concat(<Message key={messagesList.length} text = {query} type = "user_message"/>)
@@ -26,6 +26,7 @@ const Feed = () => {
       );
       clearInput();
       scrollDown();
+      document.getElementById("inputField").style.setProperty('--size',40+"px");
     }
   };
 
@@ -33,11 +34,15 @@ const Feed = () => {
   }
 
   const clearInput = () => {
-    document.getElementById("inputField").value = "";
+    document.getElementById("inputField").value = '';
   }
   const handler = (event) => {
     if (event.key === "Enter") {
       poseQuery();
+    }
+    else{
+      var temp = document.getElementById('inputField');
+      temp.style.setProperty('--size',temp.scrollHeight-4+"px");
     }
   }
 
@@ -49,11 +54,11 @@ const Feed = () => {
         </div>
         <div className = "end" ></div>
       </div>
-      <div>
+      <div className='inputarea' id='inputarena'>
         <button className="clearButton" onClick={clearInput}>Clear</button>
-        <input className = "inputBar" onKeyPress={(e) => handler(e)} 
+        <textarea className = "inputBar" onKeyUp={(e) => handler(e)} 
         id = "inputField" placeholder="Type a query here..." maxLength={250}
-        autocomplete="off"></input>
+        autoComplete="off" />
         <button className="enterButton" onClick={poseQuery}>Enter</button>
       </div>
     </div>

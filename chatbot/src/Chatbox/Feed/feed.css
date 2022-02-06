@@ -1,3 +1,7 @@
+.inputarea{
+  --size: 40px;
+  display: flex;
+}
 .user_message{
   background-color: #4a4a4a;
   color: whitesmoke;
@@ -34,16 +38,24 @@
 }
 
 .clearButton {
+  flex: 1;
   width: 50px;
+  height: var(--size)+"px";
 }
 
 .enterButton {
+  flex: 1;
   width: 50px;
   float:right;
+  height: var(--size)+"px";
 }
 
 .inputBar {
+  flex: 8;
   width: calc(100% - 108px);
+  height:  var(--size);
+  word-wrap: break-word;
+  resize: none;
 }
 
 .end {
@@ -57,7 +69,7 @@
     width: 100%;
     height: 450px;
     overflow-y: scroll;
-    font-size: 12;
+    font-size: var(--text-size);
 }
 
 ::-webkit-scrollbar {
