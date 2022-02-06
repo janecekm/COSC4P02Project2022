@@ -19,6 +19,8 @@ const Feed = () => {
       setMessagesList( prevMessages =>
         prevMessages.concat(<Message key={messagesList.length} text = {query} type = "user_message"/>)
       );
+
+
       setMessagesList( prevMessages =>
         prevMessages.concat(<Message key={messagesList.length} text = "Generic Response" type = "response"/>)
       );
@@ -30,7 +32,6 @@ const Feed = () => {
   const scrollDown = () => {
   }
 
-
   const clearInput = () => {
     document.getElementById("inputField").value = "";
   }
@@ -39,7 +40,6 @@ const Feed = () => {
       poseQuery();
     }
   }
-
 
   return (
     <div>
@@ -52,13 +52,13 @@ const Feed = () => {
       <div>
         <button className="clearButton" onClick={clearInput}>Clear</button>
         <input className = "inputBar" onKeyPress={(e) => handler(e)} 
-        id = "inputField" placeholder="Type a query here..." maxLength={250}></input>
+        id = "inputField" placeholder="Type a query here..." maxLength={250}
+        autocomplete="off"></input>
         <button className="enterButton" onClick={poseQuery}>Enter</button>
       </div>
     </div>
 
   );
 };
-
 
 export default Feed;

@@ -9,10 +9,10 @@ function Navbar(){
         <div className='Navbar'>
 
          <div className='Backarrow'>
-                    <Backarrowbutton />
+                    
             </div>
             <div className='ChatbotName'>
-                    Chatbotname here
+                    BrockBot
             </div>
             <div className= 'BurgerMenu'>
                 <Burger />       

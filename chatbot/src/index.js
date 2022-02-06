@@ -9,7 +9,7 @@ ReactDOM.render(
   <Navbar />
   <Chatbox />
   
-  <footer className='disclaimer'>this is not my fault</footer>
+  <footer className='disclaimer'>All information taken from Brock University</footer>
   </>
   ,
   document.getElementById('root'),

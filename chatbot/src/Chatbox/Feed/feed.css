@@ -13,6 +13,7 @@
   margin-bottom:2px;
   margin-left: auto;
   margin-right: 5px;
+  caret-color: transparent;
 }
 
 .response{
@@ -29,6 +30,7 @@
   margin-top:3px;
   margin-bottom:2px;
   margin-left: 5px;
+  caret-color: transparent;
 }
 
 .clearButton {
@@ -47,12 +49,13 @@
 .end {
   height: 5px;
   display: block;
+  caret-color: transparent;
 }
 
 .feed{
-
+    margin-top: 10px;
     width: 100%;
-    height: 350px;
+    height: 450px;
     overflow-y: scroll;
     font-size: 12;
 }
