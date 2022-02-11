@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import "./feed.css"
 import ReactDOM from "react-dom";
 import { useRef } from 'react';
+import ClipButton from '../ClipButton/clipbutton';
 class Message extends React.Component {
   render() {
     return (
@@ -48,6 +49,7 @@ const Feed = () => {
 
   return (
     <div>
+      <ClipButton messages = {messagesList}/>
       <div className='feed'>
         <div>
           {messagesList}

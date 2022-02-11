@@ -1,5 +1,5 @@
 .Navbar{
-    background-color: #b30000;
+    background-color: var(--primary-color);
     font-size: 2rem;
     display: flex;
     justify-content: center;

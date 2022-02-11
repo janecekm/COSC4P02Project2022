@@ -4,6 +4,13 @@
   right: 0;
   position: fixed;
 }
-:root{
+html{
+  padding:0;
+  margin:0;
+  --brock-colors:#b30000;
+  --canada-colors:#0065B3;
+}
+#root{
   --text-size:20px;
+  --primary-color:var(--brock-colors)
 }

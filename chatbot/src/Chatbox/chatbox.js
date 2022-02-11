@@ -7,7 +7,6 @@ function Chatbox(){
     return(
         
         <div className='Chatbox'>
-            <Clipbutton />
             <Feed />
             
          </div>
