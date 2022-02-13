@@ -14,6 +14,12 @@ class Message extends React.Component {
 const Feed = () => {
   const [messagesList, setMessagesList] = useState([]);
   const poseQuery = ()  => {
+    const requestOption ={
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({message:"hello"})
+    };
+    fetch('/test',requestOption);
     var query = document.getElementById("inputField").value;
     console.log(query);
     if (query !== "") {

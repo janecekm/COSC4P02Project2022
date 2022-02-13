@@ -34,10 +34,12 @@ function changecolor(staty,setstaty){
     var temp = document.getElementById('root');
     if(staty){//brock colors
         temp.style.setProperty('--primary-color',getComputedStyle(temp).getPropertyValue('--canada-colors'));
+        temp.style.setProperty('--secondary-color',getComputedStyle(temp).getPropertyValue('--canada-secondary-colors'))
         setstaty(false);
     }
     else{
         temp.style.setProperty('--primary-color',getComputedStyle(temp).getPropertyValue('--brock-colors'));
+        temp.style.setProperty('--secondary-color',getComputedStyle(temp).getPropertyValue('--brock-secondary-colors'))
         setstaty(true);
     }
 }

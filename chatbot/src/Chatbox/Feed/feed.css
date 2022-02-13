@@ -21,7 +21,7 @@
 }
 
 .response{
-  background-color: #e60000;
+  background-color: var(--secondary-color);
   color: whitesmoke;
   width: fit-content;
   word-wrap: break-word;

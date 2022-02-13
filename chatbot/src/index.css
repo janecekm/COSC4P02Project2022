@@ -8,9 +8,12 @@ html{
   padding:0;
   margin:0;
   --brock-colors:#b30000;
-  --canada-colors:#0065B3;
+  --brock-secondary-colors:#e60000;
+  --canada-colors:#006BE6;
+  --canada-secondary-colors:#0065B3;
 }
 #root{
   --text-size:20px;
-  --primary-color:var(--brock-colors)
+  --primary-color:var(--brock-colors);
+  --secondary-color:var(--brock-secondary-colors);
 }
