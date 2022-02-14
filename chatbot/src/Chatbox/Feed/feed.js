@@ -17,9 +17,9 @@ const Feed = () => {
     const requestOption ={
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({message:"hello"})
+      body: JSON.stringify({message:"hi there"})
     };
-    fetch('/test',requestOption);
+    fetch('/',requestOption);
     var query = document.getElementById("inputField").value;
     console.log(query);
     if (query !== "") {
