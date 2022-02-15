@@ -1,6 +1,10 @@
 from flask import Flask, render_template, request, json
 
+
 app = Flask(__name__)
+@app.route('/',methods = ['GET'])
+def tester():
+    return "hello this is flask and this is getting thigs"
 
 @app.route("/", methods = ['POST'])
 def front():

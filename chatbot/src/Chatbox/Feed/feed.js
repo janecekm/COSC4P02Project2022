@@ -25,8 +25,6 @@ const Feed = () => {
     console.log(reply);
   },[questions])
   const poseQuery = ()  => {
-    
-    
     var query = document.getElementById("inputField").value;
     console.log(query);
     
