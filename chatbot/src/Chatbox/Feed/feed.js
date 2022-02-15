@@ -13,23 +13,35 @@ class Message extends React.Component {
 
 const Feed = () => {
   const [messagesList, setMessagesList] = useState([]);
-  const poseQuery = ()  => {
+  const[questions,setQuestions] = useState(null);
+  const [reply, setReply] = useState(null);
+  useEffect(()=>{
     const requestOption ={
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({message:"hi there"})
+      body: JSON.stringify({message:questions})
     };
-    fetch('/',requestOption);
+    fetch("/",requestOption).then((response)=>{return response.json()}).then((data) => {setReply(data['message'])});
+    console.log(reply);
+  },[questions])
+  const poseQuery = ()  => {
     var query = document.getElementById("inputField").value;
     console.log(query);
+    
     if (query !== "") {
       setMessagesList( prevMessages =>
         prevMessages.concat(<Message key={messagesList.length} text = {query} type = "user_message"/>)
       );
-
+        // sending query
+        setQuestions(query);
+        
+        
+      
+        //done query
+        console.log("heelo");
 
       setMessagesList( prevMessages =>
-        prevMessages.concat(<Message key={messagesList.length} text = "Generic Response" type = "response"/>)
+        prevMessages.concat(<Message key={messagesList.length} text = {reply} type = "response"/>)
       );
       clearInput();
       scrollDown();
