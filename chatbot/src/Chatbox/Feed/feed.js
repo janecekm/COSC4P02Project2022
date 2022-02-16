@@ -16,15 +16,23 @@ const Feed = () => {
   const[questions,setQuestions] = useState(null);
   const [reply, setReply] = useState(null);
   useEffect(()=>{
+    console.log(reply);
+    if(reply!="None" &&reply!=null)
+      setMessagesList( prevMessages =>
+        prevMessages.concat(<Message key={messagesList.length} text = {reply} type = "response"/>)
+      );
+  },[reply])
+  useEffect(()=>{
+    document.getElementById("inputField").setAttribute("disable","true");
+    console.log(questions);
     const requestOption ={
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({message:questions})
     };
-    fetch("/",requestOption).then((response)=>{return response.json()}).then((data) => {setReply(data['message'])});
-    console.log(reply);
+    fetch("/",requestOption).then((response)=>{return response.json()}).then((data) => {setReply(data['message'])});//triggers use effect for reply
   },[questions])
-  const poseQuery = ()  => {
+  const poseQuery =  async ()  => {
     
     
     var query = document.getElementById("inputField").value;
@@ -35,16 +43,14 @@ const Feed = () => {
         prevMessages.concat(<Message key={messagesList.length} text = {query} type = "user_message"/>)
       );
         // sending query
-        setQuestions(query);
+        await setQuestions(query);//triggers useEffect for questions
         
         
       
         //done query
-        console.log("heelo");
+        console.log("query gotten");
 
-      setMessagesList( prevMessages =>
-        prevMessages.concat(<Message key={messagesList.length} text = {reply} type = "response"/>)
-      );
+     
       clearInput();
       scrollDown();
       document.getElementById("inputField").style.setProperty('--size',40+"px");
@@ -78,7 +84,7 @@ const Feed = () => {
       </div>
       <div className='inputarea' id='inputarena'>
         <button className="clearButton" onClick={clearInput}>Clear</button>
-        <textarea className = "inputBar" onKeyUp={(e) => handler(e)} 
+        <textarea disabled={false} className = "inputBar" onKeyUp={(e) => handler(e)} 
         id = "inputField" placeholder="Type a query here..." maxLength={250}
         autoComplete="off" />
         <button className="enterButton" onClick={poseQuery}>Enter</button>

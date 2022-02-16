@@ -8,8 +8,9 @@ def frontend():
 
 @app.route("/", methods = ['POST'])
 def front():
-    print(json.loads(request.data)['message'])
-    return {"message":"testing is good"}
+    t = str(json.loads(request.data)['message']).rstrip()
+    print(t)
+    return {"message": str(json.loads(request.data)['message']).rstrip()}
 
 if __name__ == "__main__":
     app.run(debug=True,port=5000)

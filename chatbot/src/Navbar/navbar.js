@@ -12,7 +12,7 @@ function Navbar(){
                     
             </div>
             <div className='ChatbotName'>
-                    BrockBot
+                    BrockChatBOT
             </div>
             <div className= 'BurgerMenu'>
                 <Burger />       
