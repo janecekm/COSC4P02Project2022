@@ -110,7 +110,7 @@ module.exports = function (webpackEnv) {
       isEnvDevelopment && require.resolve('style-loader'),
       isEnvProduction && {
         loader: MiniCssExtractPlugin.loader,
-        // css is located in `static/css`, use '../../' to locate index.html folder
+        // css is located in `css`, use '../../' to locate index.html folder
         // in production `paths.publicUrlOrPath` can be a relative path
         options: paths.publicUrlOrPath.startsWith('.')
           ? { publicPath: '../../' }
@@ -207,13 +207,13 @@ module.exports = function (webpackEnv) {
       // There will be one main bundle, and one file per asynchronous chunk.
       // In development, it does not produce real files.
       filename: isEnvProduction
-        ? 'static/js/[name].[contenthash:8].js'
-        : isEnvDevelopment && 'static/js/bundle.js',
+        ? 'js/[name].[contenthash:8].js'
+        : isEnvDevelopment && 'js/bundle.js',
       // There are also additional JS chunk files if you use code splitting.
       chunkFilename: isEnvProduction
-        ? 'static/js/[name].[contenthash:8].chunk.js'
-        : isEnvDevelopment && 'static/js/[name].chunk.js',
-      assetModuleFilename: 'static/media/[name].[hash][ext]',
+        ? 'js/[name].[contenthash:8].chunk.js'
+        : isEnvDevelopment && 'js/[name].chunk.js',
+      assetModuleFilename: 'media/[name].[hash][ext]',
       // webpack uses `publicPath` to determine where the app is being served from.
       // It requires a trailing slash, or the file assets will get an incorrect path.
       // We inferred the "public path" (such as / or /my-project) from homepage.
@@ -391,7 +391,7 @@ module.exports = function (webpackEnv) {
                 {
                   loader: require.resolve('file-loader'),
                   options: {
-                    name: 'static/media/[name].[hash].[ext]',
+                    name: 'media/[name].[hash].[ext]',
                   },
                 },
               ],
@@ -568,6 +568,7 @@ module.exports = function (webpackEnv) {
           {
             inject: true,
             template: paths.appHtml,
+            filename: "../../templates/index.html",
           },
           isEnvProduction
             ? {
@@ -623,8 +624,8 @@ module.exports = function (webpackEnv) {
         new MiniCssExtractPlugin({
           // Options similar to the same options in webpackOptions.output
           // both options are optional
-          filename: 'static/css/[name].[contenthash:8].css',
-          chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
+          filename: 'css/[name].[contenthash:8].css',
+          chunkFilename: 'css/[name].[contenthash:8].chunk.css',
         }),
       // Generate an asset manifest file with the following content:
       // - "files" key: Mapping of all asset filenames to their corresponding

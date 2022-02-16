@@ -2,6 +2,10 @@ from flask import Flask, render_template, request, json
 
 app = Flask(__name__)
 
+@app.route("/",methods = ['GET'])
+def frontend():
+    return render_template("index.html")
+
 @app.route("/", methods = ['POST'])
 def front():
     print(json.loads(request.data)['message'])
