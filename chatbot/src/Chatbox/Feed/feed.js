@@ -32,9 +32,8 @@ const Feed = () => {
     };
     fetch("/",requestOption).then((response)=>{return response.json()}).then((data) => {setReply(data['message'])});//triggers use effect for reply
   },[questions])
+
   const poseQuery =  async ()  => {
-    
-    
     var query = document.getElementById("inputField").value;
     console.log(query);
     
