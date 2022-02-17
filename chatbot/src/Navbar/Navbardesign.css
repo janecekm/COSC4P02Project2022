@@ -1,0 +1,25 @@
+.Navbar{
+    background-color: var(--primary-color);
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    padding-top: 20px;
+    caret-color: transparent;
+}
+
+.BurgerMenu{
+    flex: 1;
+    text-align: right;
+}
+.Backarrow{
+    flex: 1;
+}
+.ChatbotName{
+    flex:1;
+    text-align: center;
+    color: snow;
+    size: var(--text-size)+"px";
+}

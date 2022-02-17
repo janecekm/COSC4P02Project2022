@@ -1,0 +1,19 @@
+.disclaimer{
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+}
+html{
+  padding:0;
+  margin:0;
+  --brock-colors:#b30000;
+  --brock-secondary-colors:#e60000;
+  --canada-colors:#006BE6;
+  --canada-secondary-colors:#0065B3;
+}
+#root{
+  --text-size:20px;
+  --primary-color:var(--brock-colors);
+  --secondary-color:var(--brock-secondary-colors);
+}
