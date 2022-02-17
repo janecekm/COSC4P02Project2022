@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, json
+from backend import botNLP as bN
 
 app = Flask(__name__)
 
@@ -8,9 +9,7 @@ def frontend():
 
 @app.route("/", methods = ['POST'])
 def front():
-    t = str(json.loads(request.data)['message']).rstrip()
-    print(t)
-    return {"message": str(json.loads(request.data)['message']).rstrip()}
+    return bN.processQ(json.loads(request.data)['message'])
 
 if __name__ == "__main__":
     app.run(debug=True,port=5000)
