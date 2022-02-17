@@ -14,23 +14,21 @@ class Message extends React.Component {
 const Feed = () => {
   const [messagesList, setMessagesList] = useState([]);
   const[questions,setQuestions] = useState(null);
-  const [reply, setReply] = useState(null);
-  useEffect(()=>{
-    console.log(reply);
-    if(reply!="None" &&reply!=null)
-      setMessagesList( prevMessages =>
-        prevMessages.concat(<Message key={messagesList.length} text = {reply} type = "response"/>)
-      );
-  },[reply])
   useEffect(()=>{
     document.getElementById("inputField").setAttribute("disable","true");
-    console.log(questions);
     const requestOption ={
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({message:questions})
     };
-    fetch("/",requestOption).then((response)=>{return response.json()}).then((data) => {setReply(data['message'])});//triggers use effect for reply
+    fetch("/",requestOption).then((response)=>{return response.json()}).then((data) => {
+    console.log(data['message']);
+    if(data['message']!=null)
+    setMessagesList( prevMessages =>
+      prevMessages.concat(<Message key={messagesList.length} text = {data['message']} type = "response"/>)
+    );
+  }
+  );//triggers use effect for reply
   },[questions])
 
   const poseQuery =  async ()  => {
