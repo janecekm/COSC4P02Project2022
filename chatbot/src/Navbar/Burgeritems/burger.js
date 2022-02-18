@@ -19,15 +19,20 @@ function fontSizeDec(){
     var temp = document.getElementById('root');
     var len = getComputedStyle(temp).getPropertyValue('--text-size').length;
     var num = parseInt(getComputedStyle(temp).getPropertyValue('--text-size').substring(0,len-2))-1;
-    temp.style.setProperty('--text-size',num+"px");
-    console.log(num);
+    if (num > 9) {
+        temp.style.setProperty('--text-size',num+"px");
+    }
 }
 function fontSizeInc(){
     var temp = document.getElementById('root');
     var len = getComputedStyle(temp).getPropertyValue('--text-size').length;
     var num = parseInt(getComputedStyle(temp).getPropertyValue('--text-size').substring(0,len-2))+1;
-    temp.style.setProperty('--text-size',num+"px");
-    console.log(num);
+    if (num < 26) {
+        temp.style.setProperty('--text-size',num+"px");
+    }
+}
+function helpThem () {
+    alert("*HELPFUL MESSAGE*");
 }
 function changecolor(staty,setstaty){
     
@@ -47,7 +52,7 @@ function Dropdownmenu(props){
     const [brockorcad, setbrockorcad] = useState(true);
     function DropdownItem(props){
         return(
-            <div className="menuitem">
+            <div className="menuitem" onClick = {props.act}>
                 {props.children}
             </div>
         )
@@ -56,11 +61,10 @@ function Dropdownmenu(props){
     return (
         <>
         <div className='dropdown'>
-            <DropdownItem >item1</DropdownItem>
-            <DropdownItem>item2</DropdownItem>
-            <DropdownItem ><div onClick={fontSizeInc}>font inc</div></DropdownItem>
-            <DropdownItem ><div onClick={fontSizeDec}>font dec</div></DropdownItem>
-            <DropdownItem ><div onClick={()=>changecolor(brockorcad,setbrockorcad)}>change team</div></DropdownItem>
+            <DropdownItem act ={helpThem}><div>Help</div></DropdownItem>
+            <DropdownItem act ={fontSizeInc}><div>Font Increase</div></DropdownItem>
+            <DropdownItem act ={fontSizeDec}><div>Font Decrease</div></DropdownItem>
+            <DropdownItem act = {()=>changecolor(brockorcad,setbrockorcad)}><div>Switch Modes</div></DropdownItem>
         </div>
         </>
     );
