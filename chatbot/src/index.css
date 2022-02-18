@@ -11,9 +11,11 @@ html{
   --brock-secondary-colors:#e60000;
   --canada-colors:#006BE6;
   --canada-secondary-colors:#0065B3;
+
 }
 #root{
-  --text-size:20px;
+  --text-size:18px;
   --primary-color:var(--brock-colors);
   --secondary-color:var(--brock-secondary-colors);
+  --menu-color: rgb(202, 202, 202);
 }
