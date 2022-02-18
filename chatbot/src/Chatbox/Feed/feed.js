@@ -58,7 +58,7 @@ const Feed = () => {
         //done query
         console.log("query gotten");
 
-     
+        setQuestions(null);
       clearInput();
       document.getElementById("inputField").style.setProperty('--size',40+"px");
     }

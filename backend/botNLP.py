@@ -1,4 +1,3 @@
-from importlib_metadata import NullFinder
 import spacy
 from spacy.matcher import Matcher
 from string import Template
