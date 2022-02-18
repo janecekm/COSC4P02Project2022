@@ -52,7 +52,7 @@ function Dropdownmenu(props){
     const [brockorcad, setbrockorcad] = useState(true);
     function DropdownItem(props){
         return(
-            <div className="menuitem">
+            <div className="menuitem" onClick = {props.act}>
                 {props.children}
             </div>
         )
@@ -61,10 +61,10 @@ function Dropdownmenu(props){
     return (
         <>
         <div className='dropdown'>
-            <DropdownItem ><div onClick={helpThem}>Help</div></DropdownItem>
-            <DropdownItem ><div onClick={fontSizeInc}>Font Increase</div></DropdownItem>
-            <DropdownItem ><div onClick={fontSizeDec}>Font Decrease</div></DropdownItem>
-            <DropdownItem ><div onClick={()=>changecolor(brockorcad,setbrockorcad)}>Switch Modes</div></DropdownItem>
+            <DropdownItem act ={helpThem}><div>Help</div></DropdownItem>
+            <DropdownItem act ={fontSizeInc}><div>Font Increase</div></DropdownItem>
+            <DropdownItem act ={fontSizeDec}><div>Font Decrease</div></DropdownItem>
+            <DropdownItem act = {()=>changecolor(brockorcad,setbrockorcad)}><div>Switch Modes</div></DropdownItem>
         </div>
         </>
     );
