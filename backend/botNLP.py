@@ -6,50 +6,50 @@ nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
 
 # course codes
-courseCaps = [{'IS_ALPHA': True, 'LENGTH': 4},
-           {'SHAPE': 'dXdd'}]
-courseLower = [{'IS_ALPHA': True, 'LENGTH': 4},
-           {'SHAPE': 'dxdd'}]
-matcher.add("course code", [courseCaps, courseLower])
+courseCode = [[{'IS_ALPHA': True, 'LENGTH': 4},
+               {'SHAPE': 'dxdd'}],
+             [{"SHAPE":  "xxxxdxdd"}]]
+matcher.add("course code", courseCode)
 
 # who teaches, who is teaching, who is the instructor, who is the professor
-teaching = [{'LOWER': 'who'},
-           {'LEMMA': 'be', 'OP': '?'},
-           {'LEMMA': 'teach'}]
-instructor = [{'LOWER': 'who'},
-           {'OP': '?'},
-           {'OP': '?'},
-           {'LOWER': 'instructor'}]
-professor = [{'LOWER': 'who'},
-           {'OP': '?'},
-           {'OP': '?'},
-           {'LOWER': 'professor'}]
-matcher.add("instructor", [teaching, instructor, professor])
+teaching = [[{'LOWER': 'who'},
+            {'LEMMA': 'be', 'OP': '?'},
+            {'LEMMA': 'teach'}],
+           [{'LOWER': 'who'},
+            {'OP': '?'},
+            {'OP': '?'},
+            {'LOWER': 'instructor'}],
+           [{'LOWER': 'who'},
+            {'OP': '?'},
+            {'OP': '?'},
+            {'LOWER': 'professor'}]]
+matcher.add("instructor", teaching)
 
 # when is, when are, what time is
-when = [{'LOWER': 'when'},
-           {'LEMMA': 'be', "OP": "?"}]
-whatTime = [{'LOWER': 'what'},
-           {'LOWER': 'time'},
-           {'LEMMA': 'be'}]
-matcher.add("time", [when, whatTime])
+when = [[{'LOWER': 'when'},
+         {'LEMMA': 'be', "OP": "?"}],
+        [{'LOWER': 'what'},
+         {'LOWER': 'time'},
+         {'LEMMA': 'be'}]]
+matcher.add("time", when, greedy="LONGEST")
 
 # what are the prereq(uisites)
-prerequisites = [{'LOWER': 'what'},
-           {'OP': '?'},
-           {'OP': '?'},
-           {'LEMMA': 'prerequisites'}]
-prereqs = [{'LOWER': 'what'},
-           {'OP': '?'},
-           {'OP': '?'},
-           {'LEMMA': 'prereqs'}]
-matcher.add("prereqs", [prerequisites, prereqs])
+prerequisites = [[{'LOWER': 'what'},
+                  {'OP': '?'},
+                  {'OP': '?'},
+                  {'LEMMA': 'prerequisites'}], 
+                [{'LOWER': 'what'},
+                  {'OP': '?'},
+                  {'OP': '?'},
+                  {'LEMMA': 'prereqs'}]]
+matcher.add("prereqs", prerequisites)
 
-generalTell = [{'LOWER':'tell'},{'LOWER':'me'},{'LOWER':'about'}]
-generalInfoOn = [{'LOWER':'information'},{'LOWER':'on'}]
-generalInfoOn2 = [{'LOWER':'info'},{'LOWER':'on'}]
 
-matcher.add("general question",[generalTell, generalInfoOn, generalInfoOn2])
+generalInfo = [ [{'LOWER':'tell'},{'LOWER':'me'},{'LOWER':'about'}], 
+                [{'LOWER':'information'},{'LOWER':'on'}],
+                [{'LOWER':'info'},{'LOWER':'on'}]]
+
+matcher.add("general question", generalInfo)
 
 openerMatch = [{"LOWER": {"IN": ['hello','hi','hey','howdy','yo','sup','hiya','heyo']}}]
 
@@ -60,18 +60,17 @@ progQuestion = [{'LOWER':'the'},{'OP':'?'},{'OP':'?'},{'OP':'?'},{'OP':'?'},{'OP
 matcher.add("program question",[progQuestion])
 
 # course components
-
 courseComp = [{'LEMMA': {"IN": ['sem', 'seminar', 'lab', 'tut', 'tutorial', 'lec', 'lecture']}},
            {'LIKE_NUM': True, 'OP': '?'}]
 
-matcher.add("course component", [courseComp])
+matcher.add("course component", [courseComp], greedy="LONGEST")
 
 # location
-where = [{'LOWER': 'where'}]
-whatBuilding = [{'LOWER':'what'}, {'LOWER':'building'}]
-location = [{'LOWER':'location'}]
+location = [[{'LOWER':'location'}],
+            [{'LOWER':'what'}, {'LOWER':'building'}], 
+            [{'LOWER': 'where'}]]
 
-matcher.add("location", [where, whatBuilding, location])
+matcher.add("location", location)
 
 # exam
 exam = [{'LEMMA':'exam'}]
@@ -81,15 +80,21 @@ matcher.add("exam", [exam])
 does = [{'LOWER':'does'}]
 matcher.add("exists", [does])
 
-
 reqQuestion = [{'LOWER':'the'},{'LOWER':'program','OP':'?'},{'LOWER':'requirements'},{'LOWER':'for'}]
 
 matcher.add("requirement question",[reqQuestion])
 
+# You are asking about the _________ of __________
+# type/amount of information -- general info, or time, or location
+# finer detail -- course code or course component
+
+# span's custom attributes // attribute extensions ._.
+# matcher callback function on_match=function()
+
 def extractKeywords(question): 
+    question = question.lower() # make question lowercase 
     doc = nlp(question)
     matches = matcher(doc)
-    print(question)
     myString = ""
     for match_id, start, end in matches:
         string_id = nlp.vocab.strings[match_id]  # get string rep
@@ -104,9 +109,12 @@ def formResponse(matchedKeys):
         match_id_ = nlp.vocab.strings[match_id]
         if match_id_ == "openerGreet":
             returnThis += "Hello, world! "
-        else: 
-            returnThis = temp.substitute({'x': match_id_})
-    return returnThis        
+        else:
+            if returnThis.__contains__("You are asking about"):
+                returnThis += ", " + match_id_
+            else:
+                returnThis += temp.substitute({'x': match_id_})
+    return returnThis
 
 def processQ(question):
     matches = extractKeywords(question)
@@ -116,4 +124,4 @@ def processQ(question):
     if (myString != "" and myString != None):    
         return {"message": myString}
     else:
-         return {"message": "does not compute"}
+         return {"message": "I am not quite sure what you're asking. Could you rephrase that?"}
