@@ -48,7 +48,8 @@ const Feed = () => {
     var query = document.getElementById("inputField").value;
     console.log(query);
     
-    if (query !== "") {
+    if (query !== "" & query !== "\n") {
+      console.log(query);
       setMessagesList( prevMessages =>
         prevMessages.concat(<Message key={messagesList.length} text = {query} type = "user_message"/>)
       );
@@ -61,6 +62,9 @@ const Feed = () => {
         setQuestions(null);
       clearInput();
       document.getElementById("inputField").style.setProperty('--size',40+"px");
+    }
+    else if (query == "\n") {
+      clearInput();
     }
   };
 
