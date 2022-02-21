@@ -39,13 +39,11 @@ function changecolor(staty,setstaty){
     var temp = window.location.href.toString();
     var v = temp.search("/canada");
     if(v==-1){//in canada{//to canada
-        var temp = window.location.href;
+
         window.location.replace("http://localhost:5000/canada");
-        setstaty(false);
     }
     else{
         window.location.replace("http://localhost:5000/brock");
-        setstaty(true);
     }
 }
 function Dropdownmenu(props){

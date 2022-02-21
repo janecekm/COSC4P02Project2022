@@ -26,7 +26,7 @@ const Feed = () => {
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({message:questions})
     };
-    fetch("/",requestOption).then((response)=>{return response.json()}).then((data) => {
+    fetch("/brock",requestOption).then((response)=>{return response.json()}).then((data) => {
       console.log(data['message']);
 
       document.getElementById("inputField").disabled = false;
