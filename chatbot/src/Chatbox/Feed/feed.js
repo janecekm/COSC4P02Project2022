@@ -87,7 +87,6 @@ const Feed = () => {
 
   return (
     <div>
-      
       <ClipButton messages = {messagesList}/> 
       <div className='feed' id = "feed">
         <div>
