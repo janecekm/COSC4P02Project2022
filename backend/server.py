@@ -1,3 +1,4 @@
+import sqlite3
 from flask import Flask, render_template, request, json
 from flask_sqlalchemy import SQLAlchemy
 import botNLP as bN
@@ -6,6 +7,7 @@ import time
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/buchatbot.db'
 db = SQLAlchemy(app)
+# db = sqlite3.connect('sqlite:///database/buchatbot.db')
 
 class Course(db.Model):
     __tablename__ = 'course'
