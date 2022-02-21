@@ -30,7 +30,6 @@
     overflow: hidden;
     transition: 5s;
     text-align: left;
-    border-radius: 10px;
   }
 
   .menuitem{
@@ -46,6 +45,7 @@
     align-content: center;
     border-color: snow;
     margin: 2px;
+    text-align: center;
   }
   .menuitem:hover{
     background-color : rgb(216, 216, 216);
