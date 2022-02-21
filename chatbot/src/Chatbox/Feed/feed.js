@@ -49,7 +49,7 @@ const Feed = () => {
     var query = document.getElementById("inputField").value;
     console.log(query);
     
-    if (query !== "" & query == "\n") {
+    if (query !== "" & query !== "\n") {
       setMessagesList( prevMessages =>
         prevMessages.concat(<Message key={messagesList.length} text = {query} type = "user_message"/>)
       );
