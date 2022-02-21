@@ -95,11 +95,11 @@ const Feed = () => {
         
       </div>
       <div className='inputarea' id='inputarena'>
-        <button className="clearButton" onClick={clearInput}>Clear</button>
+        <button className="clearButton" onClick={clearInput}>{func("clear")}</button>
         <textarea disabled = {false} className = "inputBar" onKeyUp={(e) => handler(e)} 
-        id = "inputField" placeholder="Type a query here..." maxLength={250}
+        id = "inputField" placeholder={func("inputmessage")} maxLength={250}
         autoComplete="off" />
-        <button className="enterButton" onClick={poseQuery}>Enter</button>
+        <button className="enterButton" onClick={poseQuery}>{func("enter")}</button>
       </div>
     </div>
 
