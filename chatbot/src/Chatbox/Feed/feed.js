@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import "./feed.css"
 import ClipButton from '../ClipButton/clipbutton';
 import Thinking from '../Thinking/thinking';
+import func from "../../Language/Lanprocess";
 
 class Message extends React.Component {
   render() {
@@ -12,7 +13,7 @@ class Message extends React.Component {
 };
 
 const Feed = () => {
-  const [messagesList, setMessagesList] = useState([<Message key={0} text = {"Hello! Welcome to the Brock chat bot! What can I help you with today?"} type = "response"/>]);
+  const [messagesList, setMessagesList] = useState([<Message key={0} text = {func("message")} type = "response"/>]);
   const[questions,setQuestions] = useState(null);
   useEffect(()=>{
     if (questions != null){
