@@ -50,6 +50,7 @@ const Feed = () => {
     console.log(query);
     
     if (query !== "" & query !== "\n") {
+      console.log(query);
       setMessagesList( prevMessages =>
         prevMessages.concat(<Message key={messagesList.length} text = {query} type = "user_message"/>)
       );
@@ -87,7 +88,6 @@ const Feed = () => {
 
   return (
     <div>
-      
       <ClipButton messages = {messagesList}/> 
       <div className='feed' id = "feed">
         <div>

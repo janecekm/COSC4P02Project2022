@@ -17,7 +17,6 @@ const thinkingContainer = {
     marginTop:"3px",
     marginBottom:"2px",
     marginLeft: "5px",
-    height: "25px",
     borderRadius: "10px"
 }
 
