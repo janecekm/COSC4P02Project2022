@@ -15,8 +15,10 @@ def populate_db_building_codes(db='buchatbot.db'):
         cursor = connection.cursor()
         flag = True
         for c in codes:
-            codes[c] = codes[c].replace("'", "")
+            codes[c] = codes[c].replace('\'', '')
             if not flag:
+                print(c)
+                print(codes[c])
                 cursor.execute('INSERT INTO course VALUES ('+c+', '+codes[c]+')')
             else:
                 flag=False
