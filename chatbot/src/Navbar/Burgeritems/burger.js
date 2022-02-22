@@ -36,16 +36,14 @@ function helpThem () {
 }
 function changecolor(staty,setstaty){
     
-    var temp = document.getElementById('root');
-    if(staty){//brock colors
-        temp.style.setProperty('--primary-color',getComputedStyle(temp).getPropertyValue('--canada-colors'));
-        temp.style.setProperty('--secondary-color',getComputedStyle(temp).getPropertyValue('--canada-secondary-colors'))
-        setstaty(false);
+    var temp = window.location.href.toString();
+    var v = temp.search("/canada");
+    if(v==-1){//in canada{//to canada
+
+        window.location.replace("http://localhost:5000/canada");
     }
     else{
-        temp.style.setProperty('--primary-color',getComputedStyle(temp).getPropertyValue('--brock-colors'));
-        temp.style.setProperty('--secondary-color',getComputedStyle(temp).getPropertyValue('--brock-secondary-colors'))
-        setstaty(true);
+        window.location.replace("http://localhost:5000/brock");
     }
 }
 function Dropdownmenu(props){

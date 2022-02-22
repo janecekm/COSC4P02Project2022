@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import "./feed.css"
 import ClipButton from '../ClipButton/clipbutton';
 import Thinking from '../Thinking/thinking';
+import func from "../../Language/Lanprocess";
 
 class Message extends React.Component {
   render() {
@@ -12,7 +13,7 @@ class Message extends React.Component {
 };
 
 const Feed = () => {
-  const [messagesList, setMessagesList] = useState([<Message key={0} text = {"Hello! Welcome to the Brock chat bot! What can I help you with today?"} type = "response"/>]);
+  const [messagesList, setMessagesList] = useState([<Message key={0} text = {func("message")} type = "response"/>]);
   const[questions,setQuestions] = useState(null);
   useEffect(()=>{
     if (questions != null){
@@ -25,7 +26,7 @@ const Feed = () => {
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({message:questions})
     };
-    fetch("/",requestOption).then((response)=>{return response.json()}).then((data) => {
+    fetch("/brock",requestOption).then((response)=>{return response.json()}).then((data) => {
       console.log(data['message']);
 
       document.getElementById("inputField").disabled = false;
@@ -97,11 +98,11 @@ const Feed = () => {
         
       </div>
       <div className='inputarea' id='inputarena'>
-        <button className="clearButton" onClick={clearInput}>Clear</button>
+        <button className="clearButton" onClick={clearInput}>{func("clear")}</button>
         <textarea disabled = {false} className = "inputBar" onKeyUp={(e) => handler(e)} 
-        id = "inputField" placeholder="Type a query here..." maxLength={250}
+        id = "inputField" placeholder={func("inputmessage")} maxLength={250}
         autoComplete="off" />
-        <button className="enterButton" onClick={poseQuery}>Enter</button>
+        <button className="enterButton" onClick={poseQuery}>{func("enter")}</button>
       </div>
     </div>
 
