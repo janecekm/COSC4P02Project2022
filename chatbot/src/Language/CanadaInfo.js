@@ -12,7 +12,7 @@ const values = {
     {
       "name":"CanadaJeuxChatBot",
       "clear":"Dégager",
-      "Enter":"Entrer",
+      "enter":"Entrer",
       "message":"Bonjour! Bienvenue au ChatBot des Jeux du Canada! En quoi puis-je vous aider aujourd'hui ?",
       "inputmessage":"tapez une requête ici...",
       "disclaimer":"Toutes les informations tirées des sites Web des jeux du Canada"

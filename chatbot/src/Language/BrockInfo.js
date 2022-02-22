@@ -12,7 +12,7 @@ const values = {
   {
     "name":"BrockChatBOT",
     "clear":"Dégager",
-    "Enter":"Entrer",
+    "enter":"Entrer",
     "message":"Bonjour! Bienvenue sur le chatbot Brock ! En quoi puis-je vous aider aujourd'hui ?",
     "inputmessage":"tapez une requête ici...",
     "disclaimer":"Toutes les informations proviennent de l'Université Brock"
