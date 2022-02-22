@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS course;
 CREATE TABLE course (
 	code CHAR(8) PRIMARY KEY,
 	description VARCHAR(200),
-	prereq CHAR(8),
+	prereq VARCHAR(100),
 	xlist CHAR(8)
 );
 

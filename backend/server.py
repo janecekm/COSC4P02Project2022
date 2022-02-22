@@ -22,7 +22,7 @@ class Course(db.Model):
         nullable=False
     )
     prereq = db.Column(
-        db.String(8),
+        db.String(100),
         index=True,
         unique=True,
         nullable=True
@@ -35,7 +35,7 @@ class Course(db.Model):
     )
 
     def __repr__(self):
-        return 'Code '+self.code+' Description '+self.description
+        return '\nCode '+self.code+'\n Description '+self.description+'\n Prereq'+self.prereq+'\n Crosslist'+self.xlist
 
 db.create_all()
 

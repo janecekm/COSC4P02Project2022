@@ -42,18 +42,17 @@ for code in programCode:
                 no = no + 1
             if no == flagNumber:
                 #print(course.text)#description
-                temp["desc"] = course.text
+                temp["description"] = course.text
                 no = 0
                 flag = False
             if course.get_attribute("class") == "calnormal":
                 if course.text.startswith("Prerequisite"):
-                    temp["prereq"] = course.text
+                    temp["prereq"] = course.text.replace('Prerequisite(s): ', '')
                  #   print(course.text)#pre req
             if course.get_attribute("class") == "calccode":
                 #print(course.text)#course code
                 if tempcounter>0:
                     MainInfo[name] = temp
-                    print(temp)
                 else:
                     tempcounter = tempcounter+1
                 if course.text.startswith("*") or course.text.startswith("#"):
@@ -65,5 +64,7 @@ for code in programCode:
                 
                 temp = {}
                 flag = True
-print(MainInfo)
+
+with open('courseinfo.txt', 'w+') as f:
+        f.writelines(json.dumps(MainInfo))
 driver.close()
