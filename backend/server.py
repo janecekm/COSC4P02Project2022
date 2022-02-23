@@ -15,6 +15,7 @@ def frontend():
 @app.route("/brock", methods = ['POST'])
 def front():
     time.sleep(2)
+    print(json.loads(request.data)['message'])
     return bN.processQ(json.loads(request.data)['message'])
 @app.route("/",methods=['GET'])
 def splashart():

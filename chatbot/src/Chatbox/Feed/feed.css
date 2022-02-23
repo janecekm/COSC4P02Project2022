@@ -1,3 +1,7 @@
+.placeholder:hover {
+  display: none;
+}
+
 .inputBar {
   border: 1px solid #ccc;
   padding: 1px 6px;
@@ -15,12 +19,22 @@
 .inputBar[contenteditable]:empty::before {
   color: gray;
   caret-color: black;
-  content: "Type a query here...";
+  content: var(--prompt);
 }
 
-.inputcontainer {
-  display: block;
-  padding-right: 14px;
+.userTools {
+  display: flex
+}
+
+.clearButton {
+  flex: 1;
+  height: auto;
+}
+
+.enterButton {
+  flex: 1;
+  float:right;
+  height: auto;
 }
 
 
@@ -57,17 +71,6 @@
   margin-bottom:5px;
   margin-left: 5px;
   caret-color: transparent;
-}
-
-.clearButton {
-  height: 30px;
-  width: 50%;
-}
-
-.enterButton {
-  float:right;
-  height: 30px;
-  width: 50%;
 }
 
 .end {

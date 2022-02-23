@@ -13,6 +13,14 @@ class Message extends React.Component {
 };
 
 const Feed = () => {
+  document.getElementById('root').style.setProperty('--prompt', 'feed version of come on');
+
+  var bloop = document.getElementById('root');
+  console.log(getComputedStyle(bloop).getPropertyValue('--prompt'));
+  console.log("yay")
+
+
+  
   const [messagesList, setMessagesList] = useState([<Message key={0} text = {func("message")} type = "response"/>]);
   const[questions,setQuestions] = useState(null);
   useEffect(()=>{
@@ -35,7 +43,7 @@ const Feed = () => {
         prevMessages.concat(<Message key={messagesList.length} text = {data['message']} type = "response"/>)
       );
       scrollDown(document.getElementById("feed"));
-      document.getElementById("inputField").select();
+      document.getElementById("inputField").focus();
       document.getElementById("inputField").style.setProperty("caret-color", "black");
     }
     
@@ -74,11 +82,15 @@ const Feed = () => {
   const clearInput = () => {
     document.getElementById("inputField").innerText = '';
   }
+
   const handler = (event) => {
     if (event.key === "Enter") {
       poseQuery();
     }
+
   }
+
+
 
   return (
     <div>
@@ -89,13 +101,15 @@ const Feed = () => {
           <Thinking/>
         </div>
       </div>
+      <div className="userTools">
+        <button className="clearButton" onClick={clearInput}>{func("clear")}</button>
 
-      <button className="clearButton" onClick={clearInput}>{func("clear")}</button>
-      <button className="enterButton" onClick={poseQuery}>{func("enter")}</button>
-      
-      <p className='inputcontainer'>
-          <span onKeyUp={(e) => handler(e)}id = "inputField" className='inputBar' role="textbox" contentEditable></span>
-      </p>
+              <span onKeyUp={(e) => handler(e)} id = "inputField" 
+              className='inputBar' role="textbox" 
+              contentEditable>
+              </span>
+        <button className="enterButton" onClick={poseQuery}>{func("enter")}</button>
+      </div>
     </div>
 
   );

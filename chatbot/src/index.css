@@ -7,9 +7,11 @@
 html{
   padding:0;
   margin:0;
+  
 
 }
 #root{
   --text-size:18px;
   --menu-color: rgb(202, 202, 202);
+  --prompt: "asdfasdf";
 }
