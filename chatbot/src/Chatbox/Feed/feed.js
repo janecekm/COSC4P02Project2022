@@ -13,14 +13,7 @@ class Message extends React.Component {
 };
 
 const Feed = () => {
-  document.getElementById('root').style.setProperty('--prompt', 'feed version of come on');
 
-  var bloop = document.getElementById('root');
-  console.log(getComputedStyle(bloop).getPropertyValue('--prompt'));
-  console.log("yay")
-
-
-  
   const [messagesList, setMessagesList] = useState([<Message key={0} text = {func("message")} type = "response"/>]);
   const[questions,setQuestions] = useState(null);
   useEffect(()=>{
@@ -87,10 +80,7 @@ const Feed = () => {
     if (event.key === "Enter") {
       poseQuery();
     }
-
   }
-
-
 
   return (
     <div>
@@ -103,10 +93,9 @@ const Feed = () => {
       </div>
       <div className="userTools">
         <button className="clearButton" onClick={clearInput}>{func("clear")}</button>
-
               <span onKeyUp={(e) => handler(e)} id = "inputField" 
               className='inputBar' role="textbox" 
-              contentEditable>
+              contentEditable ='true' data-placeholder={func('inputmessage')}>
               </span>
         <button className="enterButton" onClick={poseQuery}>{func("enter")}</button>
       </div>

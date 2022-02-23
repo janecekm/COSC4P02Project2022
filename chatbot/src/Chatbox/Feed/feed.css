@@ -1,7 +1,3 @@
-.placeholder:hover {
-  display: none;
-}
-
 .inputBar {
   border: 1px solid #ccc;
   padding: 1px 6px;
@@ -19,7 +15,7 @@
 .inputBar[contenteditable]:empty::before {
   color: gray;
   caret-color: black;
-  content: var(--prompt);
+  content: attr(data-placeholder);
 }
 
 .userTools {
