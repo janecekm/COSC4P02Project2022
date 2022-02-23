@@ -6,10 +6,7 @@ from selenium.webdriver.common.by import By
 
 '''
 Returns the specified course data in JSON format.
-
-USAGE: python3 scrapeCourseInfo.py [courseName] [session] [type]
-RECOMMENDED USAGE (if you do this, you'll get an output file!): python3 scrapeCourseInfo.py [courseName] [session] [type] >[>] [whateveryouwantyoufiletobe.whatever]
->> appends, > overwrites
+NOTE: NEEDS A WRITE TO FILE BLOCK ADDED, OR TO BE USED AS IS WITH TERMINAL REDIRECT TO A FILE
 '''
 #add session and type options in a formatted url
 def scrapeCourseInfo(courseName, session, typ):
