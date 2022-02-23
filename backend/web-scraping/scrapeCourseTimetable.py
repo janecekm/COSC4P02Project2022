@@ -1,6 +1,7 @@
 import json
 import sys
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 
 '''
@@ -11,18 +12,20 @@ RECOMMENDED USAGE (if you do this, you'll get an output file!): python3 scrapeCo
 >> appends, > overwrites
 '''
 #add session and type options in a formatted url
-def scrapeCourseInfo(courseName, session, type):
+def scrapeCourseInfo(courseName, session, typ):
 
+	#this inits the driver every time, which I don't love. Attempts at passing
+	#it to this function got weird though
+	options = Options()
+	options.headless = True
+	driver = webdriver.Firefox(options=options) #NOTE: Don't use the chrome driver, unless you want to reconfigure it to run headless
+	
 	#valid sessions: FW, SP,SU
 	#valid types: UG, GR, IS, PS, AD
-	driver = webdriver.Firefox()
-	driver.get("https://brocku.ca/guides-and-timetables/timetables/?session=" + session + "&type=" + type + "&level=All&program="+courseName)
+	driver.get("https://brocku.ca/guides-and-timetables/timetables/?session=" + session + "&type=" + typ + "&level=All&program="+courseName)
 
 	#this code assumes that courseName is valid. Refer to the google doc for valid codes.
 	entries = driver.find_elements(By.XPATH,'//tr[contains(@class,"course-row")]')
-
-	#the attributes of each of the entries are enough to fill out our database.
-	#the next step is harvesting these attributes and formatting them nicely for you guys :3
 
 	'''
 	Code
@@ -37,32 +40,42 @@ def scrapeCourseInfo(courseName, session, type):
 
 	'''
 
+	#course-code, format, duration, section, times, days, location, room1, room2, instructor
 	for course in entries:
 		dict = {}
-		dict["course-code"] = course.get_attribute("data-cc")
-		dict["format"] = course.get_attribute("data-class_type")
-		dict["duration"] = course.get_attribute("data-duration")
-		dict["section"] = course.get_attribute("data-course_section")
-		dict["times"] = course.get_attribute("data-class_time")
-		dict["days"] = course.get_attribute("data-days")
-		dict["location"] = course.get_attribute("data-location")
-		dict["room1"] = course.get_attribute("data-room1")
-		dict["room2"] = course.get_attribute("data-room2")
-		dict["instructor"] = course.get_attribute("data-instructor")
-
-		#we could modify this code to print to file. Or, you could just use a bash redirect....0_0
-		print(json.dumps(dict))
-
+		dict["cc"] = course.get_attribute("data-cc").replace(',','')
+		dict["type"] = course.get_attribute("data-class_type").replace(',','')
+		dict["duration"] = course.get_attribute("data-duration").replace(',','')
+		dict["sec"] = course.get_attribute("data-course_section").replace(',','')
+		dict["time"] = course.get_attribute("data-class_time").replace(',','')
+		dict["days"] = course.get_attribute("data-days").replace(',','')
+		dict["loc"] = course.get_attribute("data-location").replace(',','')
+		dict["room1"] = course.get_attribute("data-room1").replace(',','')
+		dict["room2"] = course.get_attribute("data-room2").replace(',','')
+		dict["instructor"] = course.get_attribute("data-instructor").replace(',','')
+		
+		return(json.dumps(dict))
+	driver.close()
+	
 
 def main():
 
-	if (len(sys.argv) < 4):
-    print("USAGE: python3 scrapeCourseInfo.py [courseName] [session] [type]")
-    return
-  
-	courseName = sys.argv[1]
-	session = sys.argv[2]
-	type = sys.argv[3]
-	scrapeCourseInfo(courseName,session,type)
+
+	subjects = ['abed', 'abte', 'actg', 'aded', 'admi', 'adst', 'aesl', 'apco', 'arab', 'astr', 'bchm', 'biol', 'bmed', 'bphy', 'btec', 'btgd', 'cana', 'chem', 'chys', 'clas', 'comm', 'cosc', 'cpcf', 'dart', 'econ', 'edbe', 'educ', 'encw', 'engl', 'ensu', 'entr', 'ersc', 'esci', 'ethc', 'film', 'fnce', 'fren', 'geog', 'germ', 'gree', 'hist', 'hlsc', 'hlsc', 'iasc', 'indg', 'intc', 'ital', 'itis', 'japa', 'kine', 'labr', 'lati', 'ling', 'mand', 'mars', 'math', 'mgmt', 'mktg', 'musi', 'neur', 'nusc', 'obhr', 'oevi', 'oper', 'pcul', 'phil', 'phys', 'pmpb', 'poli', 'port', 'psyc', 'recl', 'russ', 'scie', 'sclc', 'soci', 'span', 'spma', 'stac', 'swah', 'tour', 'visa', 'wgst', 'wrds']
+
+	sessions = ['FW', 'SP', 'SU']
+	types = ['UG', 'GR', 'IS', 'PS', 'AD']
+
+
+	#returns a giant JSON object with sub-objects that are the courses
+	dict = {}
+	#print("#course-code, format, duration, section, times, days, location, room1, room2, instructor")
+	
+	for sess in sessions:
+		for t in types:
+			for course in subjects:
+				dict[course + "_" + sess + "_" + t] = scrapeCourseInfo(course,sess,t)
+				
+	print(json.dumps(dict))
 
 main()
