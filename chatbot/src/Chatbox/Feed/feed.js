@@ -13,13 +13,14 @@ class Message extends React.Component {
 };
 
 const Feed = () => {
+
   const [messagesList, setMessagesList] = useState([<Message key={0} text = {func("message")} type = "response"/>]);
   const[questions,setQuestions] = useState(null);
   useEffect(()=>{
     if (questions != null){
     document.getElementById("think").style.setProperty("display", "flex");
     scrollDown(document.getElementById("feed"))
-    document.getElementById("inputField").disabled = true;
+    document.getElementById("inputField").contentEditable = false;
     document.getElementById("inputField").style.setProperty("caret-color", "transparent");
     const requestOption ={
       method: 'POST',
@@ -28,16 +29,15 @@ const Feed = () => {
     };
     fetch("/brock",requestOption).then((response)=>{return response.json()}).then((data) => {
       console.log(data['message']);
-
-      document.getElementById("inputField").disabled = false;
+      document.getElementById("inputField").contentEditable = true;
       
       document.getElementById("think").style.setProperty("display", "none");
       setMessagesList( prevMessages =>
         prevMessages.concat(<Message key={messagesList.length} text = {data['message']} type = "response"/>)
       );
       scrollDown(document.getElementById("feed"));
-      document.getElementById("inputField").select();
-      document.getElementById("inputField").style.setProperty("caret-color", "auto");
+      document.getElementById("inputField").focus();
+      document.getElementById("inputField").style.setProperty("caret-color", "black");
     }
     
   
@@ -46,25 +46,24 @@ const Feed = () => {
   };},[questions])
 
   const poseQuery =  async ()  => {
-    var query = document.getElementById("inputField").value;
+    var query = document.getElementById("inputField").innerText;
     console.log(query);
     
-    if (query !== "" & query !== "\n") {
+    if (query !== "" & query !== "\n\n\n") {
       console.log(query);
       setMessagesList( prevMessages =>
         prevMessages.concat(<Message key={messagesList.length} text = {query} type = "user_message"/>)
       );
       scrollDown(document.getElementById("feed"));
-        // sending query
-        await setQuestions(query);//triggers useEffect for questions
-        //done query
-        console.log("query gotten");
+      // sending query
+      await setQuestions(query);//triggers useEffect for questions
+      //done query
+      console.log("query gotten");
 
-        setQuestions(null);
+      setQuestions(null);
       clearInput();
-      document.getElementById("inputField").style.setProperty('--size',40+"px");
     }
-    else if (query == "\n") {
+    else if (query == "\n\n\n") {
       clearInput();
     }
   };
@@ -74,15 +73,12 @@ const Feed = () => {
   }
 
   const clearInput = () => {
-    document.getElementById("inputField").value = '';
+    document.getElementById("inputField").innerText = '';
   }
+
   const handler = (event) => {
     if (event.key === "Enter") {
       poseQuery();
-    }
-    else{
-      var temp = document.getElementById('inputField');
-      temp.style.setProperty('--size',temp.scrollHeight-4+"px");
     }
   }
 
@@ -94,14 +90,13 @@ const Feed = () => {
           {messagesList}
           <Thinking/>
         </div>
-        
-        
       </div>
-      <div className='inputarea' id='inputarena'>
+      <div className="userTools">
         <button className="clearButton" onClick={clearInput}>{func("clear")}</button>
-        <textarea disabled = {false} className = "inputBar" onKeyUp={(e) => handler(e)} 
-        id = "inputField" placeholder={func("inputmessage")} maxLength={250}
-        autoComplete="off" />
+              <span onKeyUp={(e) => handler(e)} id = "inputField" 
+              className='inputBar' role="textbox" 
+              contentEditable ='true' data-placeholder={func('inputmessage')}>
+              </span>
         <button className="enterButton" onClick={poseQuery}>{func("enter")}</button>
       </div>
     </div>
