@@ -82,6 +82,14 @@ const Feed = () => {
     }
   }
 
+  const limiter = (event) => {
+    if (event.key !== "Backspace" & event.key !== "Enter" 
+    & document.getElementById("inputField").innerText.length > 250) {
+      event.preventDefault();
+      console.log("input max reached");
+    }
+  }
+
   return (
     <div>
       <ClipButton messages = {messagesList}/> 
@@ -93,7 +101,7 @@ const Feed = () => {
       </div>
       <div className="userTools">
         <button className="clearButton" onClick={clearInput}>{func("clear")}</button>
-              <span onKeyUp={(e) => handler(e)} id = "inputField" 
+              <span onKeyDown={(e) => limiter(e)} onKeyUp={(e) => handler(e)} id = "inputField" 
               className='inputBar' role="textbox" 
               contentEditable ='true' data-placeholder={func('inputmessage')}>
               </span>
