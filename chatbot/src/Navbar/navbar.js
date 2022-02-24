@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import "./Navbardesign.css"
 import Burger from './Burgeritems/burger';
 import func from "../Language/Lanprocess";
+import Backarrowbutton from './backarrow/backarrowbutton'
 
 function Navbar(){
     
@@ -9,9 +10,10 @@ function Navbar(){
         
         <div className='Navbar'>
 
-         <div className='Backarrow'>
-                    
+            <div className='Backarrow'>
+                <Backarrowbutton />
             </div>
+            
             <div className='ChatbotName'>
                     {func("name")}
             </div>
