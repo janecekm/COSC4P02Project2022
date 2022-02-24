@@ -6,16 +6,15 @@ from selenium.webdriver.common.by import By
 
 '''
 Returns the specified course data in JSON format.
-NOTE: NEEDS A WRITE TO FILE BLOCK ADDED, OR TO BE USED AS IS WITH TERMINAL REDIRECT TO A FILE
+
+USAGE: python3 scrapeCourseInfo.py [courseName] [session] [type]
+RECOMMENDED USAGE (if you do this, you'll get an output file!): python3 scrapeCourseInfo.py [courseName] [session] [type] >[>] [whateveryouwantyoufiletobe.whatever]
+>> appends, > overwrites
 '''
 #add session and type options in a formatted url
-def scrapeCourseInfo(courseName, session, typ):
+def scrapeCourseInfo(courseName, session, typ, driver):
 
-	#this inits the driver every time, which I don't love. Attempts at passing
-	#it to this function got weird though
-	options = Options()
-	options.headless = True
-	driver = webdriver.Firefox(options=options) #NOTE: Don't use the chrome driver, unless you want to reconfigure it to run headless
+
 	
 	#valid sessions: FW, SP,SU
 	#valid types: UG, GR, IS, PS, AD
@@ -38,6 +37,7 @@ def scrapeCourseInfo(courseName, session, typ):
 	'''
 
 	#course-code, format, duration, section, times, days, location, room1, room2, instructor
+	outer = {}
 	for course in entries:
 		dict = {}
 		dict["cc"] = course.get_attribute("data-cc").replace(',','')
@@ -51,28 +51,27 @@ def scrapeCourseInfo(courseName, session, typ):
 		dict["room2"] = course.get_attribute("data-room2").replace(',','')
 		dict["instructor"] = course.get_attribute("data-instructor").replace(',','')
 		
-		return(json.dumps(dict))
-	driver.close()
+		print(json.dumps(dict))
 	
 
 def main():
 
 
-	subjects = ['abed', 'abte', 'actg', 'aded', 'admi', 'adst', 'aesl', 'apco', 'arab', 'astr', 'bchm', 'biol', 'bmed', 'bphy', 'btec', 'btgd', 'cana', 'chem', 'chys', 'clas', 'comm', 'cosc', 'cpcf', 'dart', 'econ', 'edbe', 'educ', 'encw', 'engl', 'ensu', 'entr', 'ersc', 'esci', 'ethc', 'film', 'fnce', 'fren', 'geog', 'germ', 'gree', 'hist', 'hlsc', 'hlsc', 'iasc', 'indg', 'intc', 'ital', 'itis', 'japa', 'kine', 'labr', 'lati', 'ling', 'mand', 'mars', 'math', 'mgmt', 'mktg', 'musi', 'neur', 'nusc', 'obhr', 'oevi', 'oper', 'pcul', 'phil', 'phys', 'pmpb', 'poli', 'port', 'psyc', 'recl', 'russ', 'scie', 'sclc', 'soci', 'span', 'spma', 'stac', 'swah', 'tour', 'visa', 'wgst', 'wrds']
+	subjects = ['abed', 'abte', 'actg', 'aded', 'admi', 'adst', 'aesl', 'apco', 'arab', 'astr', 'bchm', 'biol', 'bmed', 'bphy', 'btec', 'btgd', 'cana', 'chem', 'chys', 'clas', 'comm', 'cosc', 'cpcf', 'dart', 'econ', 'edbe', 'educ', 'encw', 'engl', 'ensu', 'entr', 'ersc', 'esci', 'ethc', 'film', 'fnce', 'fren', 'geog', 'germ', 'gree', 'hist', 'hlsc', 'iasc', 'indg', 'intc', 'ital', 'itis', 'japa', 'kine', 'labr', 'lati', 'ling', 'mand', 'mars', 'math', 'mgmt', 'mktg', 'musi', 'neur', 'nusc', 'obhr', 'oevi', 'oper', 'pcul', 'phil', 'phys', 'pmpb', 'poli', 'port', 'psyc', 'recl', 'russ', 'scie', 'sclc', 'soci', 'span', 'spma', 'stac', 'swah', 'tour', 'visa', 'wgst', 'wrds']
 
 	sessions = ['FW', 'SP', 'SU']
 	types = ['UG', 'GR', 'IS', 'PS', 'AD']
 
+	options = Options()
+	options.headless = True
+	driver = webdriver.Firefox(options=options)
 
-	#returns a giant JSON object with sub-objects that are the courses
-	dict = {}
+	#Returns seperate json objects for each offering
 	#print("#course-code, format, duration, section, times, days, location, room1, room2, instructor")
-	
 	for sess in sessions:
 		for t in types:
 			for course in subjects:
-				dict[course + "_" + sess + "_" + t] = scrapeCourseInfo(course,sess,t)
-				
-	print(json.dumps(dict))
-
-main()
+				scrapeCourseInfo(course,sess,t,driver)
+			
+	
+	driver.close()
