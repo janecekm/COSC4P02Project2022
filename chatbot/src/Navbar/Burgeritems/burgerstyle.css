@@ -25,26 +25,25 @@
     position: absolute;
     top: 80px;
     right: 10px;
-    width:10%;
+    width:100px;
     padding: 1rem;
     overflow: hidden;
     transition: 5s;
-    text-align: left;
+    z-index: 1;
   }
 
   .menuitem{
     cursor: pointer;
-    height: 50px;
-    width: 600px;
-    border-radius: 8px;
+    height: 40px;
+    width: 100%;
     background-color: var(--primary-color);
-    display: flex;
     align-items: center;
     font-size: 15px;
     color: snow;
     align-content: center;
     border-color: snow;
     margin: 2px;
+    padding-top: 20%;
     text-align: center;
   }
   .menuitem:hover{
