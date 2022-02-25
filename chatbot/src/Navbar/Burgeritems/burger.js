@@ -19,16 +19,20 @@ function fontSizeDec(){
     var temp = document.getElementById('root');
     var len = getComputedStyle(temp).getPropertyValue('--text-size').length;
     var num = parseInt(getComputedStyle(temp).getPropertyValue('--text-size').substring(0,len-2))-1;
+    var th = parseInt(getComputedStyle(temp).getPropertyValue('--thinking-size')) -1;
     if (num > 9) {
         temp.style.setProperty('--text-size',num+"px");
+        temp.style.setProperty('--thinking-size',th+"px");
     }
 }
 function fontSizeInc(){
     var temp = document.getElementById('root');
     var len = getComputedStyle(temp).getPropertyValue('--text-size').length;
     var num = parseInt(getComputedStyle(temp).getPropertyValue('--text-size').substring(0,len-2))+1;
+    var th = parseInt(getComputedStyle(temp).getPropertyValue('--thinking-size')) +1;
     if (num < 26) {
         temp.style.setProperty('--text-size',num+"px");
+        temp.style.setProperty('--thinking-size',th +"px");
     }
 }
 function helpThem () {
