@@ -12,6 +12,7 @@ CREATE TABLE offering (
 	format VARCHAR(8),
 	duration CHAR(2),
 	section CHAR(2),
+	days CHAR(7),
 	time TIME,
 	location CHAR(10),
 	instructor CHAR(30)	
