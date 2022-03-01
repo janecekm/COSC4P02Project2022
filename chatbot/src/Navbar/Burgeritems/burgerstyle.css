@@ -25,26 +25,28 @@
     position: absolute;
     top: 80px;
     right: 10px;
-    width:10%;
+    width:100px;
     padding: 1rem;
     overflow: hidden;
     transition: 5s;
-    background-color: rgb(100, 25, 25);
-    text-align: left;
-    border-color: purple;
-    border-radius: 20px;
+    z-index: 1;
   }
 
   .menuitem{
     cursor: pointer;
-    height: 50px;
-    border-radius: 20px;
-    border-color: chartreuse;
-    background-color: rgb(113, 121, 12);
-    display: flex;
+    height: 40px;
+    width: 100%;
+    background-color: var(--primary-color);
     align-items: center;
-    size: var(--text-size)+"px";
+    font-size: 15px;
+    color: snow;
+    align-content: center;
+    border-color: snow;
+    margin: 2px;
+    padding-top: 20%;
+    text-align: center;
   }
   .menuitem:hover{
-    background-color :chocolate;
+    background-color : rgb(216, 216, 216);
+    color: var(--primary-color);
   }
