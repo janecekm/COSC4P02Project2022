@@ -41,5 +41,51 @@ def course_table_populate(db='buchatbot.db'):
                 x = ''
             cursor.execute('INSERT INTO course(code, description, prereq, xlist) VALUES (\''+c+'\', \''+codes[c]['description']+'\', \''+p+'\', \''+x+'\')')
 
+
+#this appears to execute, unsure how to get rows to display when visiting Flask site though
+def course_offering_populate(db='buchatbot.db'):
+    with open('timetable.txt', 'r') as f:
+            codes = f.readlines()
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        for line in codes:    #didn't want to modify loadFile method to handle this format, so this block decodes each row in timetable.txt one at a time
+            #days, time, instructor location, room1, and room2 can all be NoneType and need to be checked. There may be a better way than this. 
+            JSONDecodedRow = json.loads(line)
+            code = JSONDecodedRow.get('cc')
+            format = JSONDecodedRow.get('type')
+            duration = JSONDecodedRow.get('duration')
+            sec = JSONDecodedRow.get('sec')
+            time = JSONDecodedRow.get('time')
+            if (time == None):
+                time = ''
+            days = JSONDecodedRow.get('days')
+            if (days == None):
+                days = ''
+            room1 = JSONDecodedRow.get('room1')
+            room2 = JSONDecodedRow.get('room2')
+            
+            location = JSONDecodedRow.get('location')
+            if location == None:
+                location = ''
+            else:
+                if not room1 == None:
+                    if room2 == None:
+                        location = location + ' ' + room1
+                    else:
+                        location = location + ' ' + room1 + ' ' + room2
+
+                
+            instructor = JSONDecodedRow.get('instructor').replace("'", "`")
+            if instructor == None:
+                instructor = ''
+
+            cursor.execute('INSERT INTO offering(code, format, duration, section, days, time, location, instructor) VALUES (\''+code+'\', \''+ format+'\', \''+duration+'\', \''+sec+'\', \''+ days+'\', \''+ time+'\', \''+ location+'\', \''+ instructor+'\')')
+    
+
 # populate_db_building_codes()
+
+#populate offerings (timetable)
+course_offering_populate()
 course_table_populate()
+
+
