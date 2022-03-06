@@ -40,11 +40,11 @@ class Course(db.Model):
 db.create_all()
 
 @app.route("/",methods = ['GET'])
-def show_all():
-    print(Course.query.all())
-    return "Hello world"
-# def frontend():
-#     return render_template("index.html")
+# def show_all():
+#     print(Course.query.all())
+#     return "Hello world"
+def frontend():
+    return render_template("index.html")
     
 
 @app.route("/", methods = ['POST'])
@@ -53,4 +53,4 @@ def front():
     return bN.processQ(json.loads(request.data)['message'])
 
 if __name__ == "__main__":
-    app.run(debug=True,port=5000)
+    app.run(debug=True,host='0.0.0.0')
