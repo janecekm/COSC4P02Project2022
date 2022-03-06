@@ -5,13 +5,14 @@ from string import Template
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
 
-# course codes
+# course codes -- course/offering/exam
 courseCode = [[{'IS_ALPHA': True, 'LENGTH': 4},
                {'SHAPE': 'dxdd'}],
              [{"SHAPE":  "xxxxdxdd"}]]
 matcher.add("course code", courseCode)
 
 # who teaches, who is teaching, who is the instructor, who is the professor
+# offering table
 teaching = [[{'LOWER': 'who'},
             {'LEMMA': 'be', 'OP': '?'},
             {'LEMMA': 'teach'}],
@@ -33,7 +34,7 @@ when = [[{'LOWER': 'when'},
          {'LEMMA': 'be'}]]
 matcher.add("time", when, greedy="LONGEST")
 
-# what are the prereq(uisites)
+# what are the prereq(uisites) -- course table
 prerequisites = [[{'LOWER': 'what'},
                   {'OP': '?'},
                   {'OP': '?'},
@@ -44,7 +45,7 @@ prerequisites = [[{'LOWER': 'what'},
                   {'LEMMA': 'prereqs'}]]
 matcher.add("prereqs", prerequisites)
 
-
+# generally the descriptions
 generalInfo = [ [{'LOWER':'tell'},{'LOWER':'me'},{'LOWER':'about'}], 
                 [{'LOWER':'information'},{'LOWER':'on'}],
                 [{'LOWER':'info'},{'LOWER':'on'}]]
@@ -52,27 +53,27 @@ generalInfo = [ [{'LOWER':'tell'},{'LOWER':'me'},{'LOWER':'about'}],
 matcher.add("general question", generalInfo)
 
 openerMatch = [{"LOWER": {"IN": ['hello','hi','hey','howdy','yo','sup','hiya','heyo']}}]
-
 matcher.add("openerGreet", [openerMatch])
 
+# don't have table
 progQuestion = [{'LOWER':'the'},{'OP':'?'},{'OP':'?'},{'OP':'?'},{'OP':'?'},{'OP':'?'},{'OP':'?'},{'OP':'?'},{'LOWER':'program'}]
 
 matcher.add("program question",[progQuestion])
 
-# course components
-courseComp = [{'LEMMA': {"IN": ['sem', 'seminar', 'lab', 'tut', 'tutorial', 'lec', 'lecture']}},
+# course components -- offering table
+courseComp = [{'LEMMA': {"IN": ['sem', 'seminar', 'lab', 'tut', 'tutorial', 'lec', 'lecture', 'sec', 'section']}},
            {'LIKE_NUM': True, 'OP': '?'}]
 
 matcher.add("course component", [courseComp], greedy="LONGEST")
 
-# location
+# location -- offering or exam
 location = [[{'LOWER':'location'}],
             [{'LOWER':'what'}, {'LOWER':'building'}], 
             [{'LOWER': 'where'}]]
 
 matcher.add("location", location)
 
-# exam
+# exam table
 exam = [{'LEMMA':'exam'}]
 matcher.add("exam", [exam])
 
@@ -100,7 +101,15 @@ def extractKeywords(question):
         string_id = nlp.vocab.strings[match_id]  # get string rep
         span = doc[start:end]  # matched span
         myString = myString + str(string_id) + " " + str(start) + " " + str(end) + " " + str(span.text) + " "
-    return matches
+    return matches, doc
+
+def processKeywords(matches, doc):
+    processedMatches = []
+    for match_id, start, end in matches: 
+        match_label = nlp.vocab.strings[match_id]
+        match_text = doc[start:end]
+        processedMatches.append((match_label, match_text))
+    return processedMatches
 
 def formResponse(matchedKeys):
     returnThis = ""
@@ -117,10 +126,9 @@ def formResponse(matchedKeys):
     return returnThis
 
 def processQ(question):
-    matches = extractKeywords(question)
+    matches, doc = extractKeywords(question)
+    processed = processKeywords(matches, doc)
     myString = formResponse(matches)
-    print(myString)
-    print(type(myString))
     if (myString != "" and myString != None):    
         return {"message": myString}
     else:
