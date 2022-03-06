@@ -2,8 +2,13 @@ import spacy
 from spacy.matcher import Matcher
 from string import Template
 
+
+# load spacy
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
+
+###################################
+# This section defines all the patterns for the Matcher
 
 # course codes -- course/offering/exam
 courseCode = [[{'IS_ALPHA': True, 'LENGTH': 4},
@@ -85,24 +90,29 @@ reqQuestion = [{'LOWER':'the'},{'LOWER':'program','OP':'?'},{'LOWER':'requiremen
 
 matcher.add("requirement question",[reqQuestion])
 
-# You are asking about the _________ of __________
-# type/amount of information -- general info, or time, or location
-# finer detail -- course code or course component
+# end of Matcher pattern defintions
+###########################################################
 
-# span's custom attributes // attribute extensions ._.
-# matcher callback function on_match=function()
-
+'''This method runs the matcher to extract key information from the query and add match labels
+Args:
+    question: the string text to extract info from 
+Return: 
+    matches: a list of matches where each is a tuple containing the match_id as a hash, and the indices of the start and end tokens
+    doc: the user input, processed by the NLP pipeline
+'''
 def extractKeywords(question): 
     question = question.lower() # make question lowercase 
     doc = nlp(question)
     matches = matcher(doc)
-    myString = ""
-    for match_id, start, end in matches:
-        string_id = nlp.vocab.strings[match_id]  # get string rep
-        span = doc[start:end]  # matched span
-        myString = myString + str(string_id) + " " + str(start) + " " + str(end) + " " + str(span.text) + " "
     return matches, doc
 
+'''Processes the extracted keyword matches into a format to give to the database 
+Args:
+    matches: the list of matches
+    doc: the user text processed by the NLP pipeline
+Return: 
+    a list of tuples containing the string of the match_id and the matched text [(match_id_, match_text)]
+'''
 def processKeywords(matches, doc):
     processedMatches = []
     for match_id, start, end in matches: 
@@ -111,6 +121,12 @@ def processKeywords(matches, doc):
         processedMatches.append((match_label, match_text))
     return processedMatches
 
+'''A method to form a very simple response 
+Args: 
+    matchedKeys: the list of match info as a result of processing
+Return: 
+    returns a string to output as a response
+'''
 def formResponse(matchedKeys):
     returnThis = ""
     temp = Template("You are asking about $x")
@@ -125,6 +141,12 @@ def formResponse(matchedKeys):
                 returnThis += temp.substitute({'x': match_id_})
     return returnThis
 
+'''Main entry point to the NLP module. This is called by the server. 
+Args:
+    question: the string of query text input by the user
+Return: 
+    a response string to be output to the user
+'''
 def processQ(question):
     matches, doc = extractKeywords(question)
     processed = processKeywords(matches, doc)
