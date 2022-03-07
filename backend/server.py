@@ -42,6 +42,7 @@ db.create_all()
 @app.route("/",methods = ['GET'])
 # def show_all():
 #     print(Course.query.all())
+#     print()
 #     return "Hello world"
 def frontend():
     return render_template("index.html")
@@ -52,5 +53,6 @@ def front():
     time.sleep(2)
     return bN.processQ(json.loads(request.data)['message'])
 
+# port=5000 OR host='0.0.0.0'
 if __name__ == "__main__":
-    app.run(debug=True,host='0.0.0.0')
+    app.run(debug=True,port=5000)

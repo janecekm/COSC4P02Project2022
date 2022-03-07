@@ -1,6 +1,7 @@
 import spacy
 from spacy.matcher import Matcher
 from string import Template
+import QueryTables as qt
 
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
@@ -128,6 +129,7 @@ def formResponse(matchedKeys):
 def processQ(question):
     matches, doc = extractKeywords(question)
     processed = processKeywords(matches, doc)
+    qt.doQueries(processed)
     myString = formResponse(matches)
     if (myString != "" and myString != None):    
         return {"message": myString}

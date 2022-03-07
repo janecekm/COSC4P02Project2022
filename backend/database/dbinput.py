@@ -52,7 +52,7 @@ def course_offering_populate(db='buchatbot.db'):
             #days, time, instructor location, room1, and room2 can all be NoneType and need to be checked. There may be a better way than this. 
             JSONDecodedRow = json.loads(line)
             code = JSONDecodedRow.get('cc')
-            format = JSONDecodedRow.get('type')
+            frmt = JSONDecodedRow.get('type')
             duration = JSONDecodedRow.get('duration')
             sec = JSONDecodedRow.get('sec')
             time = JSONDecodedRow.get('time')
@@ -79,7 +79,7 @@ def course_offering_populate(db='buchatbot.db'):
             if instructor == None:
                 instructor = ''
 
-            cursor.execute('INSERT INTO offering(code, format, duration, section, days, time, location, instructor) VALUES (\''+code+'\', \''+ format+'\', \''+duration+'\', \''+sec+'\', \''+ days+'\', \''+ time+'\', \''+ location+'\', \''+ instructor+'\')')
+            cursor.execute('INSERT INTO offering(code, frmt, duration, section, days, time, location, instructor) VALUES (\''+code+'\', \''+ frmt+'\', \''+duration+'\', \''+sec+'\', \''+ days+'\', \''+ time+'\', \''+ location+'\', \''+ instructor+'\')')
     
 
 # populate_db_building_codes()
