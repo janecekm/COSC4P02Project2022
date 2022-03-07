@@ -53,7 +53,8 @@ matcher.add("prereqs", prerequisites)
 # generally the descriptions
 generalInfo = [ [{'LOWER':'tell'},{'LOWER':'me'},{'LOWER':'about'}], 
                 [{'LOWER':'information'},{'LOWER':'on'}],
-                [{'LOWER':'info'},{'LOWER':'on'}]]
+                [{'LOWER':'info'},{'LOWER':'on'}], 
+                [{'LOWER': 'what'}, {'LOWER': 'is'}]]
 
 matcher.add("general question", generalInfo)
 
