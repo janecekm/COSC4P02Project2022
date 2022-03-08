@@ -1,7 +1,7 @@
 import spacy
 from spacy.matcher import Matcher
 from string import Template
-import QueryTables as qt
+import backend.queryTables as qt
 
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
