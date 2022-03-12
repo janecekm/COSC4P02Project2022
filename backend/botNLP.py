@@ -1,7 +1,7 @@
 import spacy
 from spacy.matcher import Matcher
 from string import Template
-import backend.queryTables as qt
+import queryTables as qt
 
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
@@ -106,11 +106,13 @@ def extractKeywords(question):
 
 def processKeywords(matches, doc):
     processedMatches = []
+    pm = {}
     for match_id, start, end in matches: 
         match_label = nlp.vocab.strings[match_id]
         match_text = doc[start:end]
         processedMatches.append((match_label, match_text))
-    return processedMatches
+        pm[match_label] = match_text
+    return pm
 
 def formResponse(matchedKeys):
     returnThis = ""
