@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, json
 import botNLP as bN
-import time
+import os
 
 app = Flask(__name__)
 
@@ -14,12 +14,12 @@ def frontend():
 
 @app.route("/brock", methods = ['POST'])
 def front():
-    time.sleep(2)
     print(json.loads(request.data)['message'])
     return bN.processQ(json.loads(request.data)['message'])
 @app.route("/",methods=['GET'])
 def splashart():
     return render_template("splash.html")
 
+# placeholder for now
 if __name__ == "__main__":
-    app.run(debug=True,port=5000)
+    app.run(host="0.0.0.0", port=os.environ.get('PORT'))
