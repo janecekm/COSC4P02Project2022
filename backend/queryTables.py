@@ -3,22 +3,23 @@ import server
 #import models
 from flask_sqlalchemy import SQLAlchemy
 
-# processed is a list of match_id and match_text
-def doQueries(processed):
+# keywords is a dictionary of match_id and match_text
+def doQueries(keywords):
     db = server.db
-    # print(processed)
-    if 'course code' and ('prereqs' or 'description') in processed:
-        print(processed.get('course code'))
-        filterCourseInputs(processed)
+    # print(keywords)
+    if 'course code' and ('prereqs' or 'description') in keywords:
+        print(keywords.get('course code'))
+        filterCourseInputs(keywords)
         # temp = server.Course.query.filter_by(code='COSC4P03').first()
         # print(temp.description)
-        print(server.Course.query.filter_by(code=processed.get('course code')).first())
+        print(server.Course.query.filter_by(code=keywords.get('course code')).first())
     # print(server.Course.query.all())
     return 'placeholder return'
 
-def filterCourseInputs(processed):
-    temp = processed.get('course code').text
+# filter to match database formatting
+def filterCourseInputs(keywords):
+    temp = keywords.get('course code').text
     temp = temp.upper()
     print("filtered input: "+temp)
-    processed['course code'] = temp
+    keywords['course code'] = temp
     return None

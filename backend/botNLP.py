@@ -105,14 +105,12 @@ def extractKeywords(question):
     return matches, doc
 
 def processKeywords(matches, doc):
-    processedMatches = []
-    pm = {}
+    processedMatches = {}
     for match_id, start, end in matches: 
         match_label = nlp.vocab.strings[match_id]
         match_text = doc[start:end]
-        processedMatches.append((match_label, match_text))
-        pm[match_label] = match_text
-    return pm
+        processedMatches[match_label] = match_text
+    return processedMatches
 
 def formResponse(matchedKeys):
     returnThis = ""
