@@ -5,7 +5,10 @@ function Backarrowbutton(){
 
 
     const goBack = () => {
-        window.location.replace("http://localhost:5000");
+        link = window.location.href
+        link = link.replace("brock", "")
+        link = link.replace("canada", "")
+        window.location.replace(link);
     }
 
     return(

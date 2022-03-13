@@ -42,12 +42,15 @@ function changecolor(staty,setstaty){
     
     var temp = window.location.href.toString();
     var v = temp.search("/canada");
-    if(v==-1){//in canada{//to canada
-
-        window.location.replace("http://localhost:5000/canada");
+    if(v==-1){
+        link = window.location.href
+        link = link.replace("brock", "canada");
+        window.location.replace(link);
     }
     else{
-        window.location.replace("http://localhost:5000/brock");
+        link = window.location.href
+        link = link.replace("canada", "brock")
+        window.location.replace(link);
     }
 }
 function Dropdownmenu(props){
