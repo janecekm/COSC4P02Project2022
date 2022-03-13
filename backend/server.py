@@ -22,4 +22,8 @@ def splashart():
 
 # placeholder for now
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=os.environ.get('PORT'))
+    if "PORT" in os.environ:
+        connectingport = os.environ.get("PORT")
+    else:
+        connectingport = 5000
+    app.run(host="0.0.0.0", port=connectingport)
