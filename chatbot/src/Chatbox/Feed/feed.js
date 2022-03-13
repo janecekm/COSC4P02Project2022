@@ -63,7 +63,7 @@ const Feed = () => {
       setQuestions(null);
       clearInput();
     }
-    else if (query == "\n\n\n") {
+    else if (query === "\n\n\n") {
       clearInput();
     }
   };

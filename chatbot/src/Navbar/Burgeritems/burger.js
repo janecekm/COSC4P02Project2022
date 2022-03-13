@@ -42,14 +42,12 @@ function changecolor(staty,setstaty){
     
     var temp = window.location.href.toString();
     var v = temp.search("/canada");
-    if(v==-1){
-        link = window.location.href
-        link = link.replace("brock", "canada");
+    if(v===-1){
+        let link = temp.replace("brock", "canada");
         window.location.replace(link);
     }
     else{
-        link = window.location.href
-        link = link.replace("canada", "brock")
+        let link = temp.replace("canada", "brock")
         window.location.replace(link);
     }
 }

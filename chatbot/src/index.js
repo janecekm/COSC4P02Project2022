@@ -9,7 +9,7 @@ import langprocess from "./Language/Lanprocess"
 (async()=>{
   var temp = window.location.href.toString();
   var v = temp.search("/canada");
-  if(v==-1)
+  if(v===-1)
     await import("./brockcolor.css");
   else
     await import("./canadacolor.css");

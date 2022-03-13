@@ -5,7 +5,7 @@ function Backarrowbutton(){
 
 
     const goBack = () => {
-        link = window.location.href
+        var link = window.location.href.toString()
         link = link.replace("brock", "")
         link = link.replace("canada", "")
         window.location.replace(link);
