@@ -9,8 +9,16 @@ def doQueries(processed):
     # print(processed)
     if 'course code' and ('prereqs' or 'description') in processed:
         print(processed.get('course code'))
-        temp = server.Course.query.filter_by(code='COSC4P03').first()
-        print(temp.description)
-        # print(server.Course.query.filter_by(code=processed.get('course code')).first())
+        filterCourseInputs(processed)
+        # temp = server.Course.query.filter_by(code='COSC4P03').first()
+        # print(temp.description)
+        print(server.Course.query.filter_by(code=processed.get('course code')).first())
     # print(server.Course.query.all())
     return 'placeholder return'
+
+def filterCourseInputs(processed):
+    temp = processed.get('course code').text
+    temp = temp.upper()
+    print("filtered input: "+temp)
+    processed['course code'] = temp
+    return None
