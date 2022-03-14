@@ -37,16 +37,7 @@ class Course(db.Model):
     def __repr__(self):
         return '\nCode '+self.code+'\n Description '+self.description+'\n Prereq'+self.prereq+'\n Crosslist'+self.xlist
 
-db.create_all()
-
-@app.route("/",methods = ['GET'])
-# def show_all():
-#     print(Course.query.all())
-#     print()
-#     return "Hello world"
-def frontend():
-    return render_template("index.html")
-    
+db.create_all()  
 
 @app.route("/brock", methods = ['POST'])
 def front():
