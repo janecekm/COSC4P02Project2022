@@ -1,7 +1,39 @@
-.inputarea{
-  --size: 40px;
-  display: flex;
+.inputBar {
+  border: 1px solid #ccc;
+  padding: 1px 6px;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  min-height: 40px;
+  line-height: 20px;
+  resize: none;
+  font-size: var(--text-size);
+  word-wrap: break-word;
+  caret-color: black;
 }
+
+.inputBar[contenteditable]:empty::before {
+  color: gray;
+  caret-color: black;
+  content: attr(data-placeholder);
+}
+
+.userTools {
+  display: flex
+}
+
+.clearButton {
+  flex: 1;
+  height: auto;
+}
+
+.enterButton {
+  flex: 1;
+  float:right;
+  height: auto;
+}
+
+
 .user_message{
   background-color: #4a4a4a;
   color: whitesmoke;
@@ -35,28 +67,6 @@
   margin-bottom:5px;
   margin-left: 5px;
   caret-color: transparent;
-}
-
-.clearButton {
-  flex: 1;
-  width: 50px;
-  height: var(--size)+"px";
-}
-
-.enterButton {
-  flex: 1;
-  width: 50px;
-  float:right;
-  height: var(--size)+"px";
-}
-
-.inputBar {
-  flex: 8;
-  width: calc(100% - 108px);
-  height:  var(--size);
-  word-wrap: break-word;
-  resize: none;
-  font-size: var(--text-size);
 }
 
 .end {

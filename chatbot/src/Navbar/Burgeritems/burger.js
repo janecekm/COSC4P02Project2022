@@ -19,16 +19,20 @@ function fontSizeDec(){
     var temp = document.getElementById('root');
     var len = getComputedStyle(temp).getPropertyValue('--text-size').length;
     var num = parseInt(getComputedStyle(temp).getPropertyValue('--text-size').substring(0,len-2))-1;
+    var th = parseInt(getComputedStyle(temp).getPropertyValue('--thinking-size')) -1;
     if (num > 9) {
         temp.style.setProperty('--text-size',num+"px");
+        temp.style.setProperty('--thinking-size',th+"px");
     }
 }
 function fontSizeInc(){
     var temp = document.getElementById('root');
     var len = getComputedStyle(temp).getPropertyValue('--text-size').length;
     var num = parseInt(getComputedStyle(temp).getPropertyValue('--text-size').substring(0,len-2))+1;
+    var th = parseInt(getComputedStyle(temp).getPropertyValue('--thinking-size')) +1;
     if (num < 26) {
         temp.style.setProperty('--text-size',num+"px");
+        temp.style.setProperty('--thinking-size',th +"px");
     }
 }
 function helpThem () {
@@ -36,16 +40,15 @@ function helpThem () {
 }
 function changecolor(staty,setstaty){
     
-    var temp = document.getElementById('root');
-    if(staty){//brock colors
-        temp.style.setProperty('--primary-color',getComputedStyle(temp).getPropertyValue('--canada-colors'));
-        temp.style.setProperty('--secondary-color',getComputedStyle(temp).getPropertyValue('--canada-secondary-colors'))
-        setstaty(false);
+    var temp = window.location.href.toString();
+    var v = temp.search("/canada");
+    if(v===-1){
+        let link = temp.replace("brock", "canada");
+        window.location.replace(link);
     }
     else{
-        temp.style.setProperty('--primary-color',getComputedStyle(temp).getPropertyValue('--brock-colors'));
-        temp.style.setProperty('--secondary-color',getComputedStyle(temp).getPropertyValue('--brock-secondary-colors'))
-        setstaty(true);
+        let link = temp.replace("canada", "brock")
+        window.location.replace(link);
     }
 }
 function Dropdownmenu(props){

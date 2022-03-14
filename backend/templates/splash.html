@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <style>
+            .background {
+                background-color: snow;
+            }
+            h3, h1 {
+                text-align: center;
+            }
+            h1, .info  {
+                background-color: #af57b3;
+                padding: 10px;
+                color: white;
+                box-shadow: 2px 2px 4px #272727;
+            }
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                margin: 20px;
+            }
+            li {
+                border-radius:5px;
+                flex:2;
+                display: inline;
+                width: 500px;
+                background-color: rgb(131, 130, 130);
+                color: snow;
+                padding: 10px;
+                text-align: center;
+                margin: 5px;
+                box-shadow: 2px 2px 4px #272727;
+            }
+
+            li:hover {
+                background-color: #af57b3;
+            }
+            p {
+                margin: 3px;
+            }
+        </style>
+        <title>Chatbot</title>
+        <link rel="icon" href="icon.png">
+
+    </head>
+    <body class = "background">
+
+        <div class="runner">
+            <h1>Welcome to Chatbot</h1>
+            <h3>A COSC 4P02 project dedicated to helping students with finding information regarding Brock University and Canada Games</h3> 
+            
+            <h3>Pick your chatbot:</h3>
+            <ul>
+                <li onclick="window.location.href=window.location.href+'brock'"><a>Brock University</a></li>
+                <li onclick="window.location.href=window.location.href+'canada'"><a>Canada Games</a></li>
+            </ul>
+            <div class ="info">
+                Group Members:
+                <p>Greg Pogue</p>
+                <p>Joel Jacob</p>
+                <p>Sam Langdon</p>
+                <p>Kylee Schram</p>
+                <p>Brendan Park</p>
+                <p>Madeline Janecek</p>
+            </div>
+
+        </div>
+        
+    </body>
+</html>
+
