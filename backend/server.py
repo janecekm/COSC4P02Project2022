@@ -39,10 +39,24 @@ class Course(db.Model):
 
 db.create_all()  
 
+@app.route("/canada",methods=['GET'])
+def canadafront():
+    return render_template("index.html")
+
+@app.route("/brock",methods = ['GET'])
+def frontend():
+    return render_template("index.html")
+
 @app.route("/brock", methods = ['POST'])
 def front():
     print(json.loads(request.data)['message'])
     return bN.processQ(json.loads(request.data)['message'])
+
+@app.route("/canada", methods = ['POST'])
+def front():
+    print(json.loads(request.data)['message'])
+    return bN.processQ(json.loads(request.data)['message'])
+
 @app.route("/",methods=['GET'])
 def splashart():
     return render_template("splash.html")
