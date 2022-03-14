@@ -44,16 +44,16 @@ def canadafront():
     return render_template("index.html")
 
 @app.route("/brock",methods = ['GET'])
-def frontend():
+def brockfront():
     return render_template("index.html")
 
 @app.route("/brock", methods = ['POST'])
-def front():
+def brockpost():
     print(json.loads(request.data)['message'])
     return bN.processQ(json.loads(request.data)['message'])
 
 @app.route("/canada", methods = ['POST'])
-def front():
+def canadapost():
     print(json.loads(request.data)['message'])
     return bN.processQ(json.loads(request.data)['message'])
 
