@@ -2,7 +2,6 @@ import spacy
 from spacy.matcher import Matcher
 from string import Template
 
-
 # load spacy
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
@@ -12,8 +11,10 @@ matcher = Matcher(nlp.vocab)
 
 # course codes -- course/offering/exam
 courseCode = [[{'IS_ALPHA': True, 'LENGTH': 4},
-               {'SHAPE': 'dxdd'}],
-             [{"SHAPE":  "xxxxdxdd"}]]
+               {'SHAPE': {'IN': ['dxdd', 'dXdd']}}],
+             [{"SHAPE":  {'IN': ["xxxxdxdd", "Xxxxdxdd", "xXxxdxdd", "XXxxdxdd", "xxXxdxdd", "XxXxdxdd", "xXXxdxdd", "XXXxdxdd", "xxxXdxdd",
+             "XxxXdxdd", "xXxXdxdd", "XXxXdxdd", "xxXXdxdd", "xXXXdxdd", "XXXXdxdd", "xxxxdXdd", "XxxxdXdd", "xXxxdXdd", "XXxxdXdd", "xxXxdXdd",
+             "XxXxdXdd", "xXXxdXdd", "xxxXdXdd", "XxxXdXdd", "xXxXdXdd", "XXxXdXdd", "xxXXdXdd", "XxXXdXdd", "xXXXdXdd", "XXXXdXdd" ]}}]]
 matcher.add("course code", courseCode)
 
 # who teaches, who is teaching, who is the instructor, who is the professor
@@ -43,11 +44,11 @@ matcher.add("time", when, greedy="LONGEST")
 prerequisites = [[{'LOWER': 'what'},
                   {'OP': '?'},
                   {'OP': '?'},
-                  {'LEMMA': 'prerequisites'}], 
+                  {'LEMMA': 'prerequisite'}], 
                 [{'LOWER': 'what'},
                   {'OP': '?'},
                   {'OP': '?'},
-                  {'LEMMA': 'prereqs'}]]
+                  {'LEMMA': 'prereq'}]]
 matcher.add("prereqs", prerequisites)
 
 # generally the descriptions
@@ -83,10 +84,6 @@ matcher.add("location", location)
 exam = [{'LEMMA':'exam'}]
 matcher.add("exam", [exam])
 
-# exists
-does = [{'LOWER':'does'}]
-matcher.add("exists", [does])
-
 reqQuestion = [{'LOWER':'the'},{'LOWER':'program','OP':'?'},{'LOWER':'requirements'},{'LOWER':'for'}]
 
 matcher.add("requirement question",[reqQuestion])
@@ -94,41 +91,44 @@ matcher.add("requirement question",[reqQuestion])
 # end of Matcher pattern defintions
 ###########################################################
 
-'''This method runs the matcher to extract key information from the query and add match labels
-Args:
-    question: the string text to extract info from 
-Return: 
-    matches: a list of matches where each is a tuple containing the match_id as a hash, and the indices of the start and end tokens
-    doc: the user input, processed by the NLP pipeline
-'''
 def extractKeywords(question): 
-    question = question.lower() # make question lowercase 
+    '''This method runs the matcher to extract key information from the query and add match labels
+    Args:
+        question: the string text to extract info from 
+    Return: 
+        matches: a list of matches where each is a tuple containing the match_id as a hash, and the indices of the start and end tokens
+        doc: the user input, processed by the NLP pipeline
+    '''
     doc = nlp(question)
     matches = matcher(doc)
     return matches, doc
 
-'''Processes the extracted keyword matches into a format to give to the database 
-Args:
-    matches: the list of matches
-    doc: the user text processed by the NLP pipeline
-Return: 
-    a list of tuples containing the string of the match_id and the matched text [(match_id_, match_text)]
-'''
 def processKeywords(matches, doc):
+    '''Processes the extracted keyword matches into a format to give to the database 
+    Args:
+        matches: the list of matches
+        doc: the user text processed by the NLP pipeline
+    Return: 
+        a list of tuples containing the string of the match_id and the matched text [(match_id_, match_text)]
+    '''
     processedMatches = []
     for match_id, start, end in matches: 
         match_label = nlp.vocab.strings[match_id]
         match_text = doc[start:end]
         processedMatches.append((match_label, match_text))
+    # use the NER to extract the people names from document
+    for ent in doc.ents:
+        if (ent.label_ == "PERSON"):
+            processedMatches.append(("person", ent.text))  
     return processedMatches
 
-'''A method to form a very simple response 
-Args: 
-    matchedKeys: the list of match info as a result of processing
-Return: 
-    returns a string to output as a response
-'''
 def formResponse(matchedKeys):
+    '''A method to form a very simple response 
+    Args: 
+        matchedKeys: the list of match info as a result of processing
+    Return: 
+        returns a string to output as a response
+    '''
     returnThis = ""
     temp = Template("You are asking about $x")
     for match_id, start, end in matchedKeys:
@@ -142,13 +142,14 @@ def formResponse(matchedKeys):
                 returnThis += temp.substitute({'x': match_id_})
     return returnThis
 
-'''Main entry point to the NLP module. This is called by the server. 
-Args:
-    question: the string of query text input by the user
-Return: 
-    a response string to be output to the user
-'''
+
 def processQ(question):
+    '''Main entry point to the NLP module. This is called by the server. 
+    Args:
+        question: the string of query text input by the user
+    Return: 
+        a response string to be output to the user
+    '''
     matches, doc = extractKeywords(question)
     processed = processKeywords(matches, doc)
     myString = formResponse(matches)
