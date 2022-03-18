@@ -1,6 +1,4 @@
-import server
-
-db = server.db
+from server import db
 
 class Course(db.Model):
     __tablename__ = 'course'

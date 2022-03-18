@@ -1,11 +1,9 @@
 import sqlite3
 import server
-#import models
 from flask_sqlalchemy import SQLAlchemy
 
 # keywords is a dictionary of match_id and match_text
 def doQueries(keywords):
-    db = server.db
     # print(keywords)
     if 'prereqs' in keywords or 'general question' in keywords or 'xlist' in keywords:
         try:
