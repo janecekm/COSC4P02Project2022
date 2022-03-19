@@ -1,7 +1,7 @@
 import spacy
 from spacy.matcher import Matcher
 from string import Template
-import queryTables as qt
+
 
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
@@ -10,7 +10,7 @@ matcher = Matcher(nlp.vocab)
 courseCode = [[{'IS_ALPHA': True, 'LENGTH': 4},
                {'SHAPE': 'dxdd'}],
              [{"SHAPE":  "xxxxdxdd"}]]
-matcher.add("course code", courseCode)
+matcher.add("code", courseCode)
 
 # who teaches, who is teaching, who is the instructor, who is the professor
 # offering table
@@ -44,14 +44,14 @@ prerequisites = [[{'LOWER': 'what'},
                   {'OP': '?'},
                   {'OP': '?'},
                   {'LEMMA': 'prereqs'}]]
-matcher.add("prereqs", prerequisites)
+matcher.add("prereq", prerequisites)
 
 # generally the descriptions
 generalInfo = [ [{'LOWER':'tell'},{'LOWER':'me'},{'LOWER':'about'}], 
                 [{'LOWER':'information'},{'LOWER':'on'}],
                 [{'LOWER':'info'},{'LOWER':'on'}]]
 
-matcher.add("general question", generalInfo)
+matcher.add("description", generalInfo)
 
 openerMatch = [{"LOWER": {"IN": ['hello','hi','hey','howdy','yo','sup','hiya','heyo']}}]
 matcher.add("openerGreet", [openerMatch])
@@ -129,7 +129,8 @@ def formResponse(matchedKeys):
 def processQ(question):
     matches, doc = extractKeywords(question)
     processed = processKeywords(matches, doc)
-    qt.doQueries(processed)
+    from queryTables import doQueries
+    queryReturn = doQueries(processed)
     myString = formResponse(matches)
     if (myString != "" and myString != None):    
         return {"message": myString}
