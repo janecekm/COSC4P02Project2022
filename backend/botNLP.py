@@ -18,7 +18,7 @@ courseCode = [[{'IS_ALPHA': True, 'LENGTH': 4},
              [{"SHAPE":  {'IN': ["xxxxdxdd", "Xxxxdxdd", "xXxxdxdd", "XXxxdxdd", "xxXxdxdd", "XxXxdxdd", "xXXxdxdd", "XXXxdxdd", "xxxXdxdd",
              "XxxXdxdd", "xXxXdxdd", "XXxXdxdd", "xxXXdxdd", "xXXXdxdd", "XXXXdxdd", "xxxxdXdd", "XxxxdXdd", "xXxxdXdd", "XXxxdXdd", "xxXxdXdd",
              "XxXxdXdd", "xXXxdXdd", "xxxXdXdd", "XxxXdXdd", "xXxXdXdd", "XXxXdXdd", "xxXXdXdd", "XxXXdXdd", "xXXXdXdd", "XXXXdXdd" ]}}]]
-matcher.add("course code", courseCode)
+matcher.add("code", courseCode)
 
 # who teaches, who is teaching, who is the instructor, who is the professor
 # offering table
@@ -51,8 +51,8 @@ prerequisites = [[{'LOWER': 'what'},
                 [{'LOWER': 'what'},
                   {'OP': '?'},
                   {'OP': '?'},
-                  {'LEMMA': 'prereq'}]]
-matcher.add("prereqs", prerequisites)
+                  {'LEMMA': 'prereqs'}]]
+matcher.add("prereq", prerequisites)
 
 # generally the descriptions
 generalInfo = [ [{'LOWER':'tell'},{'LOWER':'me'},{'LOWER':'about'}], 
@@ -60,7 +60,7 @@ generalInfo = [ [{'LOWER':'tell'},{'LOWER':'me'},{'LOWER':'about'}],
                 [{'LOWER':'info'},{'LOWER':'on'}], 
                 [{'LOWER': 'what'}, {'LOWER': 'is'}]]
 
-matcher.add("general question", generalInfo)
+matcher.add("description", generalInfo)
 
 openerMatch = [{"LOWER": {"IN": ['hello','hi','hey','howdy','yo','sup','hiya','heyo']}}]
 matcher.add("openerGreet", [openerMatch])
@@ -189,7 +189,8 @@ def processQ(question):
     '''
     matches, doc = extractKeywords(question)
     processed = processKeywords(matches, doc)
-    qt.doQueries(processed)
+    from queryTables import doQueries
+    queryReturn = doQueries(processed)
     myString = formResponse(matches)
     if (myString != "" and myString != None):    
         return {"message": myString}
