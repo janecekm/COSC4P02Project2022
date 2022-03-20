@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 # keywords is a dictionary of match_id and match_text
 def doQueries(keywords):
     # print(keywords)
-    if 'prereq' in keywords or 'general question' in keywords or 'xlist' in keywords:
+    if 'prereq' in keywords or 'description' in keywords or 'xlist' in keywords:
         # try:
             print(keywords)
             print(keywords.get('code'))
@@ -13,11 +13,11 @@ def doQueries(keywords):
             # print(temp.description)
             temp = models.Course.query.filter_by(code=keywords.get('code')).first()
             print(temp.prereq)
-            temptemp = to_dict(temp)
+            queryRow = to_dict(temp)
             queryReturn = {}
-            for key in (keywords.keys() & temptemp.keys()):
+            for key in (keywords.keys() & queryRow.keys()):
                 print("attempting to add query return")
-                queryReturn[key] = temptemp[key]
+                queryReturn[key] = queryRow[key]
                 print("query return add successful")
             print('Query Returned to botNLP: ')
             print(queryReturn)
@@ -32,7 +32,7 @@ def doQueries(keywords):
     elif 'location' in keywords:
         print(keywords)
         try:
-            if 'course code' in keywords:
+            if 'code' in keywords:
                 filterCourseInputs(keywords)
             elif 'building' in keywords:
                 print('building found')
@@ -54,5 +54,6 @@ def filterCourseInputs(keywords):
     keywords['code'] = temp
     return None
 
+# returns a dictionary of column and row corresponding to SQLAlchemy model object
 def to_dict(self):
     return {c.name: getattr(self, c.name) for c in self.__table__.columns}
