@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import "./feed.css"
 import ClipButton from '../ClipButton/clipbutton';
 import Thinking from '../Thinking/thinking';
+import func from "../../Language/Lanprocess";
 
 class Message extends React.Component {
   render() {
@@ -12,55 +13,60 @@ class Message extends React.Component {
 };
 
 const Feed = () => {
-  const [messagesList, setMessagesList] = useState([<Message key={0} text = {"Hello! Welcome to the Brock chat bot! What can I help you with today?"} type = "response"/>]);
-  const[questions,setQuestions] = useState(null);
+
+  const [messagesList, setMessagesList] = useState([<Message key={0} text = {func("message")} type = "response"/>]);//holds the messages between user and the chat bot
+  const[questions,setQuestions] = useState(null);// holds the question asked by the user
   useEffect(()=>{
-    if (questions != null){
-    document.getElementById("think").style.setProperty("display", "flex");
+    if (questions != null){//if a question is asked
+    document.getElementById("think").style.setProperty("display", "flex");//set the display to thinking
     scrollDown(document.getElementById("feed"))
-    document.getElementById("inputField").disabled = true;
+    document.getElementById("inputField").contentEditable = false;//make the text box not editable
     document.getElementById("inputField").style.setProperty("caret-color", "transparent");
     const requestOption ={
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({message:questions})
-    };
-    fetch("/",requestOption).then((response)=>{return response.json()}).then((data) => {
-      console.log(data['message']);
+    };//building the request with the question
+    var url = window.location.href.toString();
+    var isCanada = url.search("/canada");
+    
+    var sendToUrl = isCanada==-1?"/brock":"/canada"//checks and finds which url we are in.
 
-      document.getElementById("inputField").disabled = false;
-      
+    fetch(sendToUrl,requestOption).then((response)=>{return response.json()}).then((data) => {
+      console.log(data);
+      document.getElementById("inputField").contentEditable = true;//editable after the data is processed.
       document.getElementById("think").style.setProperty("display", "none");
       setMessagesList( prevMessages =>
         prevMessages.concat(<Message key={messagesList.length} text = {data['message']} type = "response"/>)
-      );
+      );//adds the messages to the message list
       scrollDown(document.getElementById("feed"));
-      document.getElementById("inputField").select();
-      document.getElementById("inputField").style.setProperty("caret-color", "auto");
+      document.getElementById("inputField").focus();
+      document.getElementById("inputField").style.setProperty("caret-color", "black");
     }
-    
-  
   );//triggers use effect for reply
 
-  };},[questions])
+  };},[questions])//the trigger happens when there is a change of questions
 
   const poseQuery =  async ()  => {
-    var query = document.getElementById("inputField").value;
+    var query = document.getElementById("inputField").innerText;
     console.log(query);
     
-    if (query !== "") {
+    if (query !== "" & query !== "\n\n\n") {
+      console.log(query);
       setMessagesList( prevMessages =>
         prevMessages.concat(<Message key={messagesList.length} text = {query} type = "user_message"/>)
       );
       scrollDown(document.getElementById("feed"));
-        // sending query
-        await setQuestions(query);//triggers useEffect for questions
-        //done query
-        console.log("query gotten");
+      // sending query
+      await setQuestions(query);//triggers useEffect for questions
+      //done query
+      console.log("query gotten");
 
-        setQuestions(null);
+      setQuestions(null);
       clearInput();
-      document.getElementById("inputField").style.setProperty('--size',40+"px");
+    }
+    else if (query === "\n\n\n") {
+      clearInput();
     }
   };
 
@@ -69,36 +75,39 @@ const Feed = () => {
   }
 
   const clearInput = () => {
-    document.getElementById("inputField").value = '';
+    document.getElementById("inputField").innerText = '';
   }
+
   const handler = (event) => {
     if (event.key === "Enter") {
       poseQuery();
     }
-    else{
-      var temp = document.getElementById('inputField');
-      temp.style.setProperty('--size',temp.scrollHeight-4+"px");
+  }
+
+  const limiter = (event) => {
+    if (event.key !== "Backspace" & event.key !== "Enter" 
+    & document.getElementById("inputField").innerText.length > 250) {
+      event.preventDefault();
+      console.log("input max reached");
     }
   }
 
   return (
     <div>
-      
       <ClipButton messages = {messagesList}/> 
       <div className='feed' id = "feed">
         <div>
           {messagesList}
           <Thinking/>
         </div>
-        
-        
       </div>
-      <div className='inputarea' id='inputarena'>
-        <button className="clearButton" onClick={clearInput}>Clear</button>
-        <textarea disabled = {false} className = "inputBar" onKeyUp={(e) => handler(e)} 
-        id = "inputField" placeholder="Type a query here..." maxLength={250}
-        autoComplete="off" />
-        <button className="enterButton" onClick={poseQuery}>Enter</button>
+      <div className="userTools">
+        <button className="clearButton" onClick={clearInput}>{func("clear")}</button>
+              <span onKeyDown={(e) => limiter(e)} onKeyUp={(e) => handler(e)} id = "inputField" 
+              className='inputBar' role="textbox" 
+              contentEditable ='true' data-placeholder={func('inputmessage')}>
+              </span>
+        <button className="enterButton" onClick={poseQuery}>{func("enter")}</button>
       </div>
     </div>
 

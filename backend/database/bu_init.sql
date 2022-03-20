@@ -9,13 +9,13 @@ CREATE TABLE course (
 DROP TABLE IF EXISTS offering;
 CREATE TABLE offering (
 	code CHAR(8),
-	format VARCHAR(8),
+	frmt VARCHAR(8),
 	duration CHAR(2),
 	section CHAR(2),
 	days CHAR(7),
 	time TIME,
-	location CHAR(10),
-	instructor CHAR(30)	
+	location CHAR(20),
+	instructor CHAR(30)
 );
 
 DROP TABLE IF EXISTS exam;

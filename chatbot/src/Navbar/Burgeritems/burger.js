@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import "./burgerstyle.css";
 
 function Burger (){
-    const [open, setopen] = useState(false);
-    
+    const [open, setopen] = useState(false);//the state for if the menu bar is open or not
     return (
         <>
         <div className= {!open?'container':'container change'} onClick={()=>setopen(!open)}>
@@ -19,37 +18,44 @@ function fontSizeDec(){
     var temp = document.getElementById('root');
     var len = getComputedStyle(temp).getPropertyValue('--text-size').length;
     var num = parseInt(getComputedStyle(temp).getPropertyValue('--text-size').substring(0,len-2))-1;
-    if (num > 9) {
+    var th = parseInt(getComputedStyle(temp).getPropertyValue('--thinking-size')) -1;
+    if (num > 9) {//the smallest size of the alphabets
         temp.style.setProperty('--text-size',num+"px");
+        temp.style.setProperty('--thinking-size',th+"px");
     }
 }
 function fontSizeInc(){
     var temp = document.getElementById('root');
     var len = getComputedStyle(temp).getPropertyValue('--text-size').length;
     var num = parseInt(getComputedStyle(temp).getPropertyValue('--text-size').substring(0,len-2))+1;
-    if (num < 26) {
-        temp.style.setProperty('--text-size',num+"px");
+    var th = parseInt(getComputedStyle(temp).getPropertyValue('--thinking-size')) +1;
+    if (num < 26) {//the largest size of the alphabets 
+        temp.style.setProperty('--text-size',num+"px");//changes the size of the text
+        temp.style.setProperty('--thinking-size',th +"px");//changes the size of the thinking animation
     }
 }
-function helpThem () {
+function HelpButton () {
     alert("*HELPFUL MESSAGE*");
 }
-function changecolor(staty,setstaty){
+function changecolor(){
     
-    var temp = document.getElementById('root');
-    if(staty){//brock colors
-        temp.style.setProperty('--primary-color',getComputedStyle(temp).getPropertyValue('--canada-colors'));
-        temp.style.setProperty('--secondary-color',getComputedStyle(temp).getPropertyValue('--canada-secondary-colors'))
-        setstaty(false);
+    var url = window.location.href.toString();
+    var isCanada = url.search("/canada");
+    if(isCanada===-1){//if we are in the brock's website
+        let link = url.replace("brock", "canada");
+        window.location.replace(link);
     }
     else{
-        temp.style.setProperty('--primary-color',getComputedStyle(temp).getPropertyValue('--brock-colors'));
-        temp.style.setProperty('--secondary-color',getComputedStyle(temp).getPropertyValue('--brock-secondary-colors'))
-        setstaty(true);
+        let link = url.replace("canada", "brock")
+        window.location.replace(link);
     }
 }
+/**
+ * 
+ * @param {the content of each item in menu bar} props 
+ * @returns the <div> object for the menu bar
+ */
 function Dropdownmenu(props){
-    const [brockorcad, setbrockorcad] = useState(true);
     function DropdownItem(props){
         return(
             <div className="menuitem" onClick = {props.act}>
@@ -61,10 +67,10 @@ function Dropdownmenu(props){
     return (
         <>
         <div className='dropdown'>
-            <DropdownItem act ={helpThem}><div>Help</div></DropdownItem>
+            <DropdownItem act ={HelpButton}><div>Help</div></DropdownItem>
             <DropdownItem act ={fontSizeInc}><div>Font Increase</div></DropdownItem>
             <DropdownItem act ={fontSizeDec}><div>Font Decrease</div></DropdownItem>
-            <DropdownItem act = {()=>changecolor(brockorcad,setbrockorcad)}><div>Switch Modes</div></DropdownItem>
+            <DropdownItem act = {changecolor}><div>Switch Modes</div></DropdownItem>
         </div>
         </>
     );

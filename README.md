@@ -1,5 +1,5 @@
 # COSC 4P02 Project 2022
-A group project for Brock Unversity's COSC 4P02 (Software Engineering 2).
+A group project for Brock University's COSC 4P02 (Software Engineering 2).
 
 ### Chat Bot Application for Brock University and Canada Games
 The goal of this project to develop a web-based chatbot application. This chatbot will ideally have a flexible design that accomodates two distinct modes; one for Brock University and one for Canada Games. 
@@ -11,4 +11,3 @@ The goal of this project to develop a web-based chatbot application. This chatbo
 - Sam Langdon 6180137
 - Brendan Park 6541288
 - Kylee Schram 6131726
-

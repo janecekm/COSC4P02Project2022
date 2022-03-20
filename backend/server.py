@@ -2,7 +2,7 @@ import sqlite3
 from flask import Flask, render_template, request, json
 from flask_sqlalchemy import SQLAlchemy
 import botNLP as bN
-import time
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/buchatbot.db'
@@ -37,20 +37,34 @@ class Course(db.Model):
     def __repr__(self):
         return '\nCode '+self.code+'\n Description '+self.description+'\n Prereq'+self.prereq+'\n Crosslist'+self.xlist
 
-db.create_all()
+db.create_all()  
 
-@app.route("/",methods = ['GET'])
-# def show_all():
-#     print(Course.query.all())
-#     return "Hello world"
-def frontend():
+@app.route("/canada",methods=['GET'])
+def canadafront():
     return render_template("index.html")
-    
 
-@app.route("/", methods = ['POST'])
-def front():
-    time.sleep(2)
+@app.route("/brock",methods = ['GET'])
+def brockfront():
+    return render_template("index.html")
+
+@app.route("/brock", methods = ['POST'])
+def brockpost():
+    print(json.loads(request.data)['message'])
     return bN.processQ(json.loads(request.data)['message'])
 
+@app.route("/canada", methods = ['POST'])
+def canadapost():
+    print(json.loads(request.data)['message'])
+    return bN.processQ(json.loads(request.data)['message'])
+
+@app.route("/",methods=['GET'])
+def splashart():
+    return render_template("splash.html")
+
+# port=5000 OR host='0.0.0.0'
 if __name__ == "__main__":
-    app.run(debug=True,port=5000)
+    if "PORT" in os.environ:
+        connectingport = os.environ.get("PORT")
+    else:
+        connectingport = 5000
+    app.run(host="0.0.0.0", port=connectingport)

@@ -189,6 +189,7 @@ def processQ(question):
     '''
     matches, doc = extractKeywords(question)
     processed = processKeywords(matches, doc)
+    qt.doQueries(processed)
     myString = formResponse(matches)
     if (myString != "" and myString != None):    
         return {"message": myString}
