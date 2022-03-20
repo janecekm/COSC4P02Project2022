@@ -51,7 +51,7 @@ prerequisites = [[{'LOWER': 'what'},
                 [{'LOWER': 'what'},
                   {'OP': '?'},
                   {'OP': '?'},
-                  {'LEMMA': 'prereqs'}]]
+                  {'LEMMA': 'prereq'}]]
 matcher.add("prereq", prerequisites)
 
 # generally the descriptions
