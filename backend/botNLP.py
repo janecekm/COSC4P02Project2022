@@ -146,15 +146,15 @@ def processKeywords(matches, doc):
     Return: 
         a list of tuples containing the string of the match_id and the matched text [(match_id_, match_text)]
     '''
-    processedMatches = []
+    processedMatches = {}
     for match_id, start, end in matches: 
         match_label = nlp.vocab.strings[match_id]
         match_text = doc[start:end]
-        processedMatches.append((match_label, match_text))
+        processedMatches[match_label] = match_text
     # use the NER to extract the people names from document
     for ent in doc.ents:
         if (ent.label_ == "PERSON"):
-            processedMatches.append(("person", ent.text))  
+            processedMatches["person"] = ent.text 
     return processedMatches
 
 def formResponse(matchedKeys):

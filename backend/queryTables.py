@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 def doQueries(keywords):
     # print(keywords)
     if 'prereq' in keywords or 'description' in keywords or 'xlist' in keywords:
-        # try:
+        try:
             print(keywords)
             print(keywords.get('code'))
             filterCourseInputs(keywords)
@@ -22,13 +22,14 @@ def doQueries(keywords):
             print('Query Returned to botNLP: ')
             print(queryReturn)
             return queryReturn
-        # except AttributeError:
-        #     print('Attribute Error')
-        #     print(keywords)
-        #     return 'more info required'
-        # except:
-        #     print('im in danger')
-        #     return 'im in danger'
+        except AttributeError:
+            print('Attribute Error')
+            print(keywords)
+            return 'more info required'
+        except Exception as e:
+            print(e)
+            print('im in danger')
+            return 'im in danger'
     elif 'location' in keywords:
         print(keywords)
         try:
