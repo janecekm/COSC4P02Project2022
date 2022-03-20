@@ -34,13 +34,24 @@ def doQueries(keywords):
         try:
             if 'code' in keywords:
                 filterCourseInputs(keywords)
+                temp = models.Offering.query.filter_by(code=keywords.get('code')).first()
+                queryRow = to_dict(temp)
+                queryReturn = {}
+                for key in (keywords.keys() & queryRow.keys()):
+                    print("attempting to add query return")
+                    queryReturn[key] = queryRow[key]
+                    print("query return add successful")
+                print('Query Returned to botNLP: ')
+                print(queryReturn)
+                return queryReturn
             elif 'building' in keywords:
                 print('building found')
                 return 'placeholder return'
             else:
                 print('more info required')
                 return 'more info required'
-        except:
+        except Exception as e:
+            print(e)
             print('location not found')
             return 'not found'
     # print(server.Course.query.all())

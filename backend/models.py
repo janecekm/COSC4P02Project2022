@@ -56,7 +56,7 @@ class Offering(db.Model):
     frmt = db.Column(
         db.String(8),
         index=True,
-        unique=True,
+        unique=False,
         nullable=True
     )
 
@@ -92,7 +92,7 @@ class Offering(db.Model):
 
     location = db.Column (
         db.String(20),
-        index = False,
+        index = True,
         unique = False,
         nullable = True
     )
