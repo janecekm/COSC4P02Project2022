@@ -1,3 +1,4 @@
+from urllib import response
 import spacy
 import pkg_resources #resource for symspellpy
 from spacy.matcher import Matcher
@@ -110,7 +111,9 @@ links = {
     "prereqs" : "https://brocku.ca/webcal/undergrad/",
     "exam" : "https://brocku.ca/guides-and-timetables/exams/#more-exam-info",
     "timetable" : "https://brocku.ca/guides-and-timetables/timetables/",
-    "brock" : "https://brocku.ca/"
+    "brock" : "https://brocku.ca/", 
+    "directory":"https://brocku.ca/directory/", 
+    "acad_advisor": "https://brocku.ca/academic-advising/find-your-advisor/"
 }
 ###########################################################
 
@@ -186,18 +189,26 @@ def getLink(matchedKeys):
     else:
         return temp.substitute({'x': links["brock"]})
 
-def formResponse(matchedKeys):
+def formResponse(database_answer, keys):
     '''A method to form a very simple response 
     Args: 
         matchedKeys: the list of match info as a result of processing
     Return: 
         returns a string to output as a response
     '''
-
-    # if no response from database
-    returnThis = getLink(matchedKeys)
-
-    return returnThis
+    # response for prereqs (not great for single course prereqs or multi part questions?)
+    if "prereq" in database_answer: 
+        if database_answer["prereq"] != "": 
+            temp = Template("The prerequisites for $c are $p" )
+            return temp.substitute({'c': database_answer["code"], 'p':database_answer["prereq"]})
+            
+        else: 
+            temp = Template("There are no prerequisites for $c")
+            return temp.substitute({'c': database_answer["code"]})
+    if database_answer == 'more info required' or database_answer == 'im in danger': 
+        # if no response from database
+        return getLink(keys)
+    return ""
 
 
 def processQ(question):
@@ -211,7 +222,7 @@ def processQ(question):
     processed = processKeywords(matches, doc)
     from queryTables import doQueries
     queryReturn = doQueries(processed)
-    myString = formResponse(matches)
+    myString = formResponse(queryReturn, matches)
     if (myString != "" and myString != None):    
         return {"message": myString}
     else:
