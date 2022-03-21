@@ -196,6 +196,10 @@ def formResponse(database_answer, keys):
     Return: 
         returns a string to output as a response
     '''
+    # basic response for course descriptions (we should probably also be able to get course *names*)
+    if "description" in database_answer: 
+        temp = Template("The description for $c is:  $d")
+        return temp.substitute({'c':database_answer["code"], 'd':database_answer["description"]})
     # response for prereqs (not great for single course prereqs or multi part questions?)
     if "prereq" in database_answer: 
         if database_answer["prereq"] != "": 
