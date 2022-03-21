@@ -28,6 +28,7 @@ def course_table_populate(db='buchatbot.db'):
         codes = loadFile('courseinfo.txt')
         cursor = connection.cursor()
         for c in codes:
+            c.replace(" ","")
             codes[c]['description'] = codes[c]['description'].replace('\'', '`')
             # json.loads(codes[c])
             # print(codes[c].get('prereq'))
@@ -64,22 +65,22 @@ def course_offering_populate(db='buchatbot.db'):
             room1 = JSONDecodedRow.get('room1')
             room2 = JSONDecodedRow.get('room2')
             
-            location = JSONDecodedRow.get('location')
+            location = JSONDecodedRow.get('loc')
             if location == None:
                 location = ''
             else:
                 if not room1 == None:
-                    if room2 == None:
-                        location = location + ' ' + room1
-                    else:
-                        location = location + ' ' + room1 + ' ' + room2
+                    # if room2 == None:
+                    #     location = location + ' ' + room1
+                    if not room2 == None:
+                        location = room1 + ' ' + room2
 
                 
-            instructor = JSONDecodedRow.get('instructor').replace("'", "`")
+            instructor = JSONDecodedRow.get('instructor').replace("\'", "`")
             if instructor == None:
                 instructor = ''
 
-            cursor.execute('INSERT INTO offering(code, frmt, duration, section, days, time, location, instructor) VALUES (\''+code+'\', \''+ frmt+'\', \''+duration+'\', \''+sec+'\', \''+ days+'\', \''+ time+'\', \''+ location+'\', \''+ instructor+'\')')
+            cursor.execute('INSERT OR IGNORE INTO offering(code, frmt, duration, section, days, time, location, instructor) VALUES (\''+code+'\', \''+ frmt+'\', \''+duration+'\', \''+sec+'\', \''+ days+'\', \''+ time+'\', \''+ location+'\', \''+ instructor+'\')')
     
 
 # populate_db_building_codes()

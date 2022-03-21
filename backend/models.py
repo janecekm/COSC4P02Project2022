@@ -50,7 +50,9 @@ class Offering(db.Model):
     __tablename__ = 'offering'
     code = db.Column(
         db.String(8),
-        primary_key=True
+        index = True,
+        unique = False,
+        nullable = False
     )
 
     frmt = db.Column(
@@ -76,22 +78,25 @@ class Offering(db.Model):
 
     days = db.Column(
         db.String(7),
+        primary_key=True,
         index = False,
         unique = False,
-        nullable = True
+        nullable = False
     )
 
     time = db.Column (
         #er, does Python have a TIME type?
         #for now accomodates 2 times and a space in frmt 00:00 11:11
         db.String(11),
+        primary_key=True,
         index = False,
         unique = False,
-        nullable = True
+        nullable = False
     )
 
     location = db.Column (
         db.String(20),
+        primary_key=True,
         index = True,
         unique = False,
         nullable = True

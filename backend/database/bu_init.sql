@@ -15,7 +15,8 @@ CREATE TABLE offering (
 	days CHAR(7),
 	time TIME,
 	location CHAR(20),
-	instructor CHAR(30)
+	instructor CHAR(30),
+	PRIMARY KEY(days, time, location)
 );
 
 DROP TABLE IF EXISTS exam;
