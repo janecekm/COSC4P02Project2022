@@ -1,3 +1,4 @@
+from urllib import response
 import spacy
 import pkg_resources #resource for symspellpy
 from spacy.matcher import Matcher
@@ -105,6 +106,16 @@ sym_spell.load_dictionary(dictionary_path, term_index=0, count_index=1)
 sym_spell.create_dictionary_entry("is",8569404971)
 
 ###########################################################
+# links for when nothing is returned from the database
+links = {
+    "prereqs" : "https://brocku.ca/webcal/undergrad/",
+    "exam" : "https://brocku.ca/guides-and-timetables/exams/#more-exam-info",
+    "timetable" : "https://brocku.ca/guides-and-timetables/timetables/",
+    "brock" : "https://brocku.ca/", 
+    "directory":"https://brocku.ca/directory/", 
+    "acad_advisor": "https://brocku.ca/academic-advising/find-your-advisor/"
+}
+###########################################################
 
 def extractKeywords(question): 
     '''This method runs the matcher to extract key information from the query and add match labels
@@ -157,27 +168,47 @@ def processKeywords(matches, doc):
             processedMatches["person"] = ent.text 
     return processedMatches
 
-def formResponse(matchedKeys):
+def getLink(matchedKeys):
+    '''A method for if the info was not found in the database
+    Args: 
+        matchedKeys: the list of match info as a result of processing
+    Return: 
+        returns a string to output as a response
+    '''
+    temp = Template("I'm sorry, I wasn't able to find what you were looking for. However, you might be able to find more information at: $x")
+    matches = []
+    for match_id, start, end in matchedKeys:
+        print(nlp.vocab.strings[match_id])
+        matches.append(nlp.vocab.strings[match_id])
+    if "prereqs" in matches:
+        return temp.substitute({'x': links["prereqs"]})
+    if "exam" in matches:
+        return temp.substitute({'x': links["exam"]})
+    if "course component" in matches or "course code" in matches:
+        return temp.substitute({'x': links["timetable"]})
+    else:
+        return temp.substitute({'x': links["brock"]})
+
+def formResponse(database_answer, keys):
     '''A method to form a very simple response 
     Args: 
         matchedKeys: the list of match info as a result of processing
     Return: 
         returns a string to output as a response
     '''
-    returnThis = ""
-    temp = Template("You are asking about $x")
-
-
-    for match_id, start, end in matchedKeys:
-        match_id_ = nlp.vocab.strings[match_id]
-        if match_id_ == "openerGreet":
-            returnThis += "Hello, world! "
-        else:
-            if returnThis.__contains__("You are asking about"):
-                returnThis += ", " + match_id_
-            else:
-                returnThis += temp.substitute({'x': match_id_})
-    return returnThis
+    # response for prereqs (not great for single course prereqs or multi part questions?)
+    if "prereq" in database_answer: 
+        if database_answer["prereq"] != "": 
+            temp = Template("The prerequisites for $c are $p" )
+            return temp.substitute({'c': database_answer["code"], 'p':database_answer["prereq"]})
+            
+        else: 
+            temp = Template("There are no prerequisites for $c")
+            return temp.substitute({'c': database_answer["code"]})
+    if database_answer == 'more info required' or database_answer == 'im in danger': 
+        # if no response from database
+        return getLink(keys)
+    return ""
 
 
 def processQ(question):
@@ -191,7 +222,7 @@ def processQ(question):
     processed = processKeywords(matches, doc)
     from queryTables import doQueries
     queryReturn = doQueries(processed)
-    myString = formResponse(matches)
+    myString = formResponse(queryReturn, matches)
     if (myString != "" and myString != None):    
         return {"message": myString}
     else:
