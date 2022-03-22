@@ -117,18 +117,18 @@ links = {
 }
 ###########################################################
 
-def extractKeywords(question): 
-    '''This method runs the matcher to extract key information from the query and add match labels
-    Args:
-        question: the string text to extract info from 
+
+def spellcheck(question, matches, doc): 
+    '''This method performs a spellcheck on the question submitted by the user, after existing matches have been removed
+    Args: 
+        question: the original question string from the user
+        matches: the list of matches returned from running the matcher on the document
+        doc: the spaCy Doc object (https://spacy.io/api/doc) returned after running the string through the NLP pipeline
     Return: 
-        matches: a list of matches where each is a tuple containing the match_id as a hash, and the indices of the start and end tokens
-        doc: the user input, processed by the NLP pipeline
+        matches: the list of matches after spellcheck has been applied (and the matcher has been re-run on the document)
+        doc: the new Doc object (https://spacy.io/api/doc), run on the corrected string 
     '''
-    doc = nlp(question)
     orig = question.split(" ")
-    matches = matcher(doc)
-    #autocorrection layer
     for match_id, start, end in matches:
         if (str(doc[start:end]).strip() in question):
             length = len(str(doc[start:end]).split(" "))
@@ -145,17 +145,37 @@ def extractKeywords(question):
     merge = " ".join(orig)
     doc = nlp(merge)
     matches = matcher(doc)
-    #end of autocorrection
+    return matches, doc 
 
+
+def extractKeywords(question): 
+    '''This method runs the matcher to extract key information from the query and add match labels
+    Args:
+        question: the string text to extract info from 
+    Return: 
+        matches: a list of matches where each is a tuple containing the match_id as a hash, and the indices of the start and end tokens
+            [(match_id, start, end)]
+            match_id is a hashed value representing the type of match 
+            start is the start index of the matched span (set of tokens)
+            end is the end index of the matched span (set of tokens)
+        doc: the user input, processed by the NLP pipeline (output as a spaCy Doc object https://spacy.io/api/doc)
+    '''
+    doc = nlp(question)
+    matches = matcher(doc)
+    matches, doc = spellcheck(question, matches, doc)
     return matches, doc
 
 def processKeywords(matches, doc):
     '''Processes the extracted keyword matches into a format to give to the database 
     Args:
         matches: the list of matches
-        doc: the user text processed by the NLP pipeline
+            [(match_id, start, end)]
+            match_id is a hashed value representing the type of match 
+            start is the start index of the matched span (set of tokens)
+            end is the end index of the matched span (set of tokens)
+        doc: the user text processed by the NLP pipeline (spaCy Doc object https://spacy.io/api/doc)
     Return: 
-        a list of tuples containing the string of the match_id and the matched text [(match_id_, match_text)]
+        a list of tuples containing the string version of the match_id and the matched text [(match_id_, match_text)]
     '''
     processedMatches = {}
     for match_id, start, end in matches: 
@@ -171,7 +191,11 @@ def processKeywords(matches, doc):
 def getLink(matchedKeys):
     '''A method for if the info was not found in the database
     Args: 
-        matchedKeys: the list of match info as a result of processing
+        matchedKeys: the list of matches produced from extractKeywords 
+                     [(match_id, start, end)]
+                      match_id is a hashed value representing the type of match 
+                      start is the start index of the matched span (set of tokens)
+                      end is the end index of the matched span (set of tokens)
     Return: 
         returns a string to output as a response
     '''
