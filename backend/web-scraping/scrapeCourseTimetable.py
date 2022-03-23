@@ -51,6 +51,9 @@ def scrapeCourseInfo(courseName, session, typ, driver):
 		dict["room2"] = course.get_attribute("data-room2").replace(',','')
 		dict["instructor"] = course.get_attribute("data-instructor").replace(',','')
 		
+		title = course.find_element(By.CLASS_NAME,"title")
+		dict["title"] = title.text
+
 		print(json.dumps(dict))
 	
 
