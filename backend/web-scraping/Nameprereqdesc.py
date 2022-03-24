@@ -49,6 +49,10 @@ for code in programCode:
                 if course.text.startswith("Prerequisite"):
                     temp["prereq"] = course.text.replace('Prerequisite(s): ', '')
                  #   print(course.text)#pre req
+                 if course.text.startswith("(also offered as"):
+                     temp["crosslistings"] = course.text.replace("(also offered as ")
+            if course.get_attribute("class")== "calcname":
+                temp["courseCode"] = course.text
             if course.get_attribute("class") == "calccode":
                 #print(course.text)#course code
                 if tempcounter>0:
