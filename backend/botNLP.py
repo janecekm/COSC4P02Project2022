@@ -27,12 +27,10 @@ teaching = [[{'LOWER': 'who'},
             {'LEMMA': 'be', 'OP': '?'},
             {'LEMMA': 'teach'}],
            [{'LOWER': 'who'},
-            {'OP': '?'},
-            {'OP': '?'},
+            {'OP': '*'},
             {'LOWER': 'instructor'}],
            [{'LOWER': 'who'},
-            {'OP': '?'},
-            {'OP': '?'},
+            {'OP': '*'},
             {'LOWER': 'professor'}]]
 matcher.add("instructor", teaching)
 
@@ -60,28 +58,24 @@ generalInfo = [ [{'LOWER':'tell'},{'LOWER':'me'},{'LOWER':'about'}],
                 [{'LOWER':'information'},{'LOWER':'on'}],
                 [{'LOWER':'info'},{'LOWER':'on'}], 
                 [{'LOWER': 'what'}, {'LOWER': 'is'}]]
-
 matcher.add("description", generalInfo)
 
 openerMatch = [{"LOWER": {"IN": ['hello','hi','hey','howdy','yo','sup','hiya','heyo']}}]
 matcher.add("openerGreet", [openerMatch])
 
 # don't have table
-progQuestion = [{'LOWER':'the'},{'OP':'?'},{'OP':'?'},{'OP':'?'},{'OP':'?'},{'OP':'?'},{'OP':'?'},{'OP':'?'},{'LOWER':'program'}]
-
+progQuestion = [{'LOWER':'the'},{'OP':'*'},{'LOWER':'program'}]
 matcher.add("program question",[progQuestion])
 
 # course components -- offering table
 courseComp = [{'LEMMA': {"IN": ['sem', 'seminar', 'lab', 'tut', 'tutorial', 'lec', 'lecture', 'sec', 'section']}},
            {'LIKE_NUM': True, 'OP': '?'}]
-
 matcher.add("course component", [courseComp], greedy="LONGEST")
 
 # location -- offering or exam
 location = [[{'LOWER':'location'}],
             [{'LOWER':'what'}, {'LOWER':'building'}], 
             [{'LOWER': 'where'}]]
-
 matcher.add("location", location)
 
 # exam table
@@ -91,6 +85,24 @@ matcher.add("exam", [exam])
 reqQuestion = [{'LOWER':'the'},{'LOWER':'program','OP':'?'},{'LOWER':'requirements'},{'LOWER':'for'}]
 
 matcher.add("requirement question",[reqQuestion])
+
+# advisor table
+advisor = [{'LEMMA':'advisor'}]
+matcher.add("advisor", [advisor])
+
+# covid information
+covid = [[{'LEMMA':'covid'}],[{'LEMMA':'covid19'}],[{'LEMMA':'covid-19'}]]
+matcher.add("covid", covid)
+
+# tuition
+tuition = [[{'LEMMA':'cost'}],[{'LEMMA':'tuition'}],[{'LEMMA':'price'}],[{'LEMMA':'money'}],[{'LEMMA':'dollar'}],
+            [{'LEMMA':'pay'}]]
+matcher.add("tuition", tuition)
+
+# tuition
+food = [[{'LEMMA':'eat'}],[{'LEMMA':'food'}],[{'LEMMA':'breakfast'}],[{'LEMMA':'lunch'}],[{'LEMMA':'dinner'}],
+            [{'LEMMA':'meal'}],[{'LEMMA':'mealplan'}],[{'LEMMA':'dining'}],[{'LEMMA':'snack'}]]
+matcher.add("food", food)
 
 # end of Matcher pattern defintions
 
@@ -112,8 +124,19 @@ links = {
     "exam" : "https://brocku.ca/guides-and-timetables/exams/#more-exam-info",
     "timetable" : "https://brocku.ca/guides-and-timetables/timetables/",
     "brock" : "https://brocku.ca/", 
+    "acad_advisor": "https://brocku.ca/academic-advising/find-your-advisor/",
+    "tuition" : "https://brocku.ca/safa/tuition-and-fees/overview/", 
+    "covid" : "https://brocku.ca/coronavirus/", 
+    "food": "https://brocku.ca/dining-services/dining-on-campus/locations-on-campus-and-hours-of-operation/",
+    # to be accomodated for: 
     "directory":"https://brocku.ca/directory/", 
-    "acad_advisor": "https://brocku.ca/academic-advising/find-your-advisor/"
+    "programs" : "https://discover.brocku.ca/programs",
+    "service_direct" : "https://brocku.ca/directory/a-z/",
+    "transit" : "https://transitapp.com/region/niagara-region",
+    "news" : "https://brocku.ca/brock-news/", 
+    "events" : "https://experiencebu.brocku.ca/",
+    "facts" : "https://brocku.ca/about/brock-facts/",
+    "registration" : "https://discover.brocku.ca/registration/"
 }
 ###########################################################
 
@@ -206,9 +229,17 @@ def getLink(matchedKeys):
         matches.append(nlp.vocab.strings[match_id])
     if "prereqs" in matches:
         return temp.substitute({'x': links["prereqs"]})
-    if "exam" in matches:
+    elif "food" in matches:
+        return temp.substitute({'x': links["food"]})
+    elif "tuition" in matches:
+        return temp.substitute({'x': links["tuition"]})
+    elif "covid" in matches:
+        return temp.substitute({'x': links["covid"]})
+    elif "advisor" in matches:
+        return temp.substitute({'x': links["acad_advisor"]})
+    elif "exam" in matches:
         return temp.substitute({'x': links["exam"]})
-    if "course component" in matches or "course code" in matches:
+    elif "course component" in matches or "course code" in matches:
         return temp.substitute({'x': links["timetable"]})
     else:
         return temp.substitute({'x': links["brock"]})
@@ -233,7 +264,7 @@ def formResponse(database_answer, keys):
         else: 
             temp = Template("There are no prerequisites for $c")
             return temp.substitute({'c': database_answer["code"]})
-    if database_answer == 'more info required' or database_answer == 'im in danger': 
+    if database_answer == 'more info required' or database_answer == 'im in danger' or database_answer == "placeholder return": 
         # if no response from database
         return getLink(keys)
     return ""
@@ -250,6 +281,7 @@ def processQ(question):
     processed = processKeywords(matches, doc)
     from queryTables import doQueries
     queryReturn = doQueries(processed)
+    print(queryReturn)
     myString = formResponse(queryReturn, matches)
     if (myString != "" and myString != None):    
         return {"message": myString}
