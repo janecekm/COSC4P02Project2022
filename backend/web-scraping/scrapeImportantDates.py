@@ -14,7 +14,7 @@ I had to do this because the source doesn't have attribute fields, wtf.
 '''
 
 def getDates():
-	driver = webdriver.Firefox()
+	driver = webdriver.Chrome()
 	driver.get("https://brocku.ca/important-dates/all/")
 
 	items = driver.find_elements(By.XPATH, '//table[@class="gsheets"]/tbody/tr/td')
