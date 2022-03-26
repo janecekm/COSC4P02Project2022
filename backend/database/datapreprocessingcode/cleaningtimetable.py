@@ -40,6 +40,10 @@ for line in file.readlines():
     # print(day)
     locationName = f["loc"]
   
+    if len(f["time"].split('-'))==2:
+        te = [x.strip() for x in f["time"].split('-')]
+        f["time"] = te[0][:len(te[0])-2]+":"+te[0][len(te[0])-2:]+"-"+te[1][:len(te[1])-2]+":"+te[1][len(te[1])-2:]
+
 
     locations = []# for specific locations
     num = 0
