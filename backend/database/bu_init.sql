@@ -6,7 +6,7 @@ CREATE TABLE course (
 	description VARCHAR(200),
 	prereq VARCHAR(100),
 	xlist CHAR(8),
-	restriction(40),
+	restriction VARCHAR(40)
 );
 
 DROP TABLE IF EXISTS offering;
@@ -29,4 +29,4 @@ CREATE TABLE exam (
 	location CHAR(10)
 );
 
-INSERT INTO course VALUES ('COSC4P03', 'this is a description', 'COSC3P03', 'COSC3P03');
+-- INSERT INTO course VALUES ('COSC4P03', 'this is a description', 'COSC3P03', 'COSC3P03');

@@ -23,28 +23,44 @@ def populate_db_building_codes(db='buchatbot.db'):
                 flag=False
 
 def course_table_populate(db='buchatbot.db'):
-    connection = sqlite3.connect(db)
-    with connection:
-        codes = loadFile('courseinfo.txt')
+    with open('course.txt', 'r') as f:
+            codes = f.readlines()
+    with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        for c in codes:
-            codes[c]['description'] = codes[c]['description'].replace('\'', '`')
-            # json.loads(codes[c])
-            # print(codes[c].get('prereq'))
-            if 'prereq' in codes[c]:
-                p = codes[c]['prereq']
-            else:
-                p = ''
-            if 'xlist' in codes[c]:
-                x = codes[c]['xlist']
-            else:
-                x = ''
-            cursor.execute('INSERT INTO course(code, description, prereq, xlist) VALUES (\''+c+'\', \''+codes[c]['description']+'\', \''+p+'\', \''+x+'\')')
+        for line in codes:
+            JSONDecodedRow = json.loads(line)
+            code = JSONDecodedRow.get('code') or ""
+            title = JSONDecodedRow.get('title') or ""
+            title = title.replace('\'', '`')
+            frmt = JSONDecodedRow.get('frmt') or ""
+            frmt = frmt.replace('\'', '`')
+            description = JSONDecodedRow.get('description') or ""
+            description = description.replace('\'', '`')
+            prereq = JSONDecodedRow.get('prereq') or ""
+            prereq = prereq.replace('\'', '`')
+            xlist = JSONDecodedRow.get('xlist') or ""
+            restriction = JSONDecodedRow.get('restriction') or ""
+            restriction = restriction.replace('\'', '`')
+            
+            cursor.execute('INSERT OR IGNORE INTO course(code, title, frmt, description, prereq, xlist, restriction) VALUES (\''+code+'\', \''+title+'\', \''+frmt+'\', \''+description+'\', \''+prereq+'\', \''+xlist+'\', \''+ restriction+'\')')
+        # for c in codes:
+        #     codes[c]['description'] = codes[c]['description'].replace('\'', '`')
+        #     # json.loads(codes[c])
+        #     # print(codes[c].get('prereq'))
+        #     if 'prereq' in codes[c]:
+        #         p = codes[c]['prereq']
+        #     else:
+        #         p = ''
+        #     if 'xlist' in codes[c]:
+        #         x = codes[c]['xlist']
+        #     else:
+        #         x = ''
+        #     cursor.execute('INSERT INTO course(code, description, prereq, xlist) VALUES (\''+c+'\', \''+codes[c]['description']+'\', \''+p+'\', \''+x+'\')')
 
 
 #this appears to execute, unsure how to get rows to display when visiting Flask site though
 def course_offering_populate(db='buchatbot.db'):
-    with open('timetable.txt', 'r') as f:
+    with open('offering.txt', 'r') as f:
             codes = f.readlines()
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
@@ -85,7 +101,7 @@ def course_offering_populate(db='buchatbot.db'):
 # populate_db_building_codes()
 
 #populate offerings (timetable)
-course_offering_populate()
+# course_offering_populate()
 course_table_populate()
 
 

@@ -8,7 +8,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 
 driver = webdriver.Chrome()
-
+MainInfo={}
 programCode = []
 # for row in rows:
 #     if flag:
@@ -72,7 +72,7 @@ for program in programCode:
                 #print(course.text)#course code
                 if tempcounter>0:
                     temp["code"] = name
-                    print(temp)
+                    print(json.dumps(temp))
                     # MainInfo[name] = temp
                 else:
                     tempcounter = tempcounter+1
