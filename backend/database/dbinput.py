@@ -22,7 +22,7 @@ def populate_db_building_codes(db='buchatbot.db'):
             else:
                 flag=False
 
-def course_table_populate(db='buchatbot.db'):
+def course_populate(db='buchatbot.db'):
     connection = sqlite3.connect(db)
     with connection:
         codes = loadFile('courseinfo.txt')
@@ -44,7 +44,7 @@ def course_table_populate(db='buchatbot.db'):
 
 
 #this appears to execute, unsure how to get rows to display when visiting Flask site though
-def course_offering_populate(db='buchatbot.db'):
+def offering_populate(db='buchatbot.db'):
     with open('timetable.txt', 'r') as f:
             codes = f.readlines()
     with sqlite3.connect(db) as connection:
@@ -86,7 +86,7 @@ def course_offering_populate(db='buchatbot.db'):
 # populate_db_building_codes()
 
 #populate offerings (timetable)
-course_offering_populate()
-course_table_populate()
+offering_populate()
+course_populate()
 
 

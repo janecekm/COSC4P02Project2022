@@ -1,6 +1,4 @@
 import models
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import text
 
 # keywords is a dictionary of match_id and match_text
 # print(models.Course.query.all())
@@ -16,8 +14,8 @@ def doQueries(keywords):
             print('Query Returned to botNLP: ')
             print(queryReturn)
             return queryReturn
-        except AttributeError:
-            print('Attribute Error')
+        except AttributeError as a:
+            print(a)
             print(keywords)
             return 'more info required'
         except Exception as e:
@@ -27,17 +25,16 @@ def doQueries(keywords):
         try:
             if 'code' in keywords:
                 filterCourseInputs(keywords)
-                print(models.Offering.query.filter_by(code='COSC1P03').first())
                 temp = models.Offering.query.filter_by(code=keywords.get('code')).all()
                 # temp = models.Offering.query.filter_by(code=keywords.get('code')).first()
-                for t in temp:
-                    print(t.code)
-                    print(t.frmt)
                 print(temp)
-                queryRow = to_dict(temp)
-                queryReturn = {}
-                for key in (keywords.keys() & queryRow.keys()):
-                    queryReturn[key] = queryRow[key]
+                queryReturn = []
+                for row in temp:
+                    queryRow = to_dict(row)
+                    rowDict = {}
+                    for key in (keywords.keys() & queryRow.keys()):
+                        rowDict[key] = queryRow[key]
+                    queryReturn.append(rowDict)
                 print('Query Returned to botNLP: ')
                 print(queryReturn)
                 return queryReturn
@@ -51,6 +48,8 @@ def doQueries(keywords):
             print(e)
             print('location not found')
             return 'not found'
+    elif 'instructor' in keywords:
+        return 'instructor'
     return 'placeholder return'
 
 # filter to match database formatting
