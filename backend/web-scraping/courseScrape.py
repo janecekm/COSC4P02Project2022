@@ -44,7 +44,7 @@ for program in programCode:
         primaryOrSecond = 0 #  1 for main, 2 for secondary
         flagNumber = 2
         name = ""
-        # temp = {"courseCode":"","courseName":"","courseFormat":"","description":"","prereq":"","crosslistings":"","courseRestriction":""} this is the format, but if something is missing, just doesn't link it
+        # temp = {"courseCode":"","title":"","frmt":"","description":"","prereq":"","xlist":"","restriction":""} this is the format, but if something is missing, just doesn't link it
         temp = {}
         tempcounter = 0
         for course in CourseInfo:#gets prerequisty
@@ -61,17 +61,17 @@ for program in programCode:
                     temp["prereq"] = course.text.replace('Prerequisite(s): ', '')
                     #   print(course.text)#pre req
                 if course.text.startswith("(also offered as"):
-                        temp["crosslistings"] = course.text.replace("(also offered as ","")
+                        temp["xlist"] = course.text.replace("(also offered as ","")
                 if course.text.startswith("Restriction: "):
-                    temp["courseRestriction"] = course.text.replace("Restriction: ","")
+                    temp["restriction"] = course.text.replace("Restriction: ","")
             if course.get_attribute("class") == "calitalic":#this is the format
-                temp["courseFormat"] = course.text
+                temp["frmt"] = course.text
             if course.get_attribute("class")== "calcname":
-                temp["courseName"] = course.text
+                temp["title"] = course.text
             if course.get_attribute("class") == "calccode":
                 #print(course.text)#course code
                 if tempcounter>0:
-                    temp["courseCode"] = name
+                    temp["code"] = name
                     print(temp)
                     # MainInfo[name] = temp
                 else:
