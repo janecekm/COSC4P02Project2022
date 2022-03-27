@@ -255,7 +255,7 @@ def getLink(matchedKeys):
     elif "register" in matches:
         return temp2.substitute({'y' : "Brock's registration process", 'x': links["register"]})
     elif "tuition" in matches:
-        return temp.substitute({'x': links["tuition"]})
+        return temp2.substitute({'y' : "tuition", 'x': links["tuition"]})
     elif "advisor" in matches:
         return temp.substitute({'x': links["acad_advisor"]})
     elif "exam" in matches:
