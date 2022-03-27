@@ -25,8 +25,11 @@ CREATE TABLE offering (
 DROP TABLE IF EXISTS exam;
 CREATE TABLE exam (
 	code CHAR(8),
-	date DATE,
 	time TIME,
+	day VARCHAR(14),
+	dayNum INT,
+	month VARCHAR(14),
+	sec INT,
 	location CHAR(10)
 );
 

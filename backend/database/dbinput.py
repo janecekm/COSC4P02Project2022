@@ -57,6 +57,34 @@ def course_populate(db='buchatbot.db'):
         #         x = ''
         #     cursor.execute('INSERT INTO course(code, description, prereq, xlist) VALUES (\''+c+'\', \''+codes[c]['description']+'\', \''+p+'\', \''+x+'\')')
 
+#{'courseCode': 'ACTG 4P42', 'time': '19:00-22:00', 'day': 'Friday', 'dayNumber': '22', 'month': 'April', 'sec': '1', 'location': 'STH217'}
+'''
+CREATE TABLE exam (
+	code CHAR(8),
+	time TIME,
+	day VARCHAR(14),
+	dayNum INT,
+	month VARCHAR(14),
+	sec INT,
+	location CHAR(10)
+'''
+def exam_populate(db='buchatbot.db'):
+    with open('./cleandata/examtimetable.txt','r') as f:
+        codes = f.readlines()
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        for line in codes:
+            JSONDecodedRow = json.loads(line)
+            code = JSONDecodedRow.get('courseCode')
+            time = JSONDecodedRow.get('time')
+            day = JSONDecodedRow.get('day')
+            dayNumber = int(JSONDecodedRow.get('dayNumber'))
+            month = JSONDecodedRow.get('month')
+            sec = int(JSONDecodedRow.get('sec'))
+            location = JSONDecodedRow.get('location')
+            
+            cursor.execute('INSERT OR IGNORE INTO exam(code, time, day, dayNum, month, sec, location) VALUES (\''+code+'\', \''+time+'\', \''+day+'\', \''+dayNumber+'\', \''+month+'\', \''+sec+'\', \''+ section+'\')')
+
 
 #this appears to execute, unsure how to get rows to display when visiting Flask site though
 def offering_populate(db='buchatbot.db'):
