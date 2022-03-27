@@ -99,11 +99,26 @@ tuition = [[{'LEMMA':'cost'}],[{'LEMMA':'tuition'}],[{'LEMMA':'price'}],[{'LEMMA
             [{'LEMMA':'pay'}]]
 matcher.add("tuition", tuition)
 
-# tuition
+# food
 food = [[{'LEMMA':'eat'}],[{'LEMMA':'food'}],[{'LEMMA':'breakfast'}],[{'LEMMA':'lunch'}],[{'LEMMA':'dinner'}],
             [{'LEMMA':'meal'}],[{'LEMMA':'mealplan'}],[{'LEMMA':'dining'}],[{'LEMMA':'snack'}]]
 matcher.add("food", food)
 
+# transportation, "How do I get to..."
+transport = [[{'LEMMA':'travel'}],[{'LEMMA':'bus'}],[{'LEMMA':'transport'}],[{'LEMMA':'transportation'}],
+                [{'LOWER': 'how'},
+                  {'OP': '*'},
+                  {'LEMMA': 'get'},
+                  {'LEMMA': 'to'}]]
+matcher.add("transport", transport)
+
+# registration
+register = [[{'LEMMA':'register'}],[{'LEMMA':'registration'}],
+                [{'LOWER': 'choose'},{'OP': '?'},{'LEMMA': 'class'},],
+                [{'LOWER': 'pick'},{'OP': '?'},{'LEMMA': 'class'},],
+                [{'LOWER': 'choose'},{'OP': '?'},{'LEMMA': 'classes'},],
+                [{'LOWER': 'pick'},{'OP': '?'},{'LEMMA': 'classes'},]]
+matcher.add("register", register)
 # end of Matcher pattern defintions
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
@@ -128,15 +143,15 @@ links = {
     "tuition" : "https://brocku.ca/safa/tuition-and-fees/overview/", 
     "covid" : "https://brocku.ca/coronavirus/", 
     "food": "https://brocku.ca/dining-services/dining-on-campus/locations-on-campus-and-hours-of-operation/",
+    "register" : "https://discover.brocku.ca/registration/",
+    "transit" : "https://transitapp.com/region/niagara-region",
     # to be accomodated for: 
     "directory":"https://brocku.ca/directory/", 
     "programs" : "https://discover.brocku.ca/programs",
     "service_direct" : "https://brocku.ca/directory/a-z/",
-    "transit" : "https://transitapp.com/region/niagara-region",
     "news" : "https://brocku.ca/brock-news/", 
     "events" : "https://experiencebu.brocku.ca/",
-    "facts" : "https://brocku.ca/about/brock-facts/",
-    "registration" : "https://discover.brocku.ca/registration/"
+    "facts" : "https://brocku.ca/about/brock-facts/"
 }
 ###########################################################
 
@@ -223,6 +238,8 @@ def getLink(matchedKeys):
         returns a string to output as a response
     '''
     temp = Template("I'm sorry, I wasn't able to find what you were looking for. However, you might be able to find more information at: $x")
+    # for queries that we will exclusively be giving links to 
+    temp2 = Template("Information regarding $y can be found at: $x")
     matches = []
     for match_id, start, end in matchedKeys:
         print(nlp.vocab.strings[match_id])
@@ -230,11 +247,15 @@ def getLink(matchedKeys):
     if "prereqs" in matches:
         return temp.substitute({'x': links["prereqs"]})
     elif "food" in matches:
-        return temp.substitute({'x': links["food"]})
+        return temp2.substitute({'y' : "the dining options at Brock", 'x': links["food"]})
+    elif "transport" in matches:
+        return temp2.substitute({'y' : "local public transportation", 'x': links["transit"]})
+    elif "covid" in matches:
+        return temp2.substitute({'y' : "Brock's COVID-19 response", 'x': links["covid"]})
+    elif "register" in matches:
+        return temp2.substitute({'y' : "Brock's registration process", 'x': links["register"]})
     elif "tuition" in matches:
         return temp.substitute({'x': links["tuition"]})
-    elif "covid" in matches:
-        return temp.substitute({'x': links["covid"]})
     elif "advisor" in matches:
         return temp.substitute({'x': links["acad_advisor"]})
     elif "exam" in matches:
