@@ -23,24 +23,19 @@ def populate_db_building_codes(db='buchatbot.db'):
                 flag=False
 
 def course_populate(db='buchatbot.db'):
-    with open('course.txt', 'r') as f:
+    with open('./cleandata/course.txt', 'r') as f:
             codes = f.readlines()
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         for line in codes:
             JSONDecodedRow = json.loads(line)
             code = JSONDecodedRow.get('code') or ""
-            title = JSONDecodedRow.get('title') or ""
-            title = title.replace('\'', '`')
-            frmt = JSONDecodedRow.get('frmt') or ""
-            frmt = frmt.replace('\'', '`')
-            description = JSONDecodedRow.get('description') or ""
-            description = description.replace('\'', '`')
-            prereq = JSONDecodedRow.get('prereq') or ""
-            prereq = prereq.replace('\'', '`')
+            title = JSONDecodedRow.get('title').replace('\'', '`') or ""
+            frmt = JSONDecodedRow.get('frmt').replace('\'', '`') or ""
+            description = JSONDecodedRow.get('description').replace('\'', '`') or ""
+            prereq = JSONDecodedRow.get('prereq').replace('\'', '`') or ""
             xlist = JSONDecodedRow.get('xlist') or ""
-            restriction = JSONDecodedRow.get('restriction') or ""
-            restriction = restriction.replace('\'', '`')
+            restriction = JSONDecodedRow.get('restriction').replace('\'', '`') or ""
             
             cursor.execute('INSERT OR IGNORE INTO course(code, title, frmt, description, prereq, xlist, restriction) VALUES (\''+code+'\', \''+title+'\', \''+frmt+'\', \''+description+'\', \''+prereq+'\', \''+xlist+'\', \''+ restriction+'\')')
         # for c in codes:
