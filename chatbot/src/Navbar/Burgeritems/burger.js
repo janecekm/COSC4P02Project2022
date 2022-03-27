@@ -68,9 +68,9 @@ function Dropdownmenu(props){
         <>
         <div className='dropdown'>
             <DropdownItem act ={HelpButton}><div>Help</div></DropdownItem>
-            <DropdownItem act ={fontSizeInc}><div>Font Increase</div></DropdownItem>
-            <DropdownItem act ={fontSizeDec}><div>Font Decrease</div></DropdownItem>
-            <DropdownItem act = {changecolor}><div>Switch Modes</div></DropdownItem>
+            <DropdownItem act ={fontSizeInc}><div>Font +</div></DropdownItem>
+            <DropdownItem act ={fontSizeDec}><div>Font -</div></DropdownItem>
+            <DropdownItem act = {changecolor}><div>Switch</div></DropdownItem>
         </div>
         </>
     );
