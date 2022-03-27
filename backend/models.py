@@ -15,13 +15,34 @@ class Course(db.Model):
     prereq = db.Column(
         db.String(100),
         index=True,
-        unique=True,
+        unique=False,
         nullable=True
     )
     xlist = db.Column(
         db.String(8),
         index=True,
+        unique=False,
+        nullable=True
+    )
+
+    title = db.Column(
+        db.String(40),
+        index=True,
         unique=True,
+        nullable=True
+    )
+
+    frmt = db.Column(
+        db.String(40),
+        index=True,
+        unique=False,
+        nullable=True
+    )
+
+    restriction = db.Column(
+        db.String(40),
+        index=True,
+        unique=False,
         nullable=True
     )
 

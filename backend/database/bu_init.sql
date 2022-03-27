@@ -1,9 +1,12 @@
 DROP TABLE IF EXISTS course;
 CREATE TABLE course (
 	code CHAR(8) PRIMARY KEY,
+	title VARCHAR(40),
+	frmt VARCHAR(40),
 	description VARCHAR(200),
 	prereq VARCHAR(100),
-	xlist CHAR(8)
+	xlist CHAR(8),
+	restriction VARCHAR(40)
 );
 
 DROP TABLE IF EXISTS offering;
@@ -27,4 +30,4 @@ CREATE TABLE exam (
 	location CHAR(10)
 );
 
-INSERT INTO course VALUES ('COSC4P03', 'this is a description', 'COSC3P03', 'COSC3P03');
+-- INSERT INTO course VALUES ('COSC4P03', 'this is a description', 'COSC3P03', 'COSC3P03');
