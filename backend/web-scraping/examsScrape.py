@@ -2,6 +2,7 @@
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import json
 	
     
 # subjects = ['abed', 'abte', 'actg', 'aded', 'admi', 'adst', 'aesl', 'apco', 'arab', 'astr', 'bchm', 'biol', 'bmed', 'bphy', 'btec', 'btgd', 'cana', 'chem', 'chys', 'clas', 'comm', 'cosc', 'cpcf', 'dart', 'econ', 'edbe', 'educ', 'encw', 'engl', 'ensu', 'entr', 'ersc', 'esci', 'ethc', 'film', 'fnce', 'fren', 'geog', 'germ', 'gree', 'hist', 'hlsc', 'iasc', 'indg', 'intc', 'ital', 'itis', 'japa', 'kine', 'labr', 'lati', 'ling', 'mand', 'mars', 'math', 'mgmt', 'mktg', 'musi', 'neur', 'nusc', 'obhr', 'oevi', 'oper', 'pcul', 'phil', 'phys', 'pmpb', 'poli', 'port', 'psyc', 'recl', 'russ', 'scie', 'sclc', 'soci', 'span', 'spma', 'stac', 'swah', 'tour', 'visa', 'wgst', 'wrds']
@@ -34,7 +35,7 @@ for subject in subjects:
     exams = driver.find_elements(By.XPATH,'//tr[contains(@class,"exam-row")]')
     solution = {}
     for exam in exams:
-        solution["courseCode"] = exam.get_attribute("data-cc")
+        solution["code"] = exam.get_attribute("data-cc")
         # solution["location"] = exam.get_attribute("data-location")
         solution["time"] = exam.get_attribute("data-start") +"-"+exam.get_attribute("data-end")
         # solution["endTime"] = exam.get_attribute("data-end")
@@ -48,10 +49,10 @@ for subject in subjects:
             solution["location"] = exam.get_attribute("data-location")
         else:
             exam.click()
-            sleep(1)#don't know why it works
+            sleep(3)#don't know why it works
             lis = exam.find_elements(By.TAG_NAME,"li")
             solution["location"] = lis[len(lis)-1].text
-        print(solution)
+        print(json.dumps(solution))
 
 # for sess in sessions:
 # 	for t in types:

@@ -69,11 +69,11 @@ for line in file.readlines():
             val = Days[d] # if not of the form
             # f["days"].append(val)
             f["days"] = val
-            print(f)
+            print(json.dumps(f))
             datesExist = True
         except:
             pass
     if not datesExist:
         f["days"] = ""
-        print(f)
+        print(json.dumps(f))
     # k.write(json.dumps(f)+"\n")

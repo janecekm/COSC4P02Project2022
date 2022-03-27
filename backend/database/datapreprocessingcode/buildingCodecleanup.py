@@ -11,6 +11,6 @@ for key in file.keys():
     if flag:
         temp["buildingCode"] = key
         temp["buildingName"] = file[key]
-        print(temp)
+        print(json.dumps(temp))
     else:
         flag = True
