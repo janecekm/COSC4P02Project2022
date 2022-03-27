@@ -83,7 +83,7 @@ def exam_populate(db='buchatbot.db'):
             sec = int(JSONDecodedRow.get('sec'))
             location = JSONDecodedRow.get('location')
             
-            cursor.execute('INSERT OR IGNORE INTO exam(code, time, day, dayNum, month, sec, location) VALUES (\''+code+'\', \''+time+'\', \''+day+'\', \''+dayNumber+'\', \''+month+'\', \''+sec+'\', \''+ section+'\')')
+            cursor.execute('INSERT OR IGNORE INTO exam(code, time, day, dayNum, month, sec, location) VALUES (\''+code+'\', \''+time+'\', \''+day+'\', \''+dayNumber+'\', \''+month+'\', \''+sec+'\', \''+location+'\')')
 
 
 #this appears to execute, unsure how to get rows to display when visiting Flask site though
