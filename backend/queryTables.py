@@ -55,7 +55,7 @@ def doQueries(keywords):
 # filter to match database formatting
 def filterCourseInputs(keywords):
     temp = keywords.get('code').text
-    temp = temp.upper().replace(" ","")
+    temp = temp.upper()
     print('filtered input: '+temp)
     keywords['code'] = temp
     return None

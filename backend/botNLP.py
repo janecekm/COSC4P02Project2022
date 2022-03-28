@@ -205,6 +205,10 @@ def formResponse(database_answer, keys):
         else: 
             temp = Template("There are no prerequisites for $c")
             return temp.substitute({'c': database_answer["code"]})
+    if "description" in database_answer:
+        temp = Template("$c is all about $p")
+        return temp.substitute({'c': database_answer["code"], 'p':database_answer["description"]})
+
     if database_answer == 'more info required' or database_answer == 'im in danger': 
         # if no response from database
         return getLink(keys)

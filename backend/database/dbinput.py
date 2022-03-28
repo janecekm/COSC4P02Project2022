@@ -30,12 +30,17 @@ def course_populate(db='buchatbot.db'):
         for line in codes:
             JSONDecodedRow = json.loads(line)
             code = JSONDecodedRow.get('code') or ""
-            title = JSONDecodedRow.get('title').replace('\'', '`') or ""
-            frmt = JSONDecodedRow.get('frmt').replace('\'', '`') or ""
-            description = JSONDecodedRow.get('description').replace('\'', '`') or ""
-            prereq = JSONDecodedRow.get('prereq').replace('\'', '`') or ""
+            title = JSONDecodedRow.get('title') or ""
+            title = title.replace('\'', '`')
+            frmt = JSONDecodedRow.get('frmt') or ""
+            frmt = frmt.replace('\'', '`')
+            description = JSONDecodedRow.get('description') or ""
+            description = description.replace('\'', '`')
+            prereq = JSONDecodedRow.get('prereq') or ""
+            prereq = prereq.replace('\'', '`')
             xlist = JSONDecodedRow.get('xlist') or ""
-            restriction = JSONDecodedRow.get('restriction').replace('\'', '`') or ""
+            restriction = JSONDecodedRow.get('restriction') or ""
+            restriction = restriction.replace('\'', '`')
             
             cursor.execute('INSERT OR IGNORE INTO course(code, title, frmt, description, prereq, xlist, restriction) VALUES (\''+code+'\', \''+title+'\', \''+frmt+'\', \''+description+'\', \''+prereq+'\', \''+xlist+'\', \''+ restriction+'\')')
         # for c in codes:
