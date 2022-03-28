@@ -1,14 +1,26 @@
 from urllib import response
 import spacy
+from spacy.matcher import PhraseMatcher
 import pkg_resources #resource for symspellpy
 from spacy.matcher import Matcher
 from symspellpy import SymSpell, Verbosity
 from string import Template
-import re
+import json
 
 # load spacy
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
+phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
+
+###################################
+# This section sets up the PhraseMatcher
+# Currently the PhraseMatcher is used to extract only building codes
+buildings = []
+with open("backend\\nlp-resources\\buildingCodesClean.txt", encoding="utf8") as f: 
+    for line in f:
+        buildings.append(json.loads(line)["buildingCode"])
+patterns = list(nlp.pipe(buildings))
+phrase_matcher.add("buildingCode", patterns)
 
 ###################################
 # This section defines all the patterns for the Matcher
@@ -183,6 +195,9 @@ def spellcheck(question, matches, doc):
     merge = " ".join(orig)
     doc = nlp(merge)
     matches = matcher(doc)
+    phrase_matches = phrase_matcher(doc)
+    for match in phrase_matches: 
+        matches.append(match)
     return matches, doc 
 
 
@@ -200,6 +215,10 @@ def extractKeywords(question):
     '''
     doc = nlp(question)
     matches = matcher(doc)
+    # get the phrase_matches and add them to the match list
+    phrase_matches = phrase_matcher(doc) 
+    for match in phrase_matches: 
+        matches.append(match)
     matches, doc = spellcheck(question, matches, doc)
     return matches, doc
 
