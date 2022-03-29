@@ -176,7 +176,7 @@ class Exam(db.Model):
     )
 
     dayNum = db.Column(
-        db.Int,
+        db.Integer,
         primary_key = False,
         index = False,
         unique = False,
@@ -193,7 +193,7 @@ class Exam(db.Model):
     )
 
     section = db.Column (
-        db.Int,
+        db.Integer,
         index = True,
         unique = False,
         nullable = True
