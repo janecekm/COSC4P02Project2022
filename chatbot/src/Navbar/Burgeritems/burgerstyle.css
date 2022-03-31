@@ -44,5 +44,5 @@
   }
   .menuitem:hover{
     color : snow;
-    background-color : var(--primary-color);
+    background-color : var(--light-primary-color);
   }
