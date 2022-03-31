@@ -1,3 +1,8 @@
+* {
+  font-family: 'Open Sans';
+  margin: 0;
+  padding: 0;
+}
 .disclaimer{
   bottom: 0;
   left: 0;
@@ -11,5 +16,4 @@ html{
 #root{
   --text-size:18px;
   --menu-color: rgb(202, 202, 202);
-  --display-text: 'asdfasdf';
 }

@@ -2,10 +2,11 @@ import React from "react";
 import "./backarrowdesign.css";
 import Backarrowimage from './backarrowimage.svg';
 function Backarrowbutton(){
-
-
     const goBack = () => {
-        window.location.replace("http://localhost:5000");
+        var link = window.location.href.toString()
+        link = link.replace("brock", "")
+        link = link.replace("canada", "")
+        window.location.replace(link);
     }
 
     return(

@@ -14,36 +14,38 @@ class Message extends React.Component {
 
 const Feed = () => {
 
-  const [messagesList, setMessagesList] = useState([<Message key={0} text = {func("message")} type = "response"/>]);
-  const[questions,setQuestions] = useState(null);
+  const [messagesList, setMessagesList] = useState([<Message key={0} text = {func("message")} type = "response"/>]);//holds the messages between user and the chat bot
+  const[questions,setQuestions] = useState(null);// holds the question asked by the user
   useEffect(()=>{
-    if (questions != null){
-    document.getElementById("think").style.setProperty("display", "flex");
+    if (questions != null){//if a question is asked
+    document.getElementById("think").style.setProperty("display", "flex");//set the display to thinking
     scrollDown(document.getElementById("feed"))
-    document.getElementById("inputField").contentEditable = false;
+    document.getElementById("inputField").contentEditable = false;//make the text box not editable
     document.getElementById("inputField").style.setProperty("caret-color", "transparent");
     const requestOption ={
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({message:questions})
-    };
-    fetch("/brock",requestOption).then((response)=>{return response.json()}).then((data) => {
-      console.log(data['message']);
-      document.getElementById("inputField").contentEditable = true;
-      
+    };//building the request with the question
+    var url = window.location.href.toString();
+    var isCanada = url.search("/canada");
+    
+    var sendToUrl = isCanada==-1?"/brock":"/canada"//checks and finds which url we are in.
+
+    fetch(sendToUrl,requestOption).then((response)=>{return response.json()}).then((data) => {
+      console.log(data);
+      document.getElementById("inputField").contentEditable = true;//editable after the data is processed.
       document.getElementById("think").style.setProperty("display", "none");
       setMessagesList( prevMessages =>
         prevMessages.concat(<Message key={messagesList.length} text = {data['message']} type = "response"/>)
-      );
+      );//adds the messages to the message list
       scrollDown(document.getElementById("feed"));
       document.getElementById("inputField").focus();
       document.getElementById("inputField").style.setProperty("caret-color", "black");
     }
-    
-  
   );//triggers use effect for reply
 
-  };},[questions])
+  };},[questions])//the trigger happens when there is a change of questions
 
   const poseQuery =  async ()  => {
     var query = document.getElementById("inputField").innerText;
@@ -63,7 +65,7 @@ const Feed = () => {
       setQuestions(null);
       clearInput();
     }
-    else if (query == "\n\n\n") {
+    else if (query === "\n\n\n") {
       clearInput();
     }
   };
