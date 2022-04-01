@@ -91,17 +91,18 @@ advisor = [{'LEMMA':'advisor'}]
 matcher.add("advisor", [advisor])
 
 # covid information
-covid = [[{'LEMMA':'covid'}],[{'LEMMA':'covid19'}],[{'LEMMA':'covid-19'}]]
+covid = [[{'LOWER':'covid'}],[{'LOWER':'covid19'}],[{'LOWER':'covid-19'}]
+            ,[{'LOWER':'coronavirus'}],[{'LOWER':'quarantine'}],[{'LOWER':'lockdown'}]]
 matcher.add("covid", covid)
 
 # tuition
-tuition = [[{'LEMMA':'cost'}],[{'LEMMA':'tuition'}],[{'LEMMA':'price'}],[{'LEMMA':'money'}],[{'LEMMA':'dollar'}],
+tuition = [[{'LEMMA':'cost'}],[{'LOWER':'tuition'}],[{'LEMMA':'price'}],[{'LOWER':'money'}],[{'LEMMA':'dollar'}],
             [{'LEMMA':'pay'}]]
 matcher.add("tuition", tuition)
 
 # food
-food = [[{'LEMMA':'eat'}],[{'LEMMA':'food'}],[{'LEMMA':'breakfast'}],[{'LEMMA':'lunch'}],[{'LEMMA':'dinner'}],
-            [{'LEMMA':'meal'}],[{'LEMMA':'mealplan'}],[{'LEMMA':'dining'}],[{'LEMMA':'snack'}]]
+food = [[{'LEMMA':'eat'}],[{'LOWER':'food'}],[{'LOWER':'breakfast'}],[{'LOWER':'lunch'}],[{'LOWER':'dinner'}],
+            [{'LOWER':'meal'}],[{'LOWER':'mealplan'}],[{'LEMMA':'dining'}],[{'LEMMA':'snack'}]]
 matcher.add("food", food)
 
 # transportation, "How do I get to..."
@@ -119,6 +120,15 @@ register = [[{'LEMMA':'register'}],[{'LEMMA':'registration'}],
                 [{'LOWER': 'choose'},{'OP': '?'},{'LEMMA': 'classes'},],
                 [{'LOWER': 'pick'},{'OP': '?'},{'LEMMA': 'classes'},]]
 matcher.add("register", register)
+
+# directory
+directory = [[{'LEMMA':'contact'}], [{'LOWER':'call'}], [{'LOWER':'phone'}], 
+            [{'LOWER':'email'}], [{'LEMMA': 'speak'},{'LOWER': 'to'},]]
+matcher.add("directory", directory)
+
+# store
+store = [[{'LOWER':'store'}], [{'LEMMA':'textbook'}], [{'LEMMA':'booklist'}]]
+matcher.add("store", store)
 # end of Matcher pattern defintions
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
@@ -145,8 +155,9 @@ links = {
     "food": "https://brocku.ca/dining-services/dining-on-campus/locations-on-campus-and-hours-of-operation/",
     "register" : "https://discover.brocku.ca/registration/",
     "transit" : "https://transitapp.com/region/niagara-region",
-    # to be accomodated for: 
     "directory":"https://brocku.ca/directory/", 
+    "store":"https://campusstore.brocku.ca/",
+    # to be accomodated for:
     "programs" : "https://discover.brocku.ca/programs",
     "service_direct" : "https://brocku.ca/directory/a-z/",
     "news" : "https://brocku.ca/brock-news/", 
@@ -240,12 +251,17 @@ def getLink(matchedKeys):
     temp = Template("I'm sorry, I wasn't able to find what you were looking for. However, you might be able to find more information at: $x")
     # for queries that we will exclusively be giving links to 
     temp2 = Template("Information regarding $y can be found at: $x")
+
     matches = []
     for match_id, start, end in matchedKeys:
         print(nlp.vocab.strings[match_id])
         matches.append(nlp.vocab.strings[match_id])
     if "prereqs" in matches:
         return temp.substitute({'x': links["prereqs"]})
+    elif "store" in matches:
+        return temp2.substitute({'y' : "the Brock Campus Store", 'x': links["store"]})
+    elif "directory" in matches:
+        return temp2.substitute({'y' : "contacting individuals at Brock", 'x': links["directory"]})
     elif "food" in matches:
         return temp2.substitute({'y' : "the dining options at Brock", 'x': links["food"]})
     elif "transport" in matches:
@@ -257,7 +273,7 @@ def getLink(matchedKeys):
     elif "tuition" in matches:
         return temp2.substitute({'y' : "tuition", 'x': links["tuition"]})
     elif "advisor" in matches:
-        return temp.substitute({'x': links["acad_advisor"]})
+        return temp2.substitute({'y' : "academic advisors", 'x': links["acad_advisor"]})
     elif "exam" in matches:
         return temp.substitute({'x': links["exam"]})
     elif "course component" in matches or "course code" in matches:
