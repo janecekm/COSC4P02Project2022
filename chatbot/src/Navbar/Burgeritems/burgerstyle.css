@@ -11,7 +11,7 @@
     transition: 0.4s;
 }
 .change .bar1 {
-    -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+    -webkit-transform: rotate(-45deg) translate(-5px, 5px);
     transform: scale(1.1) rotate(-45deg) translate(-9px, 6px);
   }
   
@@ -27,22 +27,25 @@
     right: 0px;
     width:100px;
     overflow: hidden;
-    transition: 5s;
     z-index: 1;
+    user-select: none;
   }
 
   .menuitem{
     cursor: pointer;
     height: 40px;
     width: 100%;
+    border: 1px solid var(--light-primary-color);
     background-color: rgb(248, 248, 248);
     align-items: center;
     font-size: 15px;
     align-content: center;
     padding-top: 20%;
     text-align: center;
+    user-select: none;
   }
   .menuitem:hover{
     color : snow;
     background-color : var(--light-primary-color);
+    transition: 0.4s;
   }

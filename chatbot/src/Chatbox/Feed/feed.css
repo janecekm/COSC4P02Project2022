@@ -38,6 +38,7 @@
   border-radius: 8px;
   cursor: pointer;
   background-color: grey; 
+  user-select: none;
 }
 .clearButton:hover{
   background-color: var(--light-secondary-color);;
@@ -55,6 +56,7 @@
   height: auto;
   border-radius: 5px;
   background-color: grey;
+  user-select: none;
 }
 .enterButton:hover{
   background-color: var(--light-secondary-color);
@@ -103,10 +105,9 @@
 }
 
 .feed{
-    border: 2px solid var(--primary-color);
+    border: 1px solid var(--primary-color);
     margin-top: 10px;
     padding-top: 10px;
-    padding-left: 5px;
     width: 100%;
     height: 470px;
     overflow-y: scroll;
