@@ -10,7 +10,10 @@ function Burger (){
             <div className='bar2'></div>
             <div className='bar3'></div>
         </div>
-        {open && <Dropdownmenu />}
+        <div className={!open?'closed':'open'}>
+            <Dropdownmenu />
+        </div>
+       
         </>
     );
 }
@@ -66,7 +69,7 @@ function Dropdownmenu(props){
 
     return (
         <>
-        <div className='dropdown'>
+        <div className= "dropdown">
             <DropdownItem act ={HelpButton}><div>Help</div></DropdownItem>
             <DropdownItem act ={fontSizeInc}><div>Font +</div></DropdownItem>
             <DropdownItem act ={fontSizeDec}><div>Font -</div></DropdownItem>

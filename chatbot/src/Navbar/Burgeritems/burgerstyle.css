@@ -28,7 +28,17 @@
     width:100px;
     overflow: hidden;
     z-index: 1;
+    transition: opacity 0.4s;
+
     user-select: none;
+  }
+  .closed .dropdown{
+    opacity: 0;
+    visibility: hidden;
+  }
+  .open .dropdown{
+    opacity: 100;
+    visibility: visible; 
   }
 
   .menuitem{
@@ -42,7 +52,7 @@
     align-content: center;
     padding-top: 20%;
     text-align: center;
-    user-select: none;
+    user-select: none;    
   }
   .menuitem:hover{
     color : snow;
