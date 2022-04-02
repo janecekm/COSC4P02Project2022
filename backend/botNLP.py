@@ -3,7 +3,7 @@ import spacy
 from spacy.matcher import PhraseMatcher
 import pkg_resources #resource for symspellpy
 from spacy.matcher import Matcher
-from symspellpy import SymSpell, Verbosity
+from symspellpy import SymSpell
 from string import Template
 import json
 
@@ -144,16 +144,13 @@ matcher.add("store", store)
 # end of Matcher pattern defintions
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
-dictionary_path = pkg_resources.resource_filename(
-    "symspellpy", "frequency_dictionary_en_82_765.txt"
-)
+dictionary_path = "frequency_dictionary_en_82_765.txt"
 # term_index is the column of the term and count_index is the
 # column of the term frequency
 sym_spell.load_dictionary(dictionary_path, term_index=0, count_index=1)
 #sym_spell.create_dictionary_entry("cosc 1p02",50)
 #play with words, adjust values accordingly. look into saving updated dictionary
 sym_spell.create_dictionary_entry("is",8569404971)
-
 ###########################################################
 # links for when nothing is returned from the database
 links = {
@@ -197,7 +194,7 @@ def spellcheck(question, matches, doc):
             question = question.replace(str(doc[start:end]), string)
     question = question.replace("  "," ")
     suggestions = sym_spell.lookup_compound(
-        question, max_edit_distance=2
+        question, max_edit_distance=2,ignore_term_with_digits=True
     )
     fix = str(suggestions[0]).split(",")[0].split(" ")
     for i in range(len(orig)):
