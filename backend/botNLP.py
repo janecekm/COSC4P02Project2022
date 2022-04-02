@@ -3,7 +3,7 @@ import spacy
 from spacy.matcher import PhraseMatcher
 import pkg_resources #resource for symspellpy
 from spacy.matcher import Matcher
-from symspellpy import SymSpell
+from symspellpy import SymSpell, Verbosity
 from string import Template
 import json
 
@@ -144,13 +144,13 @@ matcher.add("store", store)
 # end of Matcher pattern defintions
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
-dictionary_path = "frequency_dictionary_en_82_765.txt"
+dictionary_path = "backend\\nlp-resources\\frequency_dictionary_en_82_765.txt"
 # term_index is the column of the term and count_index is the
 # column of the term frequency
 sym_spell.load_dictionary(dictionary_path, term_index=0, count_index=1)
 #sym_spell.create_dictionary_entry("cosc 1p02",50)
 #play with words, adjust values accordingly. look into saving updated dictionary
-sym_spell.create_dictionary_entry("is",8569404971)
+# sym_spell.create_dictionary_entry("is",8569404971)
 ###########################################################
 # links for when nothing is returned from the database
 links = {
@@ -186,21 +186,9 @@ def spellcheck(question, matches, doc):
         matches: the list of matches after spellcheck has been applied (and the matcher has been re-run on the document)
         doc: the new Doc object (https://spacy.io/api/doc), run on the corrected string 
     '''
-    orig = question.split(" ")
-    for match_id, start, end in matches:
-        if (str(doc[start:end]).strip() in question):
-            length = len(str(doc[start:end]).split(" "))
-            string = " oodles " * length
-            question = question.replace(str(doc[start:end]), string)
-    question = question.replace("  "," ")
     suggestions = sym_spell.lookup_compound(
-        question, max_edit_distance=2,ignore_term_with_digits=True
-    )
-    fix = str(suggestions[0]).split(",")[0].split(" ")
-    for i in range(len(orig)):
-        if orig[i] != fix[i] and fix[i] != "oodles":
-            orig[i] = fix[i]
-    merge = " ".join(orig)
+                question.lower(), max_edit_distance=2, ignore_non_words=True, ignore_term_with_digits=True)
+    merge = suggestions[0].term
     doc = nlp(merge)
     matches = matcher(doc)
     phrase_matches = phrase_matcher(doc)
@@ -227,7 +215,9 @@ def extractKeywords(question):
     phrase_matches = phrase_matcher(doc) 
     for match in phrase_matches: 
         matches.append(match)
+    print("Prior to correction:", doc.text)
     matches, doc = spellcheck(question, matches, doc)
+    print("Post correction:", doc.text)
     return matches, doc
 
 def processKeywords(matches, doc):

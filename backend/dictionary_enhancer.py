@@ -23,4 +23,4 @@ courseList = ["abed","abte","actg","aded","admi","adst","aesl","apco","arab","as
 
 #print("is ", 8569404971)
 for code in courseList:
-    print(code,136216727)
+    print(code,286291411)
