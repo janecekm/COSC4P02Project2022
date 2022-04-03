@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {forwardRef, useEffect, useState} from 'react';
 import "./feed.css"
 import ClipButton from '../ClipButton/clipbutton';
 import Thinking from '../Thinking/thinking';
@@ -69,13 +69,6 @@ const Feed = () => {
       clearInput();
     }
   };
-  const helper = (message) => {
-      // setMessagesList(prevMessages=>
-      //   prevMessages.concat(<Message key={messagesList.length} text = {message} type = "response"/>)
-      //   );
-      //   scrollDown(document.getElementById("feed"));
-      console.log(message);
-  }
   const scrollDown = (node) => {
     node.scrollTop = node.scrollHeight;
   }

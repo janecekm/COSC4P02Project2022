@@ -38,7 +38,7 @@ function fontSizeInc(){
     }
 }
 function HelpButton () {
-    console.log("what");
+    
 }
 function changecolor(){
     
