@@ -27,9 +27,9 @@ CREATE TABLE exam (
 	code CHAR(8),
 	time TIME,
 	day VARCHAR(14),
-	dayNum INT,
+	dayNum CHAR(2),
 	month VARCHAR(14),
-	sec INT,
+	section CHAR(2),
 	location CHAR(10)
 );
 

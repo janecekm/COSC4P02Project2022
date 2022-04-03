@@ -33,8 +33,9 @@ for subject in subjects:
     # scrapeCourseInfo(subject,"fw","ex",examYear,examMonth,driver)
     driver.get("https://brocku.ca/guides-and-timetables/timetables/?session=fw&type=ex&level=all&program="+subject+"&academicyear=2021&period=april")
     exams = driver.find_elements(By.XPATH,'//tr[contains(@class,"exam-row")]')
-    solution = {}
+    sleep(2)
     for exam in exams:
+        solution = {}
         solution["code"] = exam.get_attribute("data-cc")
         # solution["location"] = exam.get_attribute("data-location")
         solution["time"] = exam.get_attribute("data-start") +"-"+exam.get_attribute("data-end")
