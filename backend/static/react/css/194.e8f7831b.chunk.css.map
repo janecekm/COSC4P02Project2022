@@ -1,1 +1,1 @@
-{"version":3,"file":"css/194.e8f7831b.chunk.css","mappings":"AAAA,KACI,uBAAuB,CACvB,yBACF","sources":["canadacolor.css"],"sourcesContent":["html{\r\n    --primary-color:#006BE6;\r\n    --secondary-color:#0065B3;\r\n  }"],"names":[],"sourceRoot":""}
+{"version":3,"file":"css/194.e8f7831b.chunk.css","mappings":"AAAA,KACI,uBAAuB,CACvB,yBACF","sources":["canadacolor.css"],"sourcesContent":["html{\n    --primary-color:#006BE6;\n    --secondary-color:#0065B3;\n  }"],"names":[],"sourceRoot":""}

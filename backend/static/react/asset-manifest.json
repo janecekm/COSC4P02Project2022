@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/react/css/main.f0e255f9.css",
-    "main.js": "/static/react/js/main.29dff02d.js",
+    "main.js": "/static/react/js/main.f289ba4c.js",
     "css/342.9ad0dfb5.chunk.css": "/static/react/css/342.9ad0dfb5.chunk.css",
     "js/342.d9417126.chunk.js": "/static/react/js/342.d9417126.chunk.js",
     "css/194.e8f7831b.chunk.css": "/static/react/css/194.e8f7831b.chunk.css",
     "js/194.aaaccb33.chunk.js": "/static/react/js/194.aaaccb33.chunk.js",
-    "media/clipboard.svg": "/static/react/media/clipboard.2d36d079abf2f13be5a5dc9e690b173d.svg",
-    "media/backarrowimage.svg": "/static/react/media/backarrowimage.9e13dd41876fa17f00f4eb7f1c94a938.svg",
+    "media/clipboard.svg": "/static/react/media/clipboard.b3d166de67ac0bbec1d05f5b2529b53f.svg",
+    "media/backarrowimage.svg": "/static/react/media/backarrowimage.3c60f9f4254372a559271ff1fbaea25d.svg",
     "../../templates/index.html": "/static/react/../../templates/index.html",
     "main.f0e255f9.css.map": "/static/react/css/main.f0e255f9.css.map",
-    "main.29dff02d.js.map": "/static/react/js/main.29dff02d.js.map",
+    "main.f289ba4c.js.map": "/static/react/js/main.f289ba4c.js.map",
     "342.9ad0dfb5.chunk.css.map": "/static/react/css/342.9ad0dfb5.chunk.css.map",
     "342.d9417126.chunk.js.map": "/static/react/js/342.d9417126.chunk.js.map",
     "194.e8f7831b.chunk.css.map": "/static/react/css/194.e8f7831b.chunk.css.map",
@@ -18,6 +18,6 @@
   },
   "entrypoints": [
     "css/main.f0e255f9.css",
-    "js/main.29dff02d.js"
+    "js/main.f289ba4c.js"
   ]
 }
