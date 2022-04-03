@@ -66,6 +66,16 @@ prerequisites = [[{'LOWER': 'what'},
                   {'LEMMA': 'prereq'}]]
 matcher.add("prereq", prerequisites)
 
+crosslist = [[{'LOWER': 'what'},
+                  {'OP': '?'},
+                  {'OP': '?'},
+                  {'LEMMA': 'crosslist'}], 
+                [{'LOWER': 'what'},
+                  {'OP': '?'},
+                  {'OP': '?'},
+                  {'LEMMA': 'xlist'}]]
+matcher.add("xlist", crosslist)
+
 # generally the descriptions
 generalInfo = [ [{'LOWER':'tell'},{'LOWER':'me'},{'LOWER':'about'}], 
                 [{'LOWER':'information'},{'LOWER':'on'}],
@@ -302,6 +312,13 @@ def formResponse(database_answer, keys):
     if "description" in database_answer: 
         temp = Template("$c is $t and it's about $d")
         return temp.substitute({'c':database_answer["code"], 't':database_answer["title"], 'd':database_answer["description"]})
+    if "xlist" in database_answer:
+        if database_answer["xlist"] != "":
+            temp = Template("$c is crosslisted as $x")
+            return temp.substitute({'c':database_answer["code"], 'x':database_answer["xlist"]})
+        else:
+            temp = Template("There are no crosslistings for $c")
+            return temp.substitute({'c': database_answer["code"]})
     if "instructor" in database_answer:
         temp = Template("$c is taught by $i")
         return temp.substitute({'c':database_answer["code"], 'i':database_answer["instructor"]})
@@ -337,9 +354,7 @@ def processQ(question):
     processed = processKeywords(matches, doc)
     from queryTables import doQueries
     queryReturn = doQueries(processed)
-    print(queryReturn)
     myString = formResponse(queryReturn, matches)
-    print(myString)
     if (myString != "" and myString != None):    
         return {"message": myString}
     else:
