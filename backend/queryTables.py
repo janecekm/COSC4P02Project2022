@@ -10,6 +10,7 @@ def doQueries(keywords):
             queryRow = to_dict(temp)
             queryReturn = {}
             for key in (keywords.keys() & queryRow.keys()):
+                if key == 'description': queryReturn['title'] = queryRow['title']
                 queryReturn[key] = queryRow[key]
             print('Query Returned to botNLP: ')
             print(queryReturn)
@@ -37,7 +38,9 @@ def doQueries(keywords):
                         rowDict[key] = queryRow[key]
                     rowDict['exam'] = keywords["exam"]
                     rowDict['location'] = queryRow["location"]
-                    rowDict['day'] = queryRow["day"]
+                    rowDict['dayNum'] = queryRow["dayNum"]
+                    rowDict['month'] = queryRow["month"]
+                    rowDict['time'] = queryRow["time"]
                     queryReturn.update(rowDict)
                 print('Query Returned to botNLP: ')
                 print(queryReturn)
