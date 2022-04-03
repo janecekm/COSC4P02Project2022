@@ -22,4 +22,6 @@
     text-align: center;
     color: snow;
     size: var(--text-size)+"px";
+    cursor: default;
+    user-select: none;
 }

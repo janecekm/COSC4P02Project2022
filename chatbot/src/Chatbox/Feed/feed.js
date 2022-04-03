@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {forwardRef, useEffect, useState} from 'react';
 import "./feed.css"
 import ClipButton from '../ClipButton/clipbutton';
 import Thinking from '../Thinking/thinking';
@@ -69,7 +69,6 @@ const Feed = () => {
       clearInput();
     }
   };
-
   const scrollDown = (node) => {
     node.scrollTop = node.scrollHeight;
   }
@@ -102,12 +101,12 @@ const Feed = () => {
         </div>
       </div>
       <div className="userTools">
-        <button className="clearButton" onClick={clearInput}>{func("clear")}</button>
+        <div className="clearButton" onClick={clearInput}>{func("clear")}</div>
               <span onKeyDown={(e) => limiter(e)} onKeyUp={(e) => handler(e)} id = "inputField" 
               className='inputBar' role="textbox" 
               contentEditable ='true' data-placeholder={func('inputmessage')}>
               </span>
-        <button className="enterButton" onClick={poseQuery}>{func("enter")}</button>
+        <div className="enterButton" onClick={poseQuery}>{func("enter")}</div>
       </div>
     </div>
 
