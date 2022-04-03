@@ -56,13 +56,15 @@ def doQueries(keywords):
                 temp = models.Offering.query.filter_by(code=keywords.get('code')).all()
                 # temp = models.Offering.query.filter_by(code=keywords.get('code')).first()
                 print(temp)
-                queryReturn = []
+                queryReturn = {}
                 for row in temp:
                     queryRow = to_dict(row)
                     rowDict = {}
                     for key in (keywords.keys() & queryRow.keys()):
+                        if key == 'time':
+                            rowDict['days'] = queryRow["days"]
                         rowDict[key] = queryRow[key]
-                    queryReturn.append(rowDict)
+                    queryReturn.update(rowDict)
                 print('Query Returned to botNLP: ')
                 print(queryReturn)
                 return queryReturn

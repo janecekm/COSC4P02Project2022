@@ -295,10 +295,22 @@ def formResponse(database_answer, keys):
     Return: 
         returns a string to output as a response
     '''
-    # basic response for course descriptions (we should probably also be able to get course *names*)
+    if "exam" in database_answer:
+        temp = Template("$c has an exam on $m $d at $t $l")
+        return temp.substitute({'c': database_answer["code"], 'm':database_answer["month"], 'd':database_answer["dayNum"], 't':database_answer["time"], 'l':database_answer["location"]})
+    # basic response for course descriptions
     if "description" in database_answer: 
         temp = Template("$c is $t and it's about $d")
         return temp.substitute({'c':database_answer["code"], 't':database_answer["title"], 'd':database_answer["description"]})
+    if "instructor" in database_answer:
+        temp = Template("$c is taught by $i")
+        return temp.substitute({'c':database_answer["code"], 'i':database_answer["instructor"]})
+    if "time" in database_answer:
+        temp = Template("$c is at $t on $d")
+        return temp.substitute({'c':database_answer["code"], 't':database_answer["time"], 'd':database_answer["days"]})
+    if "location" in database_answer:
+        temp = Template("$c is in room $l")
+        return temp.substitute({'c':database_answer["code"], 'l':database_answer["location"]})
     # response for prereqs (not great for single course prereqs or multi part questions?)
     if "prereq" in database_answer: 
         if database_answer["prereq"] != "": 
@@ -308,12 +320,6 @@ def formResponse(database_answer, keys):
         else: 
             temp = Template("There are no prerequisites for $c")
             return temp.substitute({'c': database_answer["code"]})
-    if "description" in database_answer:
-        temp = Template("$c is all about $p")
-        return temp.substitute({'c': database_answer["code"], 'p':database_answer["description"]})
-    if "exam" in database_answer:
-        temp = Template("$c has an exam on $m $d at $t $l")
-        return temp.substitute({'c': database_answer["code"], 'm':database_answer["month"], 'd':database_answer["dayNum"], 't':database_answer["time"], 'l':database_answer["location"]})
     if database_answer == 'more info required' or database_answer == 'im in danger' or database_answer == "placeholder return": 
         # if no response from database
         return getLink(keys)
