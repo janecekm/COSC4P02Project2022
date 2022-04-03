@@ -103,17 +103,18 @@ advisor = [{'LEMMA':'advisor'}]
 matcher.add("advisor", [advisor])
 
 # covid information
-covid = [[{'LEMMA':'covid'}],[{'LEMMA':'covid19'}],[{'LEMMA':'covid-19'}]]
+covid = [[{'LOWER':'covid'}],[{'LOWER':'covid19'}],[{'LOWER':'covid-19'}]
+            ,[{'LOWER':'coronavirus'}],[{'LOWER':'quarantine'}],[{'LOWER':'lockdown'}]]
 matcher.add("covid", covid)
 
 # tuition
-tuition = [[{'LEMMA':'cost'}],[{'LEMMA':'tuition'}],[{'LEMMA':'price'}],[{'LEMMA':'money'}],[{'LEMMA':'dollar'}],
+tuition = [[{'LEMMA':'cost'}],[{'LOWER':'tuition'}],[{'LEMMA':'price'}],[{'LOWER':'money'}],[{'LEMMA':'dollar'}],
             [{'LEMMA':'pay'}]]
 matcher.add("tuition", tuition)
 
 # food
-food = [[{'LEMMA':'eat'}],[{'LEMMA':'food'}],[{'LEMMA':'breakfast'}],[{'LEMMA':'lunch'}],[{'LEMMA':'dinner'}],
-            [{'LEMMA':'meal'}],[{'LEMMA':'mealplan'}],[{'LEMMA':'dining'}],[{'LEMMA':'snack'}]]
+food = [[{'LEMMA':'eat'}],[{'LOWER':'food'}],[{'LOWER':'breakfast'}],[{'LOWER':'lunch'}],[{'LOWER':'dinner'}],
+            [{'LOWER':'meal'}],[{'LOWER':'mealplan'}],[{'LEMMA':'dining'}],[{'LEMMA':'snack'}]]
 matcher.add("food", food)
 
 # transportation, "How do I get to..."
@@ -131,19 +132,25 @@ register = [[{'LEMMA':'register'}],[{'LEMMA':'registration'}],
                 [{'LOWER': 'choose'},{'OP': '?'},{'LEMMA': 'classes'},],
                 [{'LOWER': 'pick'},{'OP': '?'},{'LEMMA': 'classes'},]]
 matcher.add("register", register)
+
+# directory
+directory = [[{'LEMMA':'contact'}], [{'LOWER':'call'}], [{'LOWER':'phone'}], 
+            [{'LOWER':'email'}], [{'LEMMA': 'speak'},{'LOWER': 'to'},]]
+matcher.add("directory", directory)
+
+# store
+store = [[{'LOWER':'store'}], [{'LEMMA':'textbook'}], [{'LEMMA':'booklist'}]]
+matcher.add("store", store)
 # end of Matcher pattern defintions
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
-dictionary_path = pkg_resources.resource_filename(
-    "symspellpy", "frequency_dictionary_en_82_765.txt"
-)
+dictionary_path = "backend\\nlp-resources\\frequency_dictionary_en_82_765.txt"
 # term_index is the column of the term and count_index is the
 # column of the term frequency
 sym_spell.load_dictionary(dictionary_path, term_index=0, count_index=1)
 #sym_spell.create_dictionary_entry("cosc 1p02",50)
 #play with words, adjust values accordingly. look into saving updated dictionary
-sym_spell.create_dictionary_entry("is",8569404971)
-
+# sym_spell.create_dictionary_entry("is",8569404971)
 ###########################################################
 # links for when nothing is returned from the database
 links = {
@@ -157,8 +164,9 @@ links = {
     "food": "https://brocku.ca/dining-services/dining-on-campus/locations-on-campus-and-hours-of-operation/",
     "register" : "https://discover.brocku.ca/registration/",
     "transit" : "https://transitapp.com/region/niagara-region",
-    # to be accomodated for: 
     "directory":"https://brocku.ca/directory/", 
+    "store":"https://campusstore.brocku.ca/",
+    # to be accomodated for:
     "programs" : "https://discover.brocku.ca/programs",
     "service_direct" : "https://brocku.ca/directory/a-z/",
     "news" : "https://brocku.ca/brock-news/", 
@@ -178,21 +186,9 @@ def spellcheck(question, matches, doc):
         matches: the list of matches after spellcheck has been applied (and the matcher has been re-run on the document)
         doc: the new Doc object (https://spacy.io/api/doc), run on the corrected string 
     '''
-    orig = question.split(" ")
-    for match_id, start, end in matches:
-        if (str(doc[start:end]).strip() in question):
-            length = len(str(doc[start:end]).split(" "))
-            string = " oodles " * length
-            question = question.replace(str(doc[start:end]), string)
-    question = question.replace("  "," ")
     suggestions = sym_spell.lookup_compound(
-        question, max_edit_distance=2
-    )
-    fix = str(suggestions[0]).split(",")[0].split(" ")
-    for i in range(len(orig)):
-        if orig[i] != fix[i] and fix[i] != "oodles":
-            orig[i] = fix[i]
-    merge = " ".join(orig)
+                question.lower(), max_edit_distance=2, ignore_non_words=True, ignore_term_with_digits=True)
+    merge = suggestions[0].term
     doc = nlp(merge)
     matches = matcher(doc)
     phrase_matches = phrase_matcher(doc)
@@ -219,7 +215,9 @@ def extractKeywords(question):
     phrase_matches = phrase_matcher(doc) 
     for match in phrase_matches: 
         matches.append(match)
+    print("Prior to correction:", doc.text)
     matches, doc = spellcheck(question, matches, doc)
+    print("Post correction:", doc.text)
     return matches, doc
 
 def processKeywords(matches, doc):
@@ -259,12 +257,17 @@ def getLink(matchedKeys):
     temp = Template("I'm sorry, I wasn't able to find what you were looking for. However, you might be able to find more information at: $x")
     # for queries that we will exclusively be giving links to 
     temp2 = Template("Information regarding $y can be found at: $x")
+
     matches = []
     for match_id, start, end in matchedKeys:
         print(nlp.vocab.strings[match_id])
         matches.append(nlp.vocab.strings[match_id])
     if "prereqs" in matches:
         return temp.substitute({'x': links["prereqs"]})
+    elif "store" in matches:
+        return temp2.substitute({'y' : "the Brock Campus Store", 'x': links["store"]})
+    elif "directory" in matches:
+        return temp2.substitute({'y' : "contacting individuals at Brock", 'x': links["directory"]})
     elif "food" in matches:
         return temp2.substitute({'y' : "the dining options at Brock", 'x': links["food"]})
     elif "transport" in matches:
@@ -276,7 +279,7 @@ def getLink(matchedKeys):
     elif "tuition" in matches:
         return temp2.substitute({'y' : "tuition", 'x': links["tuition"]})
     elif "advisor" in matches:
-        return temp.substitute({'x': links["acad_advisor"]})
+        return temp2.substitute({'y' : "academic advisors", 'x': links["acad_advisor"]})
     elif "exam" in matches:
         return temp.substitute({'x': links["exam"]})
     elif "course component" in matches or "course code" in matches:
@@ -304,6 +307,12 @@ def formResponse(database_answer, keys):
         else: 
             temp = Template("There are no prerequisites for $c")
             return temp.substitute({'c': database_answer["code"]})
+    if "description" in database_answer:
+        temp = Template("$c is all about $p")
+        return temp.substitute({'c': database_answer["code"], 'p':database_answer["description"]})
+    if "exam" in database_answer:
+        temp = Template("$c has an exam on $d at $l")
+        return temp.substitute({'c': database_answer["code"], 'd':database_answer["day"], 'l':database_answer["location"]})
     if database_answer == 'more info required' or database_answer == 'im in danger' or database_answer == "placeholder return": 
         # if no response from database
         return getLink(keys)
@@ -323,6 +332,7 @@ def processQ(question):
     queryReturn = doQueries(processed)
     print(queryReturn)
     myString = formResponse(queryReturn, matches)
+    print(myString)
     if (myString != "" and myString != None):    
         return {"message": myString}
     else:

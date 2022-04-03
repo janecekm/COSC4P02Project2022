@@ -1,47 +1,65 @@
 import models
-from flask_sqlalchemy import SQLAlchemy
 
 # keywords is a dictionary of match_id and match_text
+# print(models.Course.query.all())
 def doQueries(keywords):
-    # print(keywords)
     if 'prereq' in keywords or 'description' in keywords or 'xlist' in keywords:
         try:
-            print(keywords)
-            print(keywords.get('code'))
             filterCourseInputs(keywords)
-            # temp = server.Course.query.filter_by(code='COSC4P03').first()
-            # print(temp.description)
             temp = models.Course.query.filter_by(code=keywords.get('code')).first()
-            print(temp.prereq)
             queryRow = to_dict(temp)
             queryReturn = {}
             for key in (keywords.keys() & queryRow.keys()):
-                print("attempting to add query return")
                 queryReturn[key] = queryRow[key]
-                print("query return add successful")
             print('Query Returned to botNLP: ')
             print(queryReturn)
             return queryReturn
-        except AttributeError:
-            print('Attribute Error')
+        except AttributeError as a:
+            print(a)
             print(keywords)
             return 'more info required'
         except Exception as e:
             print(e)
-            print('im in danger')
-            return 'im in danger'
-    elif 'location' in keywords:
-        print(keywords)
+            return 'more info required'
+    elif 'exam' in keywords:
+        try:
+            if 'code' in keywords:
+                print("KEYWORDS: ")
+                print(keywords)
+                filterCourseInputs(keywords)
+                temp = models.Exam.query.filter_by(code=keywords.get('code')).all()
+                queryReturn = {}
+                print(temp)
+                for row in temp:
+                    queryRow = to_dict(row)
+                    rowDict = {}
+                    for key in (keywords.keys() & queryRow.keys()):
+                        rowDict[key] = queryRow[key]
+                    rowDict['exam'] = keywords["exam"]
+                    rowDict['location'] = queryRow["location"]
+                    rowDict['day'] = queryRow["day"]
+                    queryReturn.update(rowDict)
+                print('Query Returned to botNLP: ')
+                print(queryReturn)
+                return queryReturn
+        except Exception as e:
+            print(e)
+            print('exam not found')
+            return 'not found'
+    elif 'location' in keywords or 'instructor' in keywords or 'time' in keywords or 'course component' in keywords:
         try:
             if 'code' in keywords:
                 filterCourseInputs(keywords)
-                temp = models.Offering.query.filter_by(code=keywords.get('code')).first()
-                queryRow = to_dict(temp)
-                queryReturn = {}
-                for key in (keywords.keys() & queryRow.keys()):
-                    print("attempting to add query return")
-                    queryReturn[key] = queryRow[key]
-                    print("query return add successful")
+                temp = models.Offering.query.filter_by(code=keywords.get('code')).all()
+                # temp = models.Offering.query.filter_by(code=keywords.get('code')).first()
+                print(temp)
+                queryReturn = []
+                for row in temp:
+                    queryRow = to_dict(row)
+                    rowDict = {}
+                    for key in (keywords.keys() & queryRow.keys()):
+                        rowDict[key] = queryRow[key]
+                    queryReturn.append(rowDict)
                 print('Query Returned to botNLP: ')
                 print(queryReturn)
                 return queryReturn
@@ -53,9 +71,7 @@ def doQueries(keywords):
                 return 'more info required'
         except Exception as e:
             print(e)
-            print('location not found')
             return 'not found'
-    # print(server.Course.query.all())
     return 'placeholder return'
 
 # filter to match database formatting
@@ -65,6 +81,15 @@ def filterCourseInputs(keywords):
     print('filtered input: '+temp)
     keywords['code'] = temp
     return None
+
+def queryReturn(keywords, temp):
+    queryRow = to_dict(temp)
+    queryReturn = {}
+    for key in (keywords.keys() & queryRow.keys()):
+        queryReturn[key] = queryRow[key]
+    print('Query Returned to botNLP: ')
+    print(queryReturn)
+    return queryReturn
 
 # returns a dictionary of column and row corresponding to SQLAlchemy model object
 def to_dict(self):
