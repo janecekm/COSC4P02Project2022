@@ -1,9 +1,11 @@
 import json
 import sys
+from time import sleep
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 
+driver = webdriver.Chrome()
 '''
 Returns the specified course data in JSON format.
 
@@ -19,10 +21,10 @@ def scrapeCourseInfo(courseName, session, typ, driver):
 	#valid sessions: FW, SP,SU
 	#valid types: UG, GR, IS, PS, AD
 	driver.get("https://brocku.ca/guides-and-timetables/timetables/?session=" + session + "&type=" + typ + "&level=All&program="+courseName)
-
+	sleep(1)
 	#this code assumes that courseName is valid. Refer to the google doc for valid codes.
 	entries = driver.find_elements(By.XPATH,'//tr[contains(@class,"course-row")]')
-
+	# print(courseName)
 	'''
 	Code
 	Format
@@ -56,22 +58,28 @@ def scrapeCourseInfo(courseName, session, typ, driver):
 
 def main():
 
-
-	subjects = ['abed', 'abte', 'actg', 'aded', 'admi', 'adst', 'aesl', 'apco', 'arab', 'astr', 'bchm', 'biol', 'bmed', 'bphy', 'btec', 'btgd', 'cana', 'chem', 'chys', 'clas', 'comm', 'cosc', 'cpcf', 'dart', 'econ', 'edbe', 'educ', 'encw', 'engl', 'ensu', 'entr', 'ersc', 'esci', 'ethc', 'film', 'fnce', 'fren', 'geog', 'germ', 'gree', 'hist', 'hlsc', 'iasc', 'indg', 'intc', 'ital', 'itis', 'japa', 'kine', 'labr', 'lati', 'ling', 'mand', 'mars', 'math', 'mgmt', 'mktg', 'musi', 'neur', 'nusc', 'obhr', 'oevi', 'oper', 'pcul', 'phil', 'phys', 'pmpb', 'poli', 'port', 'psyc', 'recl', 'russ', 'scie', 'sclc', 'soci', 'span', 'spma', 'stac', 'swah', 'tour', 'visa', 'wgst', 'wrds']
-
 	sessions = ['FW', 'SP', 'SU']
 	types = ['UG', 'GR', 'IS', 'PS', 'AD']
 
-	options = Options()
-	options.headless = True
-	driver = webdriver.Firefox(options=options)
+	
 
+	
 	#Returns seperate json objects for each offering
 	#print("#course-code, format, duration, section, times, days, location, room1, room2, instructor")
 	for sess in sessions:
 		for t in types:
+			driver.get("https://brocku.ca/guides-and-timetables/timetables/?session="+sess+"&type="+t+"&level=all")
+			sleep(1)
+			subjects = []
+			programs = driver.find_element(By.CLASS_NAME,"programs")
+			courses = programs.find_elements(By.TAG_NAME,"li")
+			for c in courses:
+				tag = c.find_element(By.TAG_NAME,"a")
+				subjects.append(tag.get_attribute("data-program"))
+			# print(subjects)
 			for course in subjects:
 				scrapeCourseInfo(course,sess,t,driver)
 			
 	
 	driver.close()
+main()
