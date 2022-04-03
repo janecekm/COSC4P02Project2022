@@ -14,10 +14,13 @@ import langprocess from "./Language/Lanprocess"
     await import("./canadacolor.css");
 })();
 
+function helpbutton(){
+  console.log("hello");
+}
 ReactDOM.render(
   <>
   <Navbar />
-  <Chatbox />
+  <Chatbox helpbutton = {helpbutton} />
   <footer className='disclaimer'>{langprocess("disclaimer")}</footer>
   </>
   ,

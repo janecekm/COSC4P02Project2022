@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
+import Feed from '../../Chatbox/Feed/feed';
 import "./burgerstyle.css";
-
+import func from "../../Language/Lanprocess";
 function Burger (){
     const [open, setopen] = useState(false);//the state for if the menu bar is open or not
     return (
@@ -13,7 +14,6 @@ function Burger (){
         <div className={!open?'closed':'open'}>
             <Dropdownmenu />
         </div>
-       
         </>
     );
 }
@@ -38,7 +38,7 @@ function fontSizeInc(){
     }
 }
 function HelpButton () {
-    alert("*HELPFUL MESSAGE*");
+    console.log("what");
 }
 function changecolor(){
     

@@ -6,7 +6,8 @@ const values = {
       "enter":"Enter",
       "message":"Hello! Welcome to the Brock chat bot! What can I help you with today?",
       "inputmessage":"Type a query here...",
-      "disclaimer":"All information taken from Brock University"
+      "disclaimer":"All information taken from Brock University",
+      "help":"This website is primarily used for knowing what different courses are at Brock University, with prerequisites. \n In addition to that, during exams you can ask if where the exams are occuring."
   }  ,
   "fr":
   {
