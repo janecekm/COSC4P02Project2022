@@ -21,7 +21,32 @@ def doQueries(keywords):
         except Exception as e:
             print(e)
             return 'more info required'
-    elif 'location' in keywords:
+    elif 'exam' in keywords:
+        try:
+            if 'code' in keywords:
+                print("KEYWORDS: ")
+                print(keywords)
+                filterCourseInputs(keywords)
+                temp = models.Exam.query.filter_by(code=keywords.get('code')).all()
+                queryReturn = {}
+                print(temp)
+                for row in temp:
+                    queryRow = to_dict(row)
+                    rowDict = {}
+                    for key in (keywords.keys() & queryRow.keys()):
+                        rowDict[key] = queryRow[key]
+                    rowDict['exam'] = keywords["exam"]
+                    rowDict['location'] = queryRow["location"]
+                    rowDict['day'] = queryRow["day"]
+                    queryReturn.update(rowDict)
+                print('Query Returned to botNLP: ')
+                print(queryReturn)
+                return queryReturn
+        except Exception as e:
+            print(e)
+            print('exam not found')
+            return 'not found'
+    elif 'location' in keywords or 'instructor' in keywords or 'time' in keywords or 'course component' in keywords:
         try:
             if 'code' in keywords:
                 filterCourseInputs(keywords)
@@ -46,16 +71,13 @@ def doQueries(keywords):
                 return 'more info required'
         except Exception as e:
             print(e)
-            print('location not found')
             return 'not found'
-    elif 'instructor' in keywords:
-        return 'instructor'
     return 'placeholder return'
 
 # filter to match database formatting
 def filterCourseInputs(keywords):
     temp = keywords.get('code').text
-    temp = temp.upper().replace(" ","")
+    temp = temp.upper()
     print('filtered input: '+temp)
     keywords['code'] = temp
     return None

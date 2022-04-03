@@ -30,13 +30,18 @@ def course_populate(db='buchatbot.db'):
         for line in codes:
             JSONDecodedRow = json.loads(line)
             code = JSONDecodedRow.get('code') or ""
-            title = JSONDecodedRow.get('title').replace('\'', '`') or ""
-            frmt = JSONDecodedRow.get('frmt').replace('\'', '`') or ""
-            description = JSONDecodedRow.get('description').replace('\'', '`') or ""
-            prereq = JSONDecodedRow.get('prereq').replace('\'', '`') or ""
+            title = JSONDecodedRow.get('title') or ""
+            title = title.replace('\'', '`')
+            frmt = JSONDecodedRow.get('frmt') or ""
+            frmt = frmt.replace('\'', '`')
+            description = JSONDecodedRow.get('description') or ""
+            description = description.replace('\'', '`')
+            prereq = JSONDecodedRow.get('prereq') or ""
+            prereq = prereq.replace('\'', '`')
             xlist = JSONDecodedRow.get('xlist') or ""
-            restriction = JSONDecodedRow.get('restriction').replace('\'', '`') or ""
-            
+            restriction = JSONDecodedRow.get('restriction') or ""
+            restriction = restriction.replace('\'', '`')
+
             cursor.execute('INSERT OR IGNORE INTO course(code, title, frmt, description, prereq, xlist, restriction) VALUES (\''+code+'\', \''+title+'\', \''+frmt+'\', \''+description+'\', \''+prereq+'\', \''+xlist+'\', \''+ restriction+'\')')
         # for c in codes:
         #     codes[c]['description'] = codes[c]['description'].replace('\'', '`')
@@ -64,21 +69,21 @@ CREATE TABLE exam (
 	location CHAR(10)
 '''
 def exam_populate(db='buchatbot.db'):
-    with open('./cleandata/examtimetable.txt','r') as f:
+    with open('./cleandata/exams.txt','r') as f:
         codes = f.readlines()
     with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
         for line in codes:
             JSONDecodedRow = json.loads(line)
-            code = JSONDecodedRow.get('courseCode')
-            time = JSONDecodedRow.get('time')
-            day = JSONDecodedRow.get('day')
-            dayNumber = int(JSONDecodedRow.get('dayNumber'))
-            month = JSONDecodedRow.get('month')
-            sec = int(JSONDecodedRow.get('sec'))
-            location = JSONDecodedRow.get('location')
+            code = JSONDecodedRow.get('code') or ""
+            time = JSONDecodedRow.get('time') or ""
+            day = JSONDecodedRow.get('day') or ""
+            dayNumber = JSONDecodedRow.get('dayNumber') or ""
+            month = JSONDecodedRow.get('month') or ""
+            section = JSONDecodedRow.get('sec') or ""
+            location = JSONDecodedRow.get('location') or ""
             
-            cursor.execute('INSERT OR IGNORE INTO exam(code, time, day, dayNum, month, sec, location) VALUES (\''+code+'\', \''+time+'\', \''+day+'\', \''+dayNumber+'\', \''+month+'\', \''+sec+'\', \''+location+'\')')
+            cursor.execute('INSERT OR IGNORE INTO exam(code, time, day, dayNum, month, section, location) VALUES (\''+code+'\', \''+time+'\', \''+day+'\', \''+dayNumber+'\', \''+month+'\', \''+section+'\', \''+location+'\')')
 
 
 #this appears to execute, unsure how to get rows to display when visiting Flask site though
@@ -122,5 +127,5 @@ def offering_populate(db='buchatbot.db'):
 #populate offerings (timetable)
 offering_populate()
 course_populate()
-
+exam_populate()
 

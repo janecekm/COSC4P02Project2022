@@ -205,6 +205,12 @@ def formResponse(database_answer, keys):
         else: 
             temp = Template("There are no prerequisites for $c")
             return temp.substitute({'c': database_answer["code"]})
+    if "description" in database_answer:
+        temp = Template("$c is all about $p")
+        return temp.substitute({'c': database_answer["code"], 'p':database_answer["description"]})
+    if "exam" in database_answer:
+        temp = Template("$c has an exam on $d at $l")
+        return temp.substitute({'c': database_answer["code"], 'd':database_answer["day"], 'l':database_answer["location"]})
     if database_answer == 'more info required' or database_answer == 'im in danger': 
         # if no response from database
         return getLink(keys)
@@ -223,6 +229,7 @@ def processQ(question):
     from queryTables import doQueries
     queryReturn = doQueries(processed)
     myString = formResponse(queryReturn, matches)
+    print(myString)
     if (myString != "" and myString != None):    
         return {"message": myString}
     else:

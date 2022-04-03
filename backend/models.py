@@ -152,6 +152,7 @@ class Exam(db.Model):
     __tablename__ = 'exam'
     code = db.Column(
         db.String(8),
+        primary_key = True,
         index = True,
         unique = False,
         nullable = False
@@ -161,7 +162,6 @@ class Exam(db.Model):
         #er, does Python have a TIME type?
         #for now accomodates 2 times and a space in frmt 00:00 11:11
         db.String(11),
-        primary_key=True,
         index = False,
         unique = False,
         nullable = False
@@ -169,15 +169,13 @@ class Exam(db.Model):
 
     day = db.Column(
         db.String(14),
-        primary_key=True,
         index = False,
         unique = False,
         nullable = False
     )
 
     dayNum = db.Column(
-        db.Integer,
-        primary_key = False,
+        db.String(2),
         index = False,
         unique = False,
         nullable = False
@@ -185,7 +183,6 @@ class Exam(db.Model):
 
     month = db.Column(
         db.String(14),
-        primary_key = False,
         index = False,
         unique = False,
         nullable = False
@@ -193,7 +190,7 @@ class Exam(db.Model):
     )
 
     section = db.Column (
-        db.Integer,
+        db.String(2),
         index = True,
         unique = False,
         nullable = True
@@ -201,11 +198,10 @@ class Exam(db.Model):
 
     location = db.Column (
         db.String(10),
-        primary_key=True,
         index = True,
         unique = False,
         nullable = True
     )
 
     def __repr__(self):
-        return '\nCode '+self.code+'\n Format '+self.frmt+'\n Duration'+self.duration+'\n Section'+self.section+'\n days'+self.days+'\n time'+self.time+'\n location'+self.location+'\n Instructor'+self.instructor
+        return '\nCode '+self.code+'\n Section'+self.section+'\n day'+self.day+'\n time'+self.time+'\n location'+self.location
