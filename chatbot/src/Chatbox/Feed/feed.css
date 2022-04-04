@@ -1,6 +1,7 @@
 .inputBar {
   border: 1px solid #ccc;
-  padding: 1px 6px;
+  padding: 2px 6px;
+
   display: block;
   width: 100%;
   overflow: hidden;
@@ -10,27 +11,56 @@
   font-size: var(--text-size);
   word-wrap: break-word;
   caret-color: black;
+  background-color: #EBEDE8;
+  border-radius: 8px;
 }
 
 .inputBar[contenteditable]:empty::before {
   color: gray;
   caret-color: black;
   content: attr(data-placeholder);
+  overflow: scroll;
 }
 
 .userTools {
-  display: flex
+  display: flex;
+  padding: 2px 2px 2px 2px;
+  border-radius: 10px;
 }
 
 .clearButton {
+  text-align: center;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 0px;
   flex: 1;
   height: auto;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: grey; 
+  user-select: none;
+}
+.clearButton:hover{
+  background-color: var(--light-secondary-color);;
 }
 
 .enterButton {
+  text-align: center;
+  cursor: pointer;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 0px;
   flex: 1;
   float:right;
   height: auto;
+  border-radius: 5px;
+  background-color: grey;
+  user-select: none;
+}
+.enterButton:hover{
+  background-color: var(--light-secondary-color);
 }
 
 
@@ -76,11 +106,16 @@
 }
 
 .feed{
+    border: 1px solid var(--primary-color);
     margin-top: 10px;
+    padding-top: 10px;
     width: 100%;
-    height: 450px;
+    height: 470px;
     overflow-y: scroll;
     font-size: var(--text-size);
+    background-color: white;
+    border-radius: 10px;
+    user-select: none;
 }
 
 ::-webkit-scrollbar {

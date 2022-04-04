@@ -6,6 +6,7 @@ from spacy.matcher import Matcher
 from symspellpy import SymSpell, Verbosity
 from string import Template
 import json
+
 import os 
 import platform
 
@@ -17,6 +18,9 @@ elif os.path.basename(os.getcwd()) == "backend" and platform.system()=="Linux":
     path = "./nlp-resources/"
 else: 
     path = "./backend/nlp-resources/"
+
+
+
 # load spacy
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
@@ -74,6 +78,16 @@ prerequisites = [[{'LOWER': 'what'},
                   {'OP': '?'},
                   {'LEMMA': 'prereq'}]]
 matcher.add("prereq", prerequisites)
+
+crosslist = [[{'LOWER': 'what'},
+                  {'OP': '?'},
+                  {'OP': '?'},
+                  {'LEMMA': 'crosslist'}], 
+                [{'LOWER': 'what'},
+                  {'OP': '?'},
+                  {'OP': '?'},
+                  {'LEMMA': 'xlist'}]]
+matcher.add("xlist", crosslist)
 
 # generally the descriptions
 generalInfo = [ [{'LOWER':'tell'},{'LOWER':'me'},{'LOWER':'about'}], 
@@ -306,10 +320,29 @@ def formResponse(database_answer, keys):
     Return: 
         returns a string to output as a response
     '''
-    # basic response for course descriptions (we should probably also be able to get course *names*)
+    if "exam" in database_answer:
+        temp = Template("$c has an exam on $m $d at $t $l")
+        return temp.substitute({'c': database_answer["code"], 'm':database_answer["month"], 'd':database_answer["dayNum"], 't':database_answer["time"], 'l':database_answer["location"]})
+    # basic response for course descriptions
     if "description" in database_answer: 
-        temp = Template("The description for $c is:  $d")
-        return temp.substitute({'c':database_answer["code"], 'd':database_answer["description"]})
+        temp = Template("$c is $t and it's about $d")
+        return temp.substitute({'c':database_answer["code"], 't':database_answer["title"], 'd':database_answer["description"]})
+    if "xlist" in database_answer:
+        if database_answer["xlist"] != "":
+            temp = Template("$c is crosslisted as $x")
+            return temp.substitute({'c':database_answer["code"], 'x':database_answer["xlist"]})
+        else:
+            temp = Template("There are no crosslistings for $c")
+            return temp.substitute({'c': database_answer["code"]})
+    if "instructor" in database_answer:
+        temp = Template("$c is taught by $i")
+        return temp.substitute({'c':database_answer["code"], 'i':database_answer["instructor"]})
+    if "time" in database_answer:
+        temp = Template("$c is at $t on $d")
+        return temp.substitute({'c':database_answer["code"], 't':database_answer["time"], 'd':database_answer["days"]})
+    if "location" in database_answer:
+        temp = Template("$c is in room $l")
+        return temp.substitute({'c':database_answer["code"], 'l':database_answer["location"]})
     # response for prereqs (not great for single course prereqs or multi part questions?)
     if "prereq" in database_answer: 
         if database_answer["prereq"] != "": 
@@ -319,12 +352,6 @@ def formResponse(database_answer, keys):
         else: 
             temp = Template("There are no prerequisites for $c")
             return temp.substitute({'c': database_answer["code"]})
-    if "description" in database_answer:
-        temp = Template("$c is all about $p")
-        return temp.substitute({'c': database_answer["code"], 'p':database_answer["description"]})
-    if "exam" in database_answer:
-        temp = Template("$c has an exam on $d at $l")
-        return temp.substitute({'c': database_answer["code"], 'd':database_answer["day"], 'l':database_answer["location"]})
     if database_answer == 'more info required' or database_answer == 'im in danger' or database_answer == "placeholder return": 
         # if no response from database
         return getLink(keys)
@@ -342,9 +369,7 @@ def processQ(question):
     processed = processKeywords(matches, doc)
     from queryTables import doQueries
     queryReturn = doQueries(processed)
-    print(queryReturn)
     myString = formResponse(queryReturn, matches)
-    print(myString)
     if (myString != "" and myString != None):    
         return {"message": myString}
     else:

@@ -5,7 +5,6 @@ import func from "../Language/Lanprocess";
 import Backarrowbutton from './backarrow/backarrowbutton'
 
 function Navbar(){//this is the navbar component
-    
     return(
         <div className='Navbar'>
 

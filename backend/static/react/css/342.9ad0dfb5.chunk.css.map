@@ -1,1 +1,0 @@
-{"version":3,"file":"css/342.9ad0dfb5.chunk.css","mappings":"AAAA,KACI,uBAAuB,CACvB,yBACF","sources":["brockcolor.css"],"sourcesContent":["html{\r\n    --primary-color:#b30000;\r\n    --secondary-color:#e60000;\r\n  }"],"names":[],"sourceRoot":""}
