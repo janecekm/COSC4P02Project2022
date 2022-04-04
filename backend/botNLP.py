@@ -6,7 +6,20 @@ from spacy.matcher import Matcher
 from symspellpy import SymSpell, Verbosity
 from string import Template
 import json
-import os
+
+import os 
+import platform
+
+if os.path.basename(os.getcwd()) == "backend" and platform.system()=="Windows": 
+    path = ".\\nlp-resources\\"
+elif os.path.basename(os.getcwd()) == "COSC4P02Project2022" and platform.system()=="Windows": 
+    path = ".\\backend\\nlp-resources\\"
+elif os.path.basename(os.getcwd()) == "backend" and platform.system()=="Linux": 
+    path = "./nlp-resources/"
+else: 
+    path = "./backend/nlp-resources/"
+
+
 
 # load spacy
 nlp = spacy.load("en_core_web_md")
@@ -17,7 +30,7 @@ phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 # This section sets up the PhraseMatcher
 # Currently the PhraseMatcher is used to extract only building codes
 buildings = []
-with open("./nlp-resources/buildingCodesClean.txt", encoding="utf8") as f: 
+with open(path+"buildingCodesClean.txt", encoding="utf8") as f: 
     for line in f:
         buildings.append(json.loads(line)["buildingCode"])
 patterns = list(nlp.pipe(buildings))
@@ -295,6 +308,8 @@ def getLink(matchedKeys):
         return temp.substitute({'x': links["exam"]})
     elif "course component" in matches or "course code" in matches:
         return temp.substitute({'x': links["timetable"]})
+    elif "openerGreet" in matches:
+        return "Hello! What can I help you with today?"
     else:
         return temp.substitute({'x': links["brock"]})
 
