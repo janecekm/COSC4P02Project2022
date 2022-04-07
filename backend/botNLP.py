@@ -1,3 +1,4 @@
+from concurrent.futures import process
 from urllib import response
 import spacy
 from spacy.matcher import PhraseMatcher
@@ -69,20 +70,13 @@ when = [[{'LOWER': 'when'},
 matcher.add("time", when, greedy="LONGEST")
 
 # what are the prereq(uisites) -- course table
-prerequisites = [[{'LOWER': 'what'},
-                  {'OP': '?'},
-                  {'OP': '?'},
-                  {'LEMMA': 'prerequisite'}], 
-                [{'LOWER': 'what'},
-                  {'OP': '?'},
-                  {'OP': '?'},
-                  {'LEMMA': 'prereq'}]]
+prerequisites = [[{'LEMMA': 'prerequisite'}], 
+                [{'LEMMA': 'prereq'}]]
 matcher.add("prereq", prerequisites)
 
-crosslist = [[{'LOWER': 'what'},
-                  {'OP': '?'},
-                  {'OP': '?'},
-                  {'LEMMA': 'crosslist'}], 
+crosslist = [[{'LOWER': 'crosslist'}], 
+                [{'LOWER': 'crosslisted'}], 
+                [{'LEMMA': 'crosslisting'}], 
                 [{'LOWER': 'what'},
                   {'OP': '?'},
                   {'OP': '?'},
