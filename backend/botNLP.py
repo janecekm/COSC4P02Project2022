@@ -20,8 +20,6 @@ elif os.path.basename(os.getcwd()) == "backend" and platform.system()=="Linux":
 else: 
     path = "./backend/nlp-resources/"
 
-
-
 # load spacy
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
@@ -156,6 +154,20 @@ directory = [[{'LEMMA':'contact'}], [{'LOWER':'call'}], [{'LOWER':'phone'}],
             [{'LOWER':'email'}], [{'LEMMA': 'speak'},{'LOWER': 'to'},]]
 matcher.add("directory", directory)
 
+# masters
+masters = [[{'LOWER':'graduate'}, {'LOWER':"program"}], 
+            [{'LOWER':'graduate'}, {'LOWER':"studies"}], 
+            [{'LOWER':'masters'}], [{'LOWER':'msc'}], 
+            [{'LOWER':'mba'}], [{'LOWER': 'ma'}], [{'LOWER':'macc'}], [{'LOWER':'mag'}]
+            ,[{'LOWER':'mbe'}], [{'LOWER':'mph'}]]
+matcher.add("masters", masters)
+
+
+admission = [[{'LEMMA':'apply'}], 
+            [{'LEMMA':'admit'}], [{'LEMMA':'addmission'}] ]
+matcher.add("admission", admission)
+
+
 # store
 store = [[{'LOWER':'store'}], [{'LEMMA':'textbook'}], [{'LEMMA':'booklist'}]]
 matcher.add("store", store)
@@ -184,6 +196,8 @@ links = {
     "transit" : "https://transitapp.com/region/niagara-region",
     "directory":"https://brocku.ca/directory/", 
     "store":"https://campusstore.brocku.ca/",
+    "masters":"https://brocku.ca/programs/graduate/",
+    "admission":"https://brocku.ca/admissions/",
     # to be accomodated for:
     "programs" : "https://discover.brocku.ca/programs",
     "service_direct" : "https://brocku.ca/directory/a-z/",
@@ -192,8 +206,6 @@ links = {
     "facts" : "https://brocku.ca/about/brock-facts/"
 }
 ###########################################################
-
-
 def spellcheck(question, matches, doc): 
     '''This method performs a spellcheck on the question submitted by the user, after existing matches have been removed
     Args: 
@@ -213,7 +225,6 @@ def spellcheck(question, matches, doc):
     for match in phrase_matches: 
         matches.append(match)
     return matches, doc 
-
 
 def extractKeywords(question): 
     '''This method runs the matcher to extract key information from the query and add match labels
@@ -282,8 +293,12 @@ def getLink(matchedKeys):
         matches.append(nlp.vocab.strings[match_id])
     if "prereqs" in matches:
         return temp.substitute({'x': links["prereqs"]})
+    elif "admission" in matches:
+        return temp2.substitute({'y' : "the Brock admissions", 'x': links["store"]})
     elif "store" in matches:
         return temp2.substitute({'y' : "the Brock Campus Store", 'x': links["store"]})
+    elif "masters" in matches:
+        return temp2.substitute({'y' : "Brock's graduate programs", 'x': links["masters"]})
     elif "directory" in matches:
         return temp2.substitute({'y' : "contacting individuals at Brock", 'x': links["directory"]})
     elif "food" in matches:
