@@ -14,6 +14,14 @@ import langprocess from "./Language/Lanprocess"
     await import("./canadacolor.css");
 })();
 
+window.addEventListener("offline",(Event)=>{//if the user is online
+  document.getElementById("inputField").contentEditable = false;
+})
+
+window.addEventListener("online",(Event)=>{//if the user is online
+  document.getElementById("inputField").contentEditable = true;
+})
+
 ReactDOM.render(
   <>
   <Navbar />

@@ -6,13 +6,17 @@
     height: 100vh;
     top: 0;
     left: 0;
+    z-index: 5;
   }
-   
+   .popup-box{
+
+   }
   .box {
     position: relative;
     width: 70%;
     margin: 0 auto;
     height: auto;
+    text-align: center;
     max-height: 70vh;
     margin-top: calc(100vh - 85vh - 20px);
     background: #fff;

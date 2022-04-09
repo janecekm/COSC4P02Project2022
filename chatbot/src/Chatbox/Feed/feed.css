@@ -115,7 +115,6 @@
     font-size: var(--text-size);
     background-color: white;
     border-radius: 10px;
-    user-select: none;
 }
 
 ::-webkit-scrollbar {

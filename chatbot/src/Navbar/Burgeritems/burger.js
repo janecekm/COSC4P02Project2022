@@ -1,18 +1,22 @@
 import React, {useState} from 'react';
 import Feed from '../../Chatbox/Feed/feed';
 import "./burgerstyle.css";
+import Popup from "../../popup/popup"
+import 'reactjs-popup/dist/index.css';
 import func from "../../Language/Lanprocess";
 function Burger (){
     const [open, setopen] = useState(false);//the state for if the menu bar is open or not
+    const [help, sethelp] = useState(false);//this states keeps track of if help is needed.
     return (
         <>
+        {help && <Popup setstate={sethelp}/>}
         <div className= {!open?'container':'container change'} onClick={()=>setopen(!open)}>
             <div className='bar1'></div>
             <div className='bar2'></div>
             <div className='bar3'></div>
         </div>
         <div className={!open?'closed':'open'}>
-            <Dropdownmenu />
+            <Dropdownmenu helpstate={help} helpfunc ={sethelp}/>
         </div>
         </>
     );
@@ -37,8 +41,9 @@ function fontSizeInc(){
         temp.style.setProperty('--thinking-size',th +"px");//changes the size of the thinking animation
     }
 }
-function HelpButton () {
-    
+function HelpButton (state , setstate) {
+    console.log(state);
+    setstate(!state);
 }
 function changecolor(){
     
@@ -70,7 +75,7 @@ function Dropdownmenu(props){
     return (
         <>
         <div className= "dropdown">
-            <DropdownItem act ={HelpButton}><div>Help</div></DropdownItem>
+            <DropdownItem act = {()=>HelpButton(props.helpstate, props.helpfunc)}><div>Help</div></DropdownItem>      
             <DropdownItem act ={fontSizeInc}><div>Font +</div></DropdownItem>
             <DropdownItem act ={fontSizeDec}><div>Font -</div></DropdownItem>
             <DropdownItem act = {changecolor}><div>Switch</div></DropdownItem>
