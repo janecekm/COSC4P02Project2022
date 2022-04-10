@@ -7,7 +7,7 @@ from spacy.matcher import Matcher
 from symspellpy import SymSpell, Verbosity
 from string import Template
 import json
-
+from spacy.tokens import Span
 import os 
 import platform
 
@@ -38,13 +38,29 @@ phrase_matcher.add("buildingCode", patterns)
 ###################################
 # This section defines all the patterns for the Matcher
 
+if not Span.has_extension("prio"): 
+    Span.set_extension("prio", default=100)
+
+def assignPriority(matcher, doc, i, matches): 
+    match_id, start, end = matches[i]
+    if match_id == nlp.vocab.strings["openerGreet"]:
+        doc[start:end]._.prio = 3
+    elif match_id == nlp.vocab.strings["code"] \
+        or match_id == nlp.vocab.strings["course component"] \
+        or match_id == nlp.vocab.strings["buildingCode"] :
+        doc[start:end]._.prio = 2
+    elif match_id == nlp.vocab.strings["description"]: 
+        doc[start:end]._.prio = 1
+    else: # every other question term is more specific so it is highest prio
+        doc[start:end]._.prio = 0
+
 # course codes -- course/offering/exam
 courseCode = [[{'IS_ALPHA': True, 'LENGTH': 4},
                {'SHAPE': {'IN': ['dxdd', 'dXdd']}}],
              [{"SHAPE":  {'IN': ["xxxxdxdd", "Xxxxdxdd", "xXxxdxdd", "XXxxdxdd", "xxXxdxdd", "XxXxdxdd", "xXXxdxdd", "XXXxdxdd", "xxxXdxdd",
              "XxxXdxdd", "xXxXdxdd", "XXxXdxdd", "xxXXdxdd", "xXXXdxdd", "XXXXdxdd", "xxxxdXdd", "XxxxdXdd", "xXxxdXdd", "XXxxdXdd", "xxXxdXdd",
              "XxXxdXdd", "xXXxdXdd", "xxxXdXdd", "XxxXdXdd", "xXxXdXdd", "XXxXdXdd", "xxXXdXdd", "XxXXdXdd", "xXXXdXdd", "XXXXdXdd" ]}}]]
-matcher.add("code", courseCode)
+matcher.add("code", courseCode, on_match=assignPriority)
 
 # who teaches, who is teaching, who is the instructor, who is the professor
 # offering table
@@ -57,7 +73,7 @@ teaching = [[{'LOWER': 'who'},
            [{'LOWER': 'who'},
             {'OP': '*'},
             {'LOWER': 'professor'}]]
-matcher.add("instructor", teaching)
+matcher.add("instructor", teaching, on_match=assignPriority)
 
 # when is, when are, what time is
 when = [[{'LOWER': 'when'},
@@ -65,12 +81,12 @@ when = [[{'LOWER': 'when'},
         [{'LOWER': 'what'},
          {'LOWER': 'time'},
          {'LEMMA': 'be'}]]
-matcher.add("time", when, greedy="LONGEST")
+matcher.add("time", when, greedy="LONGEST", on_match=assignPriority)
 
 # what are the prereq(uisites) -- course table
 prerequisites = [[{'LEMMA': 'prerequisite'}], 
                 [{'LEMMA': 'prereq'}]]
-matcher.add("prereq", prerequisites)
+matcher.add("prereq", prerequisites, on_match=assignPriority)
 
 crosslist = [[{'LOWER': 'crosslist'}], 
                 [{'LOWER': 'crosslisted'}], 
@@ -79,59 +95,59 @@ crosslist = [[{'LOWER': 'crosslist'}],
                   {'OP': '?'},
                   {'OP': '?'},
                   {'LEMMA': 'xlist'}]]
-matcher.add("xlist", crosslist)
+matcher.add("xlist", crosslist, on_match=assignPriority)
 
 # generally the descriptions
 generalInfo = [ [{'LOWER':'tell'},{'LOWER':'me'},{'LOWER':'about'}], 
                 [{'LOWER':'information'},{'LOWER':'on'}],
                 [{'LOWER':'info'},{'LOWER':'on'}], 
                 [{'LOWER': 'what'}, {'LOWER': 'is'}]]
-matcher.add("description", generalInfo)
+matcher.add("description", generalInfo, on_match=assignPriority)
 
 openerMatch = [{"LOWER": {"IN": ['hello','hi','hey','howdy','yo','sup','hiya','heyo']}}]
-matcher.add("openerGreet", [openerMatch])
+matcher.add("openerGreet", [openerMatch], on_match=assignPriority)
 
 # don't have table
 progQuestion = [{'LOWER':'the'},{'OP':'*'},{'LOWER':'program'}]
-matcher.add("program question",[progQuestion])
+matcher.add("program question",[progQuestion], on_match=assignPriority)
 
 # course components -- offering table
 courseComp = [{'LEMMA': {"IN": ['sem', 'seminar', 'lab', 'tut', 'tutorial', 'lec', 'lecture', 'sec', 'section']}},
            {'LIKE_NUM': True, 'OP': '?'}]
-matcher.add("course component", [courseComp], greedy="LONGEST")
+matcher.add("course component", [courseComp], greedy="LONGEST", on_match=assignPriority)
 
 # location -- offering or exam
 location = [[{'LOWER':'location'}],
             [{'LOWER':'what'}, {'LOWER':'building'}], 
             [{'LOWER': 'where'}]]
-matcher.add("location", location)
+matcher.add("location", location, on_match=assignPriority)
 
 # exam table
 exam = [{'LEMMA':'exam'}]
-matcher.add("exam", [exam])
+matcher.add("exam", [exam], on_match=assignPriority)
 
 reqQuestion = [{'LOWER':'the'},{'LOWER':'program','OP':'?'},{'LOWER':'requirements'},{'LOWER':'for'}]
 
-matcher.add("requirement question",[reqQuestion])
+matcher.add("requirement question",[reqQuestion], on_match=assignPriority)
 
 # advisor table
 advisor = [{'LEMMA':'advisor'}]
-matcher.add("advisor", [advisor])
+matcher.add("advisor", [advisor], on_match=assignPriority)
 
 # covid information
 covid = [[{'LOWER':'covid'}],[{'LOWER':'covid19'}],[{'LOWER':'covid-19'}]
             ,[{'LOWER':'coronavirus'}],[{'LOWER':'quarantine'}],[{'LOWER':'lockdown'}]]
-matcher.add("covid", covid)
+matcher.add("covid", covid, on_match=assignPriority)
 
 # tuition
 tuition = [[{'LEMMA':'cost'}],[{'LOWER':'tuition'}],[{'LEMMA':'price'}],[{'LOWER':'money'}],[{'LEMMA':'dollar'}],
             [{'LEMMA':'pay'}]]
-matcher.add("tuition", tuition)
+matcher.add("tuition", tuition, on_match=assignPriority)
 
 # food
 food = [[{'LEMMA':'eat'}],[{'LOWER':'food'}],[{'LOWER':'breakfast'}],[{'LOWER':'lunch'}],[{'LOWER':'dinner'}],
             [{'LOWER':'meal'}],[{'LOWER':'mealplan'}],[{'LEMMA':'dining'}],[{'LEMMA':'snack'}]]
-matcher.add("food", food)
+matcher.add("food", food, on_match=assignPriority)
 
 # transportation, "How do I get to..."
 transport = [[{'LEMMA':'travel'}],[{'LEMMA':'bus'}],[{'LEMMA':'transport'}],[{'LEMMA':'transportation'}],
@@ -139,7 +155,7 @@ transport = [[{'LEMMA':'travel'}],[{'LEMMA':'bus'}],[{'LEMMA':'transport'}],[{'L
                   {'OP': '*'},
                   {'LEMMA': 'get'},
                   {'LEMMA': 'to'}]]
-matcher.add("transport", transport)
+matcher.add("transport", transport, on_match=assignPriority)
 
 # registration
 register = [[{'LEMMA':'register'}],[{'LEMMA':'registration'}],
@@ -147,12 +163,12 @@ register = [[{'LEMMA':'register'}],[{'LEMMA':'registration'}],
                 [{'LOWER': 'pick'},{'OP': '?'},{'LEMMA': 'class'},],
                 [{'LOWER': 'choose'},{'OP': '?'},{'LEMMA': 'classes'},],
                 [{'LOWER': 'pick'},{'OP': '?'},{'LEMMA': 'classes'},]]
-matcher.add("register", register)
+matcher.add("register", register, on_match=assignPriority)
 
 # directory
 directory = [[{'LEMMA':'contact'}], [{'LOWER':'call'}], [{'LOWER':'phone'}], 
             [{'LOWER':'email'}], [{'LEMMA': 'speak'},{'LOWER': 'to'},]]
-matcher.add("directory", directory)
+matcher.add("directory", directory, on_match=assignPriority)
 
 # masters
 masters = [[{'LOWER':'graduate'}, {'LOWER':"program"}], 
@@ -160,17 +176,17 @@ masters = [[{'LOWER':'graduate'}, {'LOWER':"program"}],
             [{'LOWER':'masters'}], [{'LOWER':'msc'}], 
             [{'LOWER':'mba'}], [{'LOWER': 'ma'}], [{'LOWER':'macc'}], [{'LOWER':'mag'}]
             ,[{'LOWER':'mbe'}], [{'LOWER':'mph'}]]
-matcher.add("masters", masters)
+matcher.add("masters", masters, on_match=assignPriority)
 
 
 admission = [[{'LEMMA':'apply'}], 
             [{'LEMMA':'admit'}], [{'LEMMA':'addmission'}] ]
-matcher.add("admission", admission)
+matcher.add("admission", admission, on_match=assignPriority)
 
 
 # store
 store = [[{'LOWER':'store'}], [{'LEMMA':'textbook'}], [{'LEMMA':'booklist'}]]
-matcher.add("store", store)
+matcher.add("store", store, on_match=assignPriority)
 # end of Matcher pattern defintions
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
@@ -262,14 +278,20 @@ def processKeywords(matches, doc):
         a list of tuples containing the string version of the match_id and the matched text [(match_id_, match_text)]
     '''
     processedMatches = {}
+    high_prio = False
     for match_id, start, end in matches: 
         match_label = nlp.vocab.strings[match_id]
         match_text = doc[start:end]
         processedMatches[match_label] = match_text
+        if match_text._.prio == 0: 
+            high_prio = True
+        print("Match:", match_label, "\tMatch priority:", doc[start:end]._.prio)
     # use the NER to extract the people names from document
     for ent in doc.ents:
         if (ent.label_ == "PERSON"):
             processedMatches["person"] = ent.text 
+    if "description" in processedMatches.keys() and high_prio: 
+        processedMatches.pop("description")
     return processedMatches
 
 def getLink(matchedKeys):
@@ -357,7 +379,6 @@ def formResponse(database_answer, keys):
         if database_answer["prereq"] != "": 
             temp = Template("The prerequisites for $c are $p" )
             return temp.substitute({'c': database_answer["code"], 'p':database_answer["prereq"]})
-            
         else: 
             temp = Template("There are no prerequisites for $c")
             return temp.substitute({'c': database_answer["code"]})
