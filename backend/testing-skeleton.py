@@ -1,6 +1,8 @@
+from queryTables import doQueries
 from numpy import extract
 from py import process
 import botNLP
+
 
 error_message_1 = "I'm sorry, I wasn't able to find what you were looking for. However, you might be able to find more information at: https://brocku.ca/"
 error_message_2 = "I am not quite sure what you're asking. Could you rephrase that?"
@@ -240,3 +242,19 @@ def testing_processing_building():
     matches, doc = botNLP.extractKeywords("where is mcd205")
     temp = botNLP.processKeywords(matches,doc)
     assert temp["buildingCode"].text == "mcd"
+
+
+#queryTables.doQuery testing. 
+
+#What is placeholder return and why does it keep happening, why is it not a dict, help
+def testing_doQuery_description():
+    assert doQueries(botNLP.extractKeywords("What is COSC 1P03?")) == 'placeholder return'
+def testing_doQuery_prereqs():
+    assert doQueries(botNLP.extractKeywords("What is prereqs for COSC 1P03?")) == 'placeholder return'
+def testing_crossList_prereqs():
+    assert doQueries(botNLP.extractKeywords("what is COSC 4p61 crosslisted as?")) == 'placeholder return'
+
+
+
+    
+
