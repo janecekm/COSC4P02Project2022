@@ -5,6 +5,7 @@ import spacy
 from spacy.matcher import Matcher
 from spacy.matcher import PhraseMatcher
 import botNLP
+import os
 
 error_message_1 = "I'm sorry, I wasn't able to find what you were looking for. However, you might be able to find more information at: https://brocku.ca/"
 error_message_2 = "I am not quite sure what you're asking. Could you rephrase that?"
@@ -306,6 +307,10 @@ def getQueries(question):
     query = doQueries(process)
     return botNLP.formResponse(query,matches)
 
+def testing_descriptions_response():
+    temp = getQueries("What is VISA 1p95")
+    assert "Technical foundations of digital images, media methods and concepts" in temp
+
 def testing_exams_response():
     temp = getQueries("when is econ 2p30 exam")
     assert "April 18 at 14:00-17:00 WCDVIS" in temp
@@ -323,6 +328,8 @@ def testing_prereqs_response():
     assert "BTEC 3P50, BIOL 3P51" in temp
 
 def testing_instructor_response():
+    temp = getQueries("who teaches COSC 4p61")
+    assert "Ke" in temp
     temp = getQueries("who teaches VISA 1p95")
     assert "Cerquera Benjumea, Gustavo" in temp
     temp = getQueries("who teaches PHIL 2p17")
@@ -359,3 +366,15 @@ def testing_spelling_mistake():
     matches, docs = correcting_english("hello there")
     print(matches)
     print(docs)
+
+def filepath():
+    if os.path.basename(os.getcwd()) =="backend":#we are in COSC4p02Project2022/backend
+        return "./nlp-resources/"
+    else:#we are in cosc4p02Project2022
+        return "./backend/nlp-resources/"
+
+def testing_filegrabber():
+    assert open(filepath()+"buildingCodesClean.txt","r")
+    os.chdir("..")
+    assert open(filepath()+"buildingCodesClean.txt","r")
+    
