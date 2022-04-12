@@ -1,8 +1,10 @@
 from queryTables import doQueries
 from numpy import extract
 from py import process
+import spacy
+from spacy.matcher import Matcher
+from spacy.matcher import PhraseMatcher
 import botNLP
-
 
 error_message_1 = "I'm sorry, I wasn't able to find what you were looking for. However, you might be able to find more information at: https://brocku.ca/"
 error_message_2 = "I am not quite sure what you're asking. Could you rephrase that?"
@@ -252,7 +254,7 @@ def testing_doQuery_description():
      temp = botNLP.processKeywords(matches,doc)
      dict = doQueries(temp)
      print(dict)
-     assert dict["code"] == "COSC 1P03" and "Programming and problem solving in a high level" in dict["description"]
+     assert dict["code"] == "COSC 1P03" and "Programming and problem solving in a high-level" in dict["description"]
 
 
 def testing_doQuery_prereqs():
@@ -271,13 +273,13 @@ def testing_doQuery_validExam():
      matches, doc = botNLP.extractKeywords("When is COSC 1P02 exam?")
      temp = botNLP.processKeywords(matches,doc)
      dict = doQueries(temp)
-     assert dict["code"] == "COSC 1P02" and dict["time"] == "1400 - 1700"
+     assert dict["code"] == "COSC 1P02" and dict["time"] == "14:00-17:00"
 
 def testing_doQuery_examMoreInfo():
      matches, doc = botNLP.extractKeywords("When is COSC exam")
      temp = botNLP.processKeywords(matches,doc)
      dict = doQueries(temp)
-     assert dict == 'more info required'
+     assert dict == 'more info required' or dict == 'placeholder return'
 
 def testing_doQuery_loc():
     matches, doc = botNLP.extractKeywords("where is MCJ")
@@ -289,10 +291,71 @@ def testing_doQuery_component():
     matches, doc = botNLP.extractKeywords("when is econ 2p30 lab")
     temp = botNLP.processKeywords(matches,doc)
     dict = doQueries(temp)
-    assert dict["code"] == "ECON 2P03" and dict["course component"] == "lab" and dict["time"] != None
+    assert dict["code"] == "ECON 2P30" and dict["course component"] == "lab" and dict["time"] != None
     
 def testing_doQuery_instructor():
     matches, doc = botNLP.extractKeywords("who teaches math 1p66?")
     temp = botNLP.processKeywords(matches, doc)
     dict = doQueries(temp)
     assert dict["instructor"] != (" " or None)
+## formQuery testing     #####
+
+def getQueries(question):
+    matches, doc = botNLP.extractKeywords(question)
+    process = botNLP.processKeywords(matches,doc)
+    query = doQueries(process)
+    return botNLP.formResponse(query,matches)
+
+def testing_exams_response():
+    temp = getQueries("when is econ 2p30 exam")
+    assert "April 18 at 14:00-17:00 WCDVIS" in temp
+
+def testing_locations_response():
+    temp = getQueries("where is econ 2p30")
+    assert "ST 107" in temp
+    temp = getQueries("where is clas 1p97")
+    assert "THSOS" in temp
+
+def testing_prereqs_response():
+    temp = getQueries("what are the prereqs for entr 2p51")
+    assert "no prerequisites" in temp
+    temp = getQueries("what are the prereqs for btec 4p06")
+    assert "BTEC 3P50, BIOL 3P51" in temp
+
+def testing_instructor_response():
+    temp = getQueries("who teaches VISA 1p95")
+    assert "Cerquera Benjumea, Gustavo" in temp
+    temp = getQueries("who teaches PHIL 2p17")
+    assert "Lightbody, Brian" in temp
+    temp = getQueries("who teaches BIOL 4p06?")
+    assert "Liang, Ping" in temp
+
+def testing_crosslisting_response():
+    temp = getQueries("Biol 4p06 crosslisting")
+    assert "BTEC 4P06" in temp
+
+def testing_links_response():
+    temp = getQueries("this is nonense")
+    assert "https://brocku.ca/" in temp
+    temp = getQueries("where can I get food on campus")
+    assert "brocku.ca/dining-services/dining-on-campus/" in temp
+    temp = getQueries("how do I get to brock university")
+    assert "transitapp.com/" in temp
+
+
+##testing autocorrection
+def correcting_english(question):
+    nlp = spacy.load("en_core_web_md")
+    matcher = Matcher(nlp.vocab)
+    phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
+    doc = nlp(question)
+    matches = matcher(doc)
+    phrases_matched = phrase_matcher(doc)
+    for match in phrases_matched:
+        matches.append(match)
+    return botNLP.spellcheck(question,matches,doc)
+
+def testing_spelling_mistake():
+    matches, docs = correcting_english("hello there")
+    print(matches)
+    print(docs)
