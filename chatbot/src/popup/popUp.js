@@ -6,7 +6,7 @@ function Popup(props){
   <div className="popup-box">
     <div ref={props.helpref} className="box">
       <button className="close-icon" onClick={()=>props.setstate(false)}>X</button>
-      <div className="popup-title">Help menu</div>
+      <div className="popup-title">{func("mainhelpmenu")}</div>
       <div className="popup-content">{func("help")}</div>
     </div>
   </div>

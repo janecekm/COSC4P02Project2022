@@ -1,4 +1,9 @@
 /* Popup style */
+.popup-title{
+  border-radius: 2px;
+  background-color: var(--primary-color);  
+  color: white;
+}
 .popup-box {
     position: fixed;
     background: #00000050;
@@ -8,9 +13,6 @@
     left: 0;
     z-index: 5;
   }
-   .popup-box{
-
-   }
   .box {
     position: relative;
     width: 70%;
@@ -20,10 +22,11 @@
     max-height: 70vh;
     margin-top: calc(100vh - 85vh - 20px);
     background: #fff;
-    border-radius: 4px;
+    border-radius: 10px;
     padding: 20px;
     border: 1px solid #999;
     overflow: auto;
+    box-shadow: 7px 7px 5px grey;
     user-select: none;
   }
    
@@ -41,4 +44,9 @@
     text-align: center;
     border: 1px solid #999;
     font-size: 20px;
+  }
+  .popup-content{
+    border: 1px solid black;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }

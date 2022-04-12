@@ -2,7 +2,6 @@ import React, {useEffect, useRef, useState} from 'react';
 import Feed from '../../Chatbox/Feed/feed';
 import "./burgerstyle.css";
 import Popup from "../../popup/popup"
-import 'reactjs-popup/dist/index.css';
 import func from "../../Language/Lanprocess";
 function Burger (){
     const [open, setopen] = useState(false);//the state for if the menu bar is open or not
@@ -92,10 +91,10 @@ function Dropdownmenu(props){
     return (
         <>
         <div className= "dropdown">
-            <DropdownItem act = {()=>HelpButton(props.helpstate, props.helpfunc)}><div>Help</div></DropdownItem>      
-            <DropdownItem act ={fontSizeInc}><div>Font +</div></DropdownItem>
-            <DropdownItem act ={fontSizeDec}><div>Font -</div></DropdownItem>
-            <DropdownItem act = {changecolor}><div>Switch</div></DropdownItem>
+            <DropdownItem act = {()=>HelpButton(props.helpstate, props.helpfunc)}><div>{func("helpmenu")}</div></DropdownItem>      
+            <DropdownItem act ={fontSizeInc}><div>{func("fontsizebutton")} +</div></DropdownItem>
+            <DropdownItem act ={fontSizeDec}><div>{func("fontsizebutton")} -</div></DropdownItem>
+            <DropdownItem act = {changecolor}><div>{func("switchbutton")}</div></DropdownItem>
         </div>
         </>
     );
