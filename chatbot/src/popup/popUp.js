@@ -4,7 +4,7 @@ import func from "../Language/Lanprocess"
 function Popup(props){
   return (
   <div className="popup-box">
-    <div className="box">
+    <div ref={props.helpref} className="box">
       <button className="close-icon" onClick={()=>props.setstate(false)}>X</button>
       <div className="popup-title">Help menu</div>
       <div className="popup-content">{func("help")}</div>

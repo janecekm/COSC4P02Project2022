@@ -24,6 +24,7 @@
     padding: 20px;
     border: 1px solid #999;
     overflow: auto;
+    user-select: none;
   }
    
   .close-icon {

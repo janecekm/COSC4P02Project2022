@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Feed from '../../Chatbox/Feed/feed';
 import "./burgerstyle.css";
 import Popup from "../../popup/popup"
@@ -7,16 +7,33 @@ import func from "../../Language/Lanprocess";
 function Burger (){
     const [open, setopen] = useState(false);//the state for if the menu bar is open or not
     const [help, sethelp] = useState(false);//this states keeps track of if help is needed.
+    let menuRef = useRef();
+    let helpRef = useRef();
+    useEffect(()=>{
+        let handler = (Event)=>{
+            if(!help && !menuRef.current.contains(Event.target))//check if the menu is open and the click is not on the menu
+                setopen(false);
+            else if(help && !helpRef.current.contains(Event.target))//checks if we are on help and if the click is not on the box
+                sethelp(false);
+        }
+        document.addEventListener("mousedown",handler);
+
+        return () =>{
+            document.removeEventListener("mousedown",handler);
+        }
+    },[open,help]);
     return (
         <>
-        {help && <Popup setstate={sethelp}/>}
-        <div className= {!open?'container':'container change'} onClick={()=>setopen(!open)}>
+        {help && <Popup setstate={sethelp} helpref= {helpRef}/>}
+        <div ref={menuRef}>
+        <div  className= {!open?'container':'container change'} onClick={()=>setopen((open)=>!open)}>
             <div className='bar1'></div>
             <div className='bar2'></div>
             <div className='bar3'></div>
         </div>
-        <div className={!open?'closed':'open'}>
+        <div ref={menuRef} className={!open?'closed':'open'}>
             <Dropdownmenu helpstate={help} helpfunc ={sethelp}/>
+        </div>
         </div>
         </>
     );
