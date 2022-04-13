@@ -21,7 +21,7 @@ def scrapeCourseInfo(courseName, session, typ, driver):
 	#valid sessions: FW, SP,SU
 	#valid types: UG, GR, IS, PS, AD
 	driver.get("https://brocku.ca/guides-and-timetables/timetables/?session=" + session + "&type=" + typ + "&level=All&program="+courseName)
-	sleep(1)
+	sleep(3)
 	#this code assumes that courseName is valid. Refer to the google doc for valid codes.
 	entries = driver.find_elements(By.XPATH,'//tr[contains(@class,"course-row")]')
 	# print(courseName)
@@ -72,7 +72,7 @@ def main():
 	for sess in sessions:
 		for t in types:
 			driver.get("https://brocku.ca/guides-and-timetables/timetables/?session="+sess+"&type="+t+"&level=all")
-			sleep(1)
+			sleep(3)
 			subjects = []
 			programs = driver.find_element(By.CLASS_NAME,"programs")
 			courses = programs.find_elements(By.TAG_NAME,"li")
