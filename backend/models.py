@@ -71,6 +71,7 @@ class Offering(db.Model):
     __tablename__ = 'offering'
     code = db.Column(
         db.String(8),
+        primary_key=True,
         index = True,
         unique = False,
         nullable = False

@@ -19,7 +19,7 @@ CREATE TABLE offering (
 	time TIME,
 	location CHAR(20),
 	instructor CHAR(30),
-	PRIMARY KEY(days, time, location)
+	PRIMARY KEY(code, days, time, location)
 );
 
 DROP TABLE IF EXISTS exam;

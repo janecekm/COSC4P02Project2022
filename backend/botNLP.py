@@ -306,7 +306,7 @@ def formResponse(database_answer, keys):
         returns a string to output as a response
     '''
     if "exam" in database_answer:
-        temp = Template("$c has an exam on $m $d at $t $l")
+        temp = Template("$c has an exam on $m $d at $t in $l")
         return temp.substitute({'c': database_answer["code"], 'm':database_answer["month"], 'd':database_answer["dayNum"], 't':database_answer["time"], 'l':database_answer["location"]})
     # basic response for course descriptions
     if "description" in database_answer: 
