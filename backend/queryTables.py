@@ -68,9 +68,24 @@ def doQueries(keywords):
                 print('Query Returned to botNLP: ')
                 print(queryReturn)
                 return queryReturn
-            elif 'building' in keywords:
+            elif 'buildingCode' in keywords:
                 print('building found')
-                return 'placeholder return'
+                print(keywords)
+                filterCourseInputs(keywords)
+                temp = models.Building.query.filter_by(code=keywords.get('code')).all()
+                print(temp)
+                queryReturn = {}
+                for row in temp:
+                    queryRow = to_dict(row)
+                    rowDict = {}
+                    for key in (keywords.keys() & queryRow.keys()):
+                        rowDict[key] = queryRow[key]
+                    rowDict["code"] = queryRow["code"]
+                    rowDict["name"] = queryRow["name"]
+                    queryReturn.update(rowDict)
+                print('Query Returned to botNLP: ')
+                print(queryReturn)
+                return queryReturn
             else:
                 print('more info required')
                 return 'more info required'
