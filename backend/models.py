@@ -206,3 +206,23 @@ class Exam(db.Model):
 
     def __repr__(self):
         return '\nCode '+self.code+'\n Section'+self.section+'\n day'+self.day+'\n time'+self.time+'\n location'+self.location
+
+class Building(db.Model):
+    __tablename__ = 'building'
+    code = db.Column(
+        db.String(10),
+        primary_key = True,
+        index = True,
+        unique = True,
+        nullable = False
+    )
+
+    name = db.Column (
+        db.String(30),
+        index = False,
+        unique = True,
+        nullable = False
+    )
+
+    def __repr__(self):
+        return '\nCode '+self.code+'\n Name'+self.name

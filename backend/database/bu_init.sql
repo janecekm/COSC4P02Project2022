@@ -33,4 +33,11 @@ CREATE TABLE exam (
 	location CHAR(10)
 );
 
+DROP TABLE IF EXISTS building;
+CREATE TABLE building (
+	code VARCHAR(10),
+	name VARCHAR(30),
+	PRIMARY KEY(code)
+);
+
 -- INSERT INTO course VALUES ('COSC4P03', 'this is a description', 'COSC3P03', 'COSC3P03');

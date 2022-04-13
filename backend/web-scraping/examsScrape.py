@@ -3,7 +3,9 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import json
-	
+import sys
+
+sys.stdout.reconfigure(encoding='utf-8')
     
 # subjects = ['abed', 'abte', 'actg', 'aded', 'admi', 'adst', 'aesl', 'apco', 'arab', 'astr', 'bchm', 'biol', 'bmed', 'bphy', 'btec', 'btgd', 'cana', 'chem', 'chys', 'clas', 'comm', 'cosc', 'cpcf', 'dart', 'econ', 'edbe', 'educ', 'encw', 'engl', 'ensu', 'entr', 'ersc', 'esci', 'ethc', 'film', 'fnce', 'fren', 'geog', 'germ', 'gree', 'hist', 'hlsc', 'iasc', 'indg', 'intc', 'ital', 'itis', 'japa', 'kine', 'labr', 'lati', 'ling', 'mand', 'mars', 'math', 'mgmt', 'mktg', 'musi', 'neur', 'nusc', 'obhr', 'oevi', 'oper', 'pcul', 'phil', 'phys', 'pmpb', 'poli', 'port', 'psyc', 'recl', 'russ', 'scie', 'sclc', 'soci', 'span', 'spma', 'stac', 'swah', 'tour', 'visa', 'wgst', 'wrds']
 # 

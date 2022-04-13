@@ -8,19 +8,31 @@ def loadFile(filename):
     return codes
 
 def populate_db_building_codes(db='buchatbot.db'):
-    connection = sqlite3.connect(db)
-    with connection:
-        codes = loadFile('buildingCodes.txt')
+    with open('./cleandata/buildingCodesClean.txt', 'r') as f:
+            codes = f.readlines()
+    with sqlite3.connect(db) as connection:
         cursor = connection.cursor()
-        flag = True
-        for c in codes:
-            codes[c] = codes[c].replace('\'', '`')
-            if not flag:
-                print(c)
-                print(codes[c])
-                cursor.execute('INSERT INTO course(code, description) VALUES (\''+c+'\', \''+codes[c]+'\')')
-            else:
-                flag=False
+        for line in codes:
+            JSONDecodedRow = json.loads(line)
+            code = JSONDecodedRow.get('buildingCode') or ""
+            name = JSONDecodedRow.get('title') or ""
+            name = name.replace('\'', '`')
+
+            cursor.execute('INSERT OR IGNORE INTO building(code, name) VALUES (\''+code+'\', \''+name+'\')')
+        
+    # connection = sqlite3.connect(db)
+    # with connection:
+    #     codes = loadFile('buildingCodes.txt')
+    #     cursor = connection.cursor()
+    #     flag = True
+    #     for c in codes:
+    #         codes[c] = codes[c].replace('\'', '`')
+    #         if not flag:
+    #             print(c)
+    #             print(codes[c])
+    #             cursor.execute('INSERT INTO course(code, description) VALUES (\''+c+'\', \''+codes[c]+'\')')
+    #         else:
+    #             flag=False
 
 def course_populate(db='buchatbot.db'):
     with open('./cleandata/course.txt', 'r') as f:
