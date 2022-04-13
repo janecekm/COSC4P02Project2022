@@ -13,11 +13,17 @@ nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
 phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 
+def filepath():
+    if os.path.basename(os.getcwd()) =="backend":#we are in COSC4p02Project2022/backend
+        return "./nlp-resources/"
+    else:#we are in cosc4p02Project2022
+        return "./backend/nlp-resources/"
+
 ###################################
 # This section sets up the PhraseMatcher
 # Currently the PhraseMatcher is used to extract only building codes
 buildings = []
-with open("./nlp-resources/buildingCodesClean.txt", encoding="utf8") as f: 
+with open(filepath()+"buildingCodesClean.txt", encoding="utf8") as f: 
     for line in f:
         buildings.append(json.loads(line)["buildingCode"])
 patterns = list(nlp.pipe(buildings))
