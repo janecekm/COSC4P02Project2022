@@ -313,11 +313,11 @@ def testing_descriptions_response():
 
 def testing_exams_response():
     temp = getQueries("when is econ 2p30 exam")
-    assert "April 18 at 14:00-17:00 WCDVIS" in temp
+    assert "April 18 at 14:00-17:00 in WCDVIS" in temp
 
 def testing_locations_response():
     temp = getQueries("where is econ 2p30")
-    assert "ST 107" in temp
+    assert "SYNC" in temp or "STH 207" in temp
     temp = getQueries("where is clas 1p97")
     assert "THSOS" in temp
 
@@ -331,14 +331,16 @@ def testing_instructor_response():
     temp = getQueries("who teaches COSC 4p61")
     assert "Ke" in temp
     temp = getQueries("who teaches VISA 1p95")
-    assert "Cerquera Benjumea, Gustavo" in temp
+    assert "Cerquera Benjumea Gustavo" in temp
     temp = getQueries("who teaches PHIL 2p17")
-    assert "Lightbody, Brian" in temp
+    assert "Lightbody Brian" in temp
     temp = getQueries("who teaches BIOL 4p06?")
-    assert "Liang, Ping" in temp
+    assert "Liang Ping" in temp
 
 def testing_crosslisting_response():
-    temp = getQueries("Biol 4p06 crosslisting")
+    temp = getQueries("what crosslist COSC 4p61")
+    assert "MATH 4P61" in temp
+    temp = getQueries("What crosslist BIOL 4p06")
     assert "BTEC 4P06" in temp
 
 def testing_links_response():
