@@ -1,7 +1,8 @@
 .clip-button{
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 2px;
+    right: 2px;
+    border-radius: 10px;
     opacity: 20%;
     cursor: pointer;
 }

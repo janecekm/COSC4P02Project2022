@@ -2,6 +2,7 @@
     margin: auto;
     margin-top:3px;
     width: 65%;
+    height: 100%;
     position: relative;
   }
 
@@ -9,6 +10,7 @@
   .Chatbox{
     margin:auto;
     width: 100%;
+    height: 100%;
     margin-top: 3px;
     position: relative;
     bottom: 5px;

@@ -1,71 +1,141 @@
 <html>
     <head>
-        <style>
-            .background {
-                background-color: snow;
-            }
-            h3, h1 {
-                text-align: center;
-            }
-            h1, .info  {
-                background-color: #103a88;
-                padding: 10px;
-                color: white;
-            }
-            .info {
-                margin-top: 50px;
-            }
-            ul {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                margin: 20px;
-            }
-            li {
-                border-radius:5px;
-                flex:2;
-                display: inline;
-                width: 500px;
-                background-color: #103a88;
-                color: snow;
-                padding: 10px;
-                text-align: center;
-                margin: 5px;
-                margin-top: 25px;
-                box-shadow: 2px 2px 4px #272727;
-            }
-            .runner {
-                align-self: center;
-                box-shadow: 2px 2px 4px #272727;
-            }
-            .brock:hover {
-                background-color: #b30000;
-            }
-            .canada:hover {
-                background-color: #006BE6;
-            }
-            p {
-                margin: 3px;
-            }
-        </style>
         <title>Chatbot</title>
         <link rel="icon" href="icon.png">
+        <style>
+            h3, h1 {
+    color: white; 
+    top: 8px;
 
+}
+h1, .info  {
+    /* background-color: #103a88; */
+    padding: 10px;
+    color: white;
+}
+.info {
+    bottom: 0;
+    background-color: black;
+    width: 100%;
+}
+
+.container { 
+    display: flex;
+}
+
+.container > div { 
+    flex: 2;
+    margin: 1px; 
+    padding: 20px; 
+    text-align: center;
+    text-shadow: 1px 1px #000000;
+    font-size: larger;
+    height: 500px;
+    filter: brightness(80%);
+    left: 50%;
+    max-width: 100%;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}   
+
+.choice > h2 { 
+    filter: brightness(100%);
+    vertical-align: middle;
+    color: white;
+}
+
+.runner {
+    
+    box-shadow: 2px 2px 4px #272727;
+}
+
+.brock{
+    background-image: url(https://brocku.ca/brock-news/wp-content/uploads/2020/04/IMG_6885-RS-1600x1067.jpg?x70330);
+    background-size: cover;
+    text-align: center;
+    margin-right: 0;
+    cursor:pointer;
+    /* display: flex;
+    justify-content: center; */
+}
+
+.canada{
+    background-image: url(https://niagara2022games.ca/assets/img/n21-hero-cgp-lg.jpg);
+    background-size: cover;
+    cursor: pointer;
+}
+
+.container > div:hover{ 
+    filter: brightness(100%);
+}
+.title{
+    text-align: center;
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+
+}
+
+p {
+    margin: 3px;
+}
+.background { 
+    background-color: black;
+}
+
+@media only screen and (max-width:768px){
+    /*the mobile version*/
+    .container { 
+    display: flex;
+    flex-direction: column;
+}
+
+.container > div { 
+    flex: 2;
+    margin: 1px; 
+    padding: 20px; 
+    text-align: center;
+    text-shadow: 1px 1px #000000;
+    font-size: larger;
+    height: 500px;
+    filter: brightness(80%);
+    left: 50%;
+    max-width: 100%;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}  
+.title{
+    text-align: center;
+    z-index: 1;
+    width: 100%;
+    position: relative;
+} 
+}
+
+        </style>
     </head>
     <body class = "background" display = "flex">
 
         <div class="runner">
-            <h1>Welcome to Chatbot</h1>
-            <h3>A COSC 4P02 project dedicated to helping students with finding information regarding Brock University and Canada Games</h3> 
-                
-            <h3>Pick your chatbot:</h3>
-            <ul>
-                <li class="brock" onclick="window.location.href=window.location.href+'brock'"><a>Brock University</a></li>
-                <li class="canada" onclick="window.location.href=window.location.href+'canada'"><a>Canada Games</a></li>
-            </ul>
+            <div class="title">
+                <h1>Welcome to Chatbot</h1>
+                <h3>Pick your chatbot:</h3>
+            </div>
             
+            <div class="container">
+                <div class="choice brock"onclick="window.location.href=window.location.href+'brock'">
+                    <h2> Brock University</h2>
+                </div>
+                <div class="choice canada" onclick="window.location.href=window.location.href+'canada'">
+                    <h2>Canada Games</h2>
+                </div> 
+            </div>
+
+
             <div class ="info">
+                A COSC 4P02 project dedicated to helping students with finding information regarding Brock University and Canada Games
                 Group Members:
                 <p>Greg Pogue</p>
                 <p>Joel Jacob</p>
