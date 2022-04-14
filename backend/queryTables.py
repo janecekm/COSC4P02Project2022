@@ -86,7 +86,9 @@ def doQueries(keywords):
                 for row in temp:
                     queryRow = to_dict(row)
                     rowDict = {}
+                    rowsList = []
                     for key in (keywords.keys() & queryRow.keys()):
+                        rowDict = {}
                         if 'format' in keywords:
                             keywords["format"] = filterInputs(keywords, 'format')
                             if rowDict['format'] == queryRow['format']:
@@ -96,7 +98,9 @@ def doQueries(keywords):
                                 rowDict['days'] = queryRow["days"]
                             else:
                                 rowDict[key] = queryRow[key]
-                    queryReturn.update(rowDict)
+                        queryReturn.update(rowDict)
+                        rowsList.append(rowDict)
+                print(rowsList)
                 print('Query Returned to botNLP: ')
                 print(queryReturn)
                 return queryReturn
