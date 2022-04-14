@@ -3,6 +3,8 @@ import re
 # keywords is a dictionary of match_id and match_text
 # print(models.Course.query.all())
 def doQueries(keywords):
+    print("Keywords received from botNLP: ")
+    print(keywords)
     if 'prereq' in keywords or 'description' in keywords or 'xlist' in keywords:
         try:
             filterCourseInputs(keywords)

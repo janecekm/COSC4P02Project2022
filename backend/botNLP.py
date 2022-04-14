@@ -43,7 +43,8 @@ if not Span.has_extension("prio"):
 
 def assignPriority(matcher, doc, i, matches): 
     match_id, start, end = matches[i]
-    if match_id == nlp.vocab.strings["openerGreet"]:
+    if match_id == nlp.vocab.strings["openerGreet"]\
+        or match_id == nlp.vocab.strings["question"]:
         doc[start:end]._.prio = 3
     elif match_id == nlp.vocab.strings["code"] \
         or match_id == nlp.vocab.strings["course component"] \
@@ -82,6 +83,14 @@ when = [[{'LOWER': 'when'},
          {'LOWER': 'time'},
          {'LEMMA': 'be'}]]
 matcher.add("time", when, greedy="LONGEST", on_match=assignPriority)
+
+# question
+question = [[{'LOWER': 'who'}], 
+                [{'LOWER': 'what'}],
+                [{'LOWER': 'when'}],
+                [{'LOWER': 'where'}], 
+                [{'LOWER': 'why'}]]
+matcher.add("question", question, on_match=assignPriority)
 
 # what are the prereq(uisites) -- course table
 prerequisites = [[{'LEMMA': 'prerequisite'}], 
@@ -150,7 +159,7 @@ food = [[{'LEMMA':'eat'}],[{'LOWER':'food'}],[{'LOWER':'breakfast'}],[{'LOWER':'
 matcher.add("food", food, on_match=assignPriority)
 
 # transportation, "How do I get to..."
-transport = [[{'LEMMA':'travel'}],[{'LEMMA':'bus'}],[{'LEMMA':'transport'}],[{'LEMMA':'transportation'}],
+transport = [[{'LEMMA':'transit'}],[{'LEMMA':'travel'}],[{'LEMMA':'bus'}],[{'LEMMA':'transport'}],[{'LEMMA':'transportation'}],
                 [{'LOWER': 'how'},
                   {'OP': '*'},
                   {'LEMMA': 'get'},
@@ -223,6 +232,25 @@ links = {
     "facts" : "https://brocku.ca/about/brock-facts/"
 }
 ###########################################################
+def multiQuestionCheck(matches, doc):
+    '''This method uses the matches and their corresponding priorities to see if the user has submitted multiple queries
+    Args:
+        matches: the list of matches returned from running the matcher on the document
+        doc: the user text processed by the NLP pipeline (spaCy Doc object https://spacy.io/api/doc)
+    Return:
+        returns true if there is likely multiple questions, otherwise false
+    '''
+    labels = []
+
+    for match_id, start, end in matches: 
+        labels.append(nlp.vocab.strings[match_id])
+    
+    if labels.count('question') > 1:
+        return False
+
+    return True
+
+
 def spellcheck(question, matches, doc): 
     '''This method performs a spellcheck on the question submitted by the user, after existing matches have been removed
     Args: 
@@ -291,10 +319,25 @@ def processKeywords(matches, doc):
     for match_id, start, end in matches: 
         match_label = nlp.vocab.strings[match_id]
         match_text = doc[start:end]
-        processedMatches[match_label] = match_text
-        if match_text._.prio == 0: 
-            high_prio = True
-        print("Match:", match_label, "\tMatch priority:", doc[start:end]._.prio)
+        match_text = match_text.text
+        if not match_label == 'course component' and not match_label == 'question':
+            processedMatches[match_label] = match_text
+            if match_text._.prio == 0: 
+                high_prio = True
+            print("Match:", match_label, "\tMatch priority:", doc[start:end]._.prio)
+        elif match_label == 'course component':
+            comp = ''
+            num = ''
+            barred = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+            
+            for i in range(len(match_text)):
+                if match_text[i] in barred:
+                    num += match_text[i]
+                elif not i == " ":
+                    comp += match_text[i]
+            processedMatches['format'] = comp.strip()
+            processedMatches['format num'] = num
+            
     # use the NER to extract the people names from document
     for ent in doc.ents:
         if (ent.label_ == "PERSON"):
@@ -340,14 +383,14 @@ def getLink(matchedKeys):
         return temp2.substitute({'y' : "Brock's COVID-19 response", 'x': links["covid"]})
     elif "register" in matches:
         return temp2.substitute({'y' : "Brock's registration process", 'x': links["register"]})
-    elif "tuition" in matches:
-        return temp2.substitute({'y' : "tuition", 'x': links["tuition"]})
     elif "advisor" in matches:
         return temp2.substitute({'y' : "academic advisors", 'x': links["acad_advisor"]})
     elif "exam" in matches:
         return temp.substitute({'x': links["exam"]})
     elif "course component" in matches or "course code" in matches:
         return temp.substitute({'x': links["timetable"]})
+    elif "tuition" in matches:
+        return temp2.substitute({'y' : "tuition", 'x': links["tuition"]})
     elif "openerGreet" in matches:
         return "What can I help you with today?"
     else:
@@ -405,14 +448,17 @@ def processQ(question):
         a response string to be output to the user
     '''
     matches, doc = extractKeywords(question)
-    processed = processKeywords(matches, doc)
-    from queryTables import doQueries
-    queryReturn = doQueries(processed)
-    myString = ""
-    if "hello" in question.lower():
-        myString += "Hello! "
-    myString += formResponse(queryReturn, matches)
-    if (myString != "" and myString != None):    
-        return {"message": myString}
+    if multiQuestionCheck(matches, doc):
+        processed = processKeywords(matches, doc)
+        from queryTables import doQueries
+        queryReturn = doQueries(processed)
+        myString = ""
+        if "hello" in question.lower():
+            myString += "Hello! "
+        myString += formResponse(queryReturn, matches)
+        if (myString != "" and myString != None):    
+            return {"message": myString}
+        else:
+            return {"message": "I am not quite sure what you're asking. Could you rephrase that?"}
     else:
-         return {"message": "I am not quite sure what you're asking. Could you rephrase that?"}
+        return {"message": "I'm sorry, that is a little too complicated for me. Please try rephrasing and limiting your questions to one at a time."}
