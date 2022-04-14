@@ -14,7 +14,7 @@ def testing_valid_input_ProcessQ():
 def testing_valid_misspelled_input_ProcessQ():
     assert 'COSC 1P02' in botNLP.processQ('What aer the Prereq for COSC 1p03')['message']
 def testing_valid_more_misspelled_input_ProcessQ():
-    assert (botNLP.processQ('Qjtat is jet prereq for COSC 1p03')['message'] == error_message_2) or (botNLP.processQ('Qjtat is jet prereq for COSC 1p03')['message'] == error_message_1)
+    assert ("COSC 1P02" in botNLP.processQ('Qjtat is jet prereq for COSC 1p03')['message'])
 def testing_misspelled_wat_input_ProcessQ():
     assert 'COSC 1P02' in botNLP.processQ('Wat is prereqs for COSC 1P03')['message'] 
 def testing_attempt_SQL_injection1_ProcessQ():
@@ -22,12 +22,13 @@ def testing_attempt_SQL_injection1_ProcessQ():
 def testing_attempt_SQL_injection2_ProcessQ():
     assert (botNLP.processQ('What are the prereqs for /**/ *’--')['message'] == error_message_1) or (botNLP.processQ('What are the prereqs for /**/ *’--')['message'] == error_message_2) 
 def testing_single_hello_processQ():
-    assert botNLP.processQ('Hello Hello')['message']== "Hello"
+    assert botNLP.processQ('Hello Hello')['message']== "Hello! What can I help you with today?"
 
 def testing_spacefor_course():
     assert 'MATH 1P66' in botNLP.processQ("what are prereq for math1p67")['message']
 
-#botNLP.getLink
+#botNLP.getLink 
+#FAILED testingFiles/general_tests.py::testing_prereq_getLink - ValueError: not enough values to unpack (expected 3, got 1)
 def testing_prereq_getLink():
     assert 'https://brocku.ca/webcal/undergrad/' in botNLP.getLink('prereq')
 
