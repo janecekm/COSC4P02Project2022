@@ -46,6 +46,7 @@ def testing_extract_keywords_crosslist():
 
 def testing_extract_keywords_prereqs():
     response = botNLP.extractKeywords("What is prereqs for COSC 1P03?")
+    print(response)
     assert response[0][0] == (15699362302781265145, 0,2) and response[0][1] == (12246778916035409871, 0, 3) and response[0][2] == (3084953006211575075, 4, 6)
 
 def testing_extract_keywords_hello():
@@ -141,4 +142,5 @@ def testing_extract_keywords_tuition2():
 
 def testing_extract_keywords_xlist():
     response = botNLP.extractKeywords("What is crosslist for COSC 4P61?")
+    print(response)
     assert (12057252092477718455, 0,3) in response[0]
