@@ -13,11 +13,17 @@ nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
 phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 
+def filepath():
+    if os.path.basename(os.getcwd()) =="backend":#we are in COSC4p02Project2022/backend
+        return "./nlp-resources/"
+    else:#we are in cosc4p02Project2022
+        return "./backend/nlp-resources/"
+
 ###################################
 # This section sets up the PhraseMatcher
 # Currently the PhraseMatcher is used to extract only building codes
 buildings = []
-with open("./nlp-resources/buildingCodesClean.txt", encoding="utf8") as f: 
+with open(filepath()+"buildingCodesClean.txt", encoding="utf8") as f: 
     for line in f:
         buildings.append(json.loads(line)["buildingCode"])
 patterns = list(nlp.pipe(buildings))
@@ -93,7 +99,7 @@ matcher.add("program question",[progQuestion])
 # course components -- offering table
 courseComp = [{'LEMMA': {"IN": ['sem', 'seminar', 'lab', 'tut', 'tutorial', 'lec', 'lecture', 'sec', 'section']}},
            {'LIKE_NUM': True, 'OP': '?'}]
-matcher.add("course component", [courseComp], greedy="LONGEST")
+matcher.add("format", [courseComp], greedy="LONGEST")
 
 # location -- offering or exam
 location = [[{'LOWER':'location'}],
@@ -155,7 +161,7 @@ matcher.add("store", store)
 # end of Matcher pattern defintions
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
-dictionary_path = "backend\\nlp-resources\\frequency_dictionary_en_82_765.txt"
+dictionary_path = filepath() + "frequency_dictionary_en_82_765.txt"
 # term_index is the column of the term and count_index is the
 # column of the term frequency
 sym_spell.load_dictionary(dictionary_path, term_index=0, count_index=1)
@@ -306,7 +312,7 @@ def formResponse(database_answer, keys):
         returns a string to output as a response
     '''
     if "exam" in database_answer:
-        temp = Template("$c has an exam on $m $d at $t $l")
+        temp = Template("$c has an exam on $m $d at $t in $l")
         return temp.substitute({'c': database_answer["code"], 'm':database_answer["month"], 'd':database_answer["dayNum"], 't':database_answer["time"], 'l':database_answer["location"]})
     # basic response for course descriptions
     if "description" in database_answer: 

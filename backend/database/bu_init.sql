@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS course;
 CREATE TABLE course (
 	code CHAR(8) PRIMARY KEY,
 	title VARCHAR(40),
-	frmt VARCHAR(40),
+	format VARCHAR(40),
 	description VARCHAR(200),
 	prereq VARCHAR(100),
 	xlist CHAR(8),
@@ -12,14 +12,14 @@ CREATE TABLE course (
 DROP TABLE IF EXISTS offering;
 CREATE TABLE offering (
 	code CHAR(8),
-	frmt VARCHAR(8),
+	format VARCHAR(8),
 	duration CHAR(2),
 	section CHAR(2),
 	days CHAR(7),
 	time TIME,
 	location CHAR(20),
 	instructor CHAR(30),
-	PRIMARY KEY(days, time, location)
+	PRIMARY KEY(code, days, time, location)
 );
 
 DROP TABLE IF EXISTS exam;
@@ -31,6 +31,13 @@ CREATE TABLE exam (
 	month VARCHAR(14),
 	section CHAR(2),
 	location CHAR(10)
+);
+
+DROP TABLE IF EXISTS building;
+CREATE TABLE building (
+	code VARCHAR(10),
+	name VARCHAR(30),
+	PRIMARY KEY(code)
 );
 
 -- INSERT INTO course VALUES ('COSC4P03', 'this is a description', 'COSC3P03', 'COSC3P03');
