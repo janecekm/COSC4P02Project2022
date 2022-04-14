@@ -11,6 +11,7 @@ from spacy.tokens import Span
 import os 
 import platform
 
+#setting up path for various nlp-resources such as autocorrect dictionary
 if os.path.basename(os.getcwd()) == "backend" and platform.system()=="Windows": 
     path = ".\\nlp-resources\\"
 elif os.path.basename(os.getcwd()) == "COSC4P02Project2022" and platform.system()=="Windows": 
@@ -19,7 +20,6 @@ elif os.path.basename(os.getcwd()) == "backend" and platform.system()=="Linux":
     path = "./nlp-resources/"
 else: 
     path = "./backend/nlp-resources/"
-
 # load spacy
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
@@ -97,7 +97,7 @@ crosslist = [[{'LOWER': 'crosslist'}],
                   {'LEMMA': 'xlist'}]]
 matcher.add("xlist", crosslist, on_match=assignPriority)
 
-# generally the descriptions
+# general descriptions
 generalInfo = [ [{'LOWER':'tell'},{'LOWER':'me'},{'LOWER':'about'}], 
                 [{'LOWER':'information'},{'LOWER':'on'}],
                 [{'LOWER':'info'},{'LOWER':'on'}], 
@@ -190,6 +190,7 @@ matcher.add("store", store, on_match=assignPriority)
 # end of Matcher pattern defintions
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
+print(os.curdir)
 dictionary_path = "backend\\nlp-resources\\frequency_dictionary_en_82_765.txt"
 # term_index is the column of the term and count_index is the
 # column of the term frequency
@@ -232,10 +233,18 @@ def spellcheck(question, matches, doc):
         matches: the list of matches after spellcheck has been applied (and the matcher has been re-run on the document)
         doc: the new Doc object (https://spacy.io/api/doc), run on the corrected string 
     '''
-    suggestions = sym_spell.lookup_compound(
-                question.lower(), max_edit_distance=2, ignore_non_words=True, ignore_term_with_digits=True)
-    merge = suggestions[0].term
-    doc = nlp(merge)
+    questionPieces = question.split(" ")
+    merge = ''
+    for q in questionPieces:
+        suggestion = sym_spell.lookup(q.lower(),Verbosity.TOP,max_edit_distance = 2,ignore_token= "[!@£#$%^&*();,.?:{}/|<>1234567890]")
+        if suggestion:
+            merge += suggestion+" "
+        else:
+            merge += q+" "
+    # suggestions = sym_spell.lookup_compound(
+    #             question.lower(), max_edit_distance=2, ignore_non_words=True, ignore_term_with_digits=True)
+    #merge = suggestions[0].term
+    doc = nlp(merge.strip())
     matches = matcher(doc)
     phrase_matches = phrase_matcher(doc)
     for match in phrase_matches: 
