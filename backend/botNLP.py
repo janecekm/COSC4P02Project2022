@@ -310,10 +310,25 @@ def processKeywords(matches, doc):
     for match_id, start, end in matches: 
         match_label = nlp.vocab.strings[match_id]
         match_text = doc[start:end]
-        processedMatches[match_label] = match_text
-        if match_text._.prio == 0: 
-            high_prio = True
-        print("Match:", match_label, "\tMatch priority:", doc[start:end]._.prio)
+        match_text = match_text.text
+        if not match_label == 'course component' and not match_label == 'question':
+            processedMatches[match_label] = match_text
+            if match_text._.prio == 0: 
+                high_prio = True
+            print("Match:", match_label, "\tMatch priority:", doc[start:end]._.prio)
+        elif match_label == 'course component':
+            comp = ''
+            num = ''
+            barred = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+            
+            for i in range(len(match_text)):
+                if match_text[i] in barred:
+                    num += match_text[i]
+                elif not i == " ":
+                    comp += match_text[i]
+            processedMatches['format'] = comp.strip()
+            processedMatches['format num'] = num
+            
     # use the NER to extract the people names from document
     for ent in doc.ents:
         if (ent.label_ == "PERSON"):
