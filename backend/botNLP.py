@@ -340,7 +340,7 @@ def getLink(matchedKeys):
     elif "course component" in matches or "course code" in matches:
         return temp.substitute({'x': links["timetable"]})
     elif "openerGreet" in matches:
-        return "Hello! What can I help you with today?"
+        return "What can I help you with today?"
     else:
         return temp.substitute({'x': links["brock"]})
 
@@ -399,7 +399,10 @@ def processQ(question):
     processed = processKeywords(matches, doc)
     from queryTables import doQueries
     queryReturn = doQueries(processed)
-    myString = formResponse(queryReturn, matches)
+    myString = ""
+    if "hello" in question.lower():
+        myString += "Hello! "
+    myString += formResponse(queryReturn, matches)
     if (myString != "" and myString != None):    
         return {"message": myString}
     else:
