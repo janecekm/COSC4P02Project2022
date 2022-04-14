@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS course;
 CREATE TABLE course (
 	code CHAR(8) PRIMARY KEY,
 	title VARCHAR(40),
-	frmt VARCHAR(40),
+	format VARCHAR(40),
 	description VARCHAR(200),
 	prereq VARCHAR(100),
 	xlist CHAR(8),
@@ -12,7 +12,7 @@ CREATE TABLE course (
 DROP TABLE IF EXISTS offering;
 CREATE TABLE offering (
 	code CHAR(8),
-	frmt VARCHAR(8),
+	format VARCHAR(8),
 	duration CHAR(2),
 	section CHAR(2),
 	days CHAR(7),

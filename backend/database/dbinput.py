@@ -7,7 +7,7 @@ def loadFile(filename):
     codes = json.loads(contents)
     return codes
 
-def populate_db_building_codes(db='buchatbot.db'):
+def populate_building_codes(db='buchatbot.db'):
     with open('./cleandata/buildingCodesClean.txt', 'r') as f:
             codes = f.readlines()
     with sqlite3.connect(db) as connection:
@@ -15,7 +15,7 @@ def populate_db_building_codes(db='buchatbot.db'):
         for line in codes:
             JSONDecodedRow = json.loads(line)
             code = JSONDecodedRow.get('buildingCode') or ""
-            name = JSONDecodedRow.get('title') or ""
+            name = JSONDecodedRow.get('buildingName') or ""
             name = name.replace('\'', '`')
 
             cursor.execute('INSERT OR IGNORE INTO building(code, name) VALUES (\''+code+'\', \''+name+'\')')
@@ -44,8 +44,8 @@ def course_populate(db='buchatbot.db'):
             code = JSONDecodedRow.get('code') or ""
             title = JSONDecodedRow.get('title') or ""
             title = title.replace('\'', '`')
-            frmt = JSONDecodedRow.get('frmt') or ""
-            frmt = frmt.replace('\'', '`')
+            format = JSONDecodedRow.get('frmt') or ""
+            format = format.replace('\'', '`')
             description = JSONDecodedRow.get('description') or ""
             description = description.replace('\'', '`')
             prereq = JSONDecodedRow.get('prereq') or ""
@@ -54,7 +54,7 @@ def course_populate(db='buchatbot.db'):
             restriction = JSONDecodedRow.get('restriction') or ""
             restriction = restriction.replace('\'', '`')
 
-            cursor.execute('INSERT OR IGNORE INTO course(code, title, frmt, description, prereq, xlist, restriction) VALUES (\''+code+'\', \''+title+'\', \''+frmt+'\', \''+description+'\', \''+prereq+'\', \''+xlist+'\', \''+ restriction+'\')')
+            cursor.execute('INSERT OR IGNORE INTO course(code, title, format, description, prereq, xlist, restriction) VALUES (\''+code+'\', \''+title+'\', \''+format+'\', \''+description+'\', \''+prereq+'\', \''+xlist+'\', \''+ restriction+'\')')
         # for c in codes:
         #     codes[c]['description'] = codes[c]['description'].replace('\'', '`')
         #     # json.loads(codes[c])
@@ -108,7 +108,7 @@ def offering_populate(db='buchatbot.db'):
             #days, time, instructor location, room1, and room2 can all be NoneType and need to be checked. There may be a better way than this. 
             JSONDecodedRow = json.loads(line)
             code = JSONDecodedRow.get('courseCode')
-            frmt = JSONDecodedRow.get('type')
+            format = JSONDecodedRow.get('type')
             duration = JSONDecodedRow.get('duration')
             sec = JSONDecodedRow.get('sec')
             time = JSONDecodedRow.get('time') or ""
@@ -131,7 +131,7 @@ def offering_populate(db='buchatbot.db'):
             if instructor == None:
                 instructor = ''
 
-            cursor.execute('INSERT OR IGNORE INTO offering(code, frmt, duration, section, days, time, location, instructor) VALUES (\''+code+'\', \''+ frmt+'\', \''+duration+'\', \''+sec+'\', \''+ days+'\', \''+ time+'\', \''+ location+'\', \''+ instructor+'\')')
+            cursor.execute('INSERT OR IGNORE INTO offering(code, format, duration, section, days, time, location, instructor) VALUES (\''+code+'\', \''+ format+'\', \''+duration+'\', \''+sec+'\', \''+ days+'\', \''+ time+'\', \''+ location+'\', \''+ instructor+'\')')
     
 
 # populate_db_building_codes()
@@ -140,4 +140,4 @@ def offering_populate(db='buchatbot.db'):
 offering_populate()
 course_populate()
 exam_populate()
-
+populate_building_codes()

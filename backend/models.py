@@ -32,7 +32,7 @@ class Course(db.Model):
         nullable=True
     )
 
-    frmt = db.Column(
+    format = db.Column(
         db.String(40),
         index=True,
         unique=False,
@@ -77,7 +77,7 @@ class Offering(db.Model):
         nullable = False
     )
 
-    frmt = db.Column(
+    format = db.Column(
         db.String(8),
         index=True,
         unique=False,
@@ -132,7 +132,7 @@ class Offering(db.Model):
     )
 
     def __repr__(self):
-        return '\nCode '+self.code+'\n Format '+self.frmt+'\n Duration'+self.duration+'\n Section'+self.section+'\n days'+self.days+'\n time'+self.time+'\n location'+self.location+'\n Instructor'+self.instructor
+        return '\nCode '+self.code+'\n Format '+self.format+'\n Duration'+self.duration+'\n Section'+self.section+'\n days'+self.days+'\n time'+self.time+'\n location'+self.location+'\n Instructor'+self.instructor
 
 
 '''

@@ -99,7 +99,7 @@ matcher.add("program question",[progQuestion])
 # course components -- offering table
 courseComp = [{'LEMMA': {"IN": ['sem', 'seminar', 'lab', 'tut', 'tutorial', 'lec', 'lecture', 'sec', 'section']}},
            {'LIKE_NUM': True, 'OP': '?'}]
-matcher.add("course component", [courseComp], greedy="LONGEST")
+matcher.add("format", [courseComp], greedy="LONGEST")
 
 # location -- offering or exam
 location = [[{'LOWER':'location'}],
