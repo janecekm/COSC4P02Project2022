@@ -18,7 +18,7 @@
     flex: 1;
 }
 .ChatbotName{
-    flex:1;
+    flex:4;
     text-align: center;
     color: snow;
     size: var(--text-size)+"px";

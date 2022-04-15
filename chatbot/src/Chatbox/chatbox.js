@@ -7,7 +7,9 @@ function Chatbox(){
     
     return(
         <div className='Chatbox'>
-            <Feed />
+            <div className='Chatbot'>
+                <Feed />
+            </div>
          </div>
     )
 }

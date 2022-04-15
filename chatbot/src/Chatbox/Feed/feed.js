@@ -3,6 +3,8 @@ import "./feed.css"
 import ClipButton from '../ClipButton/clipbutton';
 import Thinking from '../Thinking/thinking';
 import func from "../../Language/Lanprocess";
+import Zoomin from '../Zoomin/zoomin';
+import Zoomout from '../Zoomout/zoomout'
 
 class Message extends React.Component {
   render() {
@@ -92,9 +94,20 @@ const Feed = () => {
   }
 
   return (
-    <div>
-      <ClipButton messages = {messagesList}/> 
+    <>
       <div className='feed' id = "feed">
+      <ul className='contextmenu'>
+      <li>
+         <Zoomin />
+        </li>
+        <li>
+          <Zoomout />
+        </li>
+        <li>
+        <ClipButton messages = {messagesList}/> 
+        </li>
+        
+      </ul>
         <div>
           {messagesList}
           <Thinking/>
@@ -102,7 +115,7 @@ const Feed = () => {
       </div>
       <div className="userTools">
         <div className="clearButton" onClick={clearInput}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eraser" viewBox="0 0 16 16">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-eraser" viewBox="0 0 16 16">
             <path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm2.121.707a1 1 0 0 0-1.414 0L4.16 7.547l5.293 5.293 4.633-4.633a1 1 0 0 0 0-1.414l-3.879-3.879zM8.746 13.547 3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z"/>
           </svg>
         </div>
@@ -111,12 +124,12 @@ const Feed = () => {
               contentEditable ='true' data-placeholder={func('inputmessage')}>
               </span>
         <div className="enterButton" onClick={poseQuery}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
              <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
           </svg>
         </div>
       </div>
-    </div>
+    </>
 
   );
 };

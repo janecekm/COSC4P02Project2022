@@ -5,7 +5,9 @@
     height: 100%;
     position: relative;
   }
-
+.Chatbot{
+ 
+}
 @media only screen and (max-width: 768px){
   .Chatbox{
     margin:auto;

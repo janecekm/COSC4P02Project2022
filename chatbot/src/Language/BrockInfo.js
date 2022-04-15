@@ -7,8 +7,11 @@ const values = {
       "message":"Hello! Welcome to the Brock chat bot! What can I help you with today?",
       "inputmessage":"Type a query here...",
       "disclaimer":"All information taken from Brock University",
-      "help":"ASK SAM",
-      "fontsizebutton":"Font",
+      "helptext":"ASK SAM",
+      "disclaimermenu":"Disclaimer",
+      "disclaimertext":"This is scraped from brock websites",
+      "aboutusmenu":"About",
+      "aboutustext":"We are a group of people",
       "helpmenu":"Help",
       "mainhelpmenu":"Help Menu",
       "switchbutton":"Switch"
