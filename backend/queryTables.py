@@ -1,8 +1,10 @@
 import models
-
+import re
 # keywords is a dictionary of match_id and match_text
 # print(models.Course.query.all())
 def doQueries(keywords):
+    print("Keywords received from botNLP: ")
+    print(keywords)
     #Builing table
     if 'buildingCode' in keywords:
         try:
@@ -123,6 +125,9 @@ def filterInputs(keywords, key):
 def filterBuildingCodes(keywords):
     temp = keywords.get('buildingCode').text
     temp = temp.upper()
+    temp = re.split(r'([0-9][A-Z][0-9][0-9])', temp, maxsplit=1)
+    temp = [t.strip() for t in temp]
+    temp = ' '.join(temp).strip()
     print('filtered input: '+temp)
     keywords['buildingCode'] = temp
     return None
