@@ -1,3 +1,4 @@
+from concurrent.futures import process
 from urllib import response
 import spacy
 from spacy.matcher import PhraseMatcher
@@ -6,10 +7,11 @@ from spacy.matcher import Matcher
 from symspellpy import SymSpell, Verbosity
 from string import Template
 import json
-
+from spacy.tokens import Span
 import os 
 import platform
 
+#setting up path for various nlp-resources such as autocorrect dictionary
 if os.path.basename(os.getcwd()) == "backend" and platform.system()=="Windows": 
     path = ".\\nlp-resources\\"
 elif os.path.basename(os.getcwd()) == "COSC4P02Project2022" and platform.system()=="Windows": 
@@ -18,9 +20,6 @@ elif os.path.basename(os.getcwd()) == "backend" and platform.system()=="Linux":
     path = "./nlp-resources/"
 else: 
     path = "./backend/nlp-resources/"
-
-
-
 # load spacy
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
@@ -39,13 +38,30 @@ phrase_matcher.add("buildingCode", patterns)
 ###################################
 # This section defines all the patterns for the Matcher
 
+if not Span.has_extension("prio"): 
+    Span.set_extension("prio", default=100)
+
+def assignPriority(matcher, doc, i, matches): 
+    match_id, start, end = matches[i]
+    if match_id == nlp.vocab.strings["openerGreet"]\
+        or match_id == nlp.vocab.strings["question"]:
+        doc[start:end]._.prio = 3
+    elif match_id == nlp.vocab.strings["code"] \
+        or match_id == nlp.vocab.strings["course component"] \
+        or match_id == nlp.vocab.strings["buildingCode"] :
+        doc[start:end]._.prio = 2
+    elif match_id == nlp.vocab.strings["description"]: 
+        doc[start:end]._.prio = 1
+    else: # every other question term is more specific so it is highest prio
+        doc[start:end]._.prio = 0
+
 # course codes -- course/offering/exam
 courseCode = [[{'IS_ALPHA': True, 'LENGTH': 4},
                {'SHAPE': {'IN': ['dxdd', 'dXdd']}}],
              [{"SHAPE":  {'IN': ["xxxxdxdd", "Xxxxdxdd", "xXxxdxdd", "XXxxdxdd", "xxXxdxdd", "XxXxdxdd", "xXXxdxdd", "XXXxdxdd", "xxxXdxdd",
              "XxxXdxdd", "xXxXdxdd", "XXxXdxdd", "xxXXdxdd", "xXXXdxdd", "XXXXdxdd", "xxxxdXdd", "XxxxdXdd", "xXxxdXdd", "XXxxdXdd", "xxXxdXdd",
              "XxXxdXdd", "xXXxdXdd", "xxxXdXdd", "XxxXdXdd", "xXxXdXdd", "XXxXdXdd", "xxXXdXdd", "XxXXdXdd", "xXXXdXdd", "XXXXdXdd" ]}}]]
-matcher.add("code", courseCode)
+matcher.add("code", courseCode, on_match=assignPriority)
 
 # who teaches, who is teaching, who is the instructor, who is the professor
 # offering table
@@ -58,7 +74,7 @@ teaching = [[{'LOWER': 'who'},
            [{'LOWER': 'who'},
             {'OP': '*'},
             {'LOWER': 'professor'}]]
-matcher.add("instructor", teaching)
+matcher.add("instructor", teaching, on_match=assignPriority)
 
 # when is, when are, what time is
 when = [[{'LOWER': 'when'},
@@ -66,88 +82,89 @@ when = [[{'LOWER': 'when'},
         [{'LOWER': 'what'},
          {'LOWER': 'time'},
          {'LEMMA': 'be'}]]
-matcher.add("time", when, greedy="LONGEST")
+matcher.add("time", when, greedy="LONGEST", on_match=assignPriority)
+
+# question
+question = [[{'LOWER': 'who'}], 
+                [{'LOWER': 'what'}],
+                [{'LOWER': 'when'}],
+                [{'LOWER': 'where'}], 
+                [{'LOWER': 'why'}]]
+matcher.add("question", question, on_match=assignPriority)
 
 # what are the prereq(uisites) -- course table
-prerequisites = [[{'LOWER': 'what'},
-                  {'OP': '?'},
-                  {'OP': '?'},
-                  {'LEMMA': 'prerequisite'}], 
-                [{'LOWER': 'what'},
-                  {'OP': '?'},
-                  {'OP': '?'},
-                  {'LEMMA': 'prereq'}]]
-matcher.add("prereq", prerequisites)
+prerequisites = [[{'LEMMA': 'prerequisite'}], 
+                [{'LEMMA': 'prereq'}]]
+matcher.add("prereq", prerequisites, on_match=assignPriority)
 
-crosslist = [[{'LOWER': 'what'},
-                  {'OP': '?'},
-                  {'OP': '?'},
-                  {'LEMMA': 'crosslist'}], 
+crosslist = [[{'LOWER': 'crosslist'}], 
+                [{'LOWER': 'crosslisted'}], 
+                [{'LEMMA': 'crosslisting'}], 
                 [{'LOWER': 'what'},
                   {'OP': '?'},
                   {'OP': '?'},
                   {'LEMMA': 'xlist'}]]
-matcher.add("xlist", crosslist)
+matcher.add("xlist", crosslist, on_match=assignPriority)
 
-# generally the descriptions
+# general descriptions
 generalInfo = [ [{'LOWER':'tell'},{'LOWER':'me'},{'LOWER':'about'}], 
                 [{'LOWER':'information'},{'LOWER':'on'}],
                 [{'LOWER':'info'},{'LOWER':'on'}], 
                 [{'LOWER': 'what'}, {'LOWER': 'is'}]]
-matcher.add("description", generalInfo)
+matcher.add("description", generalInfo, on_match=assignPriority)
 
 openerMatch = [{"LOWER": {"IN": ['hello','hi','hey','howdy','yo','sup','hiya','heyo']}}]
-matcher.add("openerGreet", [openerMatch])
+matcher.add("openerGreet", [openerMatch], on_match=assignPriority)
 
 # don't have table
 progQuestion = [{'LOWER':'the'},{'OP':'*'},{'LOWER':'program'}]
-matcher.add("program question",[progQuestion])
+matcher.add("program question",[progQuestion], on_match=assignPriority)
 
 # course components -- offering table
 courseComp = [{'LEMMA': {"IN": ['sem', 'seminar', 'lab', 'tut', 'tutorial', 'lec', 'lecture', 'sec', 'section']}},
            {'LIKE_NUM': True, 'OP': '?'}]
-matcher.add("course component", [courseComp], greedy="LONGEST")
+matcher.add("course component", [courseComp], greedy="LONGEST", on_match=assignPriority)
 
 # location -- offering or exam
 location = [[{'LOWER':'location'}],
             [{'LOWER':'what'}, {'LOWER':'building'}], 
             [{'LOWER': 'where'}]]
-matcher.add("location", location)
+matcher.add("location", location, on_match=assignPriority)
 
 # exam table
 exam = [{'LEMMA':'exam'}]
-matcher.add("exam", [exam])
+matcher.add("exam", [exam], on_match=assignPriority)
 
 reqQuestion = [{'LOWER':'the'},{'LOWER':'program','OP':'?'},{'LOWER':'requirements'},{'LOWER':'for'}]
 
-matcher.add("requirement question",[reqQuestion])
+matcher.add("requirement question",[reqQuestion], on_match=assignPriority)
 
 # advisor table
 advisor = [{'LEMMA':'advisor'}]
-matcher.add("advisor", [advisor])
+matcher.add("advisor", [advisor], on_match=assignPriority)
 
 # covid information
 covid = [[{'LOWER':'covid'}],[{'LOWER':'covid19'}],[{'LOWER':'covid-19'}]
             ,[{'LOWER':'coronavirus'}],[{'LOWER':'quarantine'}],[{'LOWER':'lockdown'}]]
-matcher.add("covid", covid)
+matcher.add("covid", covid, on_match=assignPriority)
 
 # tuition
 tuition = [[{'LEMMA':'cost'}],[{'LOWER':'tuition'}],[{'LEMMA':'price'}],[{'LOWER':'money'}],[{'LEMMA':'dollar'}],
             [{'LEMMA':'pay'}]]
-matcher.add("tuition", tuition)
+matcher.add("tuition", tuition, on_match=assignPriority)
 
 # food
 food = [[{'LEMMA':'eat'}],[{'LOWER':'food'}],[{'LOWER':'breakfast'}],[{'LOWER':'lunch'}],[{'LOWER':'dinner'}],
             [{'LOWER':'meal'}],[{'LOWER':'mealplan'}],[{'LEMMA':'dining'}],[{'LEMMA':'snack'}]]
-matcher.add("food", food)
+matcher.add("food", food, on_match=assignPriority)
 
 # transportation, "How do I get to..."
-transport = [[{'LEMMA':'travel'}],[{'LEMMA':'bus'}],[{'LEMMA':'transport'}],[{'LEMMA':'transportation'}],
+transport = [[{'LEMMA':'transit'}],[{'LEMMA':'travel'}],[{'LEMMA':'bus'}],[{'LEMMA':'transport'}],[{'LEMMA':'transportation'}],
                 [{'LOWER': 'how'},
                   {'OP': '*'},
                   {'LEMMA': 'get'},
                   {'LEMMA': 'to'}]]
-matcher.add("transport", transport)
+matcher.add("transport", transport, on_match=assignPriority)
 
 # registration
 register = [[{'LEMMA':'register'}],[{'LEMMA':'registration'}],
@@ -155,19 +172,34 @@ register = [[{'LEMMA':'register'}],[{'LEMMA':'registration'}],
                 [{'LOWER': 'pick'},{'OP': '?'},{'LEMMA': 'class'},],
                 [{'LOWER': 'choose'},{'OP': '?'},{'LEMMA': 'classes'},],
                 [{'LOWER': 'pick'},{'OP': '?'},{'LEMMA': 'classes'},]]
-matcher.add("register", register)
+matcher.add("register", register, on_match=assignPriority)
 
 # directory
 directory = [[{'LEMMA':'contact'}], [{'LOWER':'call'}], [{'LOWER':'phone'}], 
             [{'LOWER':'email'}], [{'LEMMA': 'speak'},{'LOWER': 'to'},]]
-matcher.add("directory", directory)
+matcher.add("directory", directory, on_match=assignPriority)
+
+# masters
+masters = [[{'LOWER':'graduate'}, {'LOWER':"program"}], 
+            [{'LOWER':'graduate'}, {'LOWER':"studies"}], 
+            [{'LOWER':'masters'}], [{'LOWER':'msc'}], 
+            [{'LOWER':'mba'}], [{'LOWER': 'ma'}], [{'LOWER':'macc'}], [{'LOWER':'mag'}]
+            ,[{'LOWER':'mbe'}], [{'LOWER':'mph'}]]
+matcher.add("masters", masters, on_match=assignPriority)
+
+
+admission = [[{'LEMMA':'apply'}], 
+            [{'LEMMA':'admit'}], [{'LEMMA':'addmission'}] ]
+matcher.add("admission", admission, on_match=assignPriority)
+
 
 # store
 store = [[{'LOWER':'store'}], [{'LEMMA':'textbook'}], [{'LEMMA':'booklist'}]]
-matcher.add("store", store)
+matcher.add("store", store, on_match=assignPriority)
 # end of Matcher pattern defintions
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
+print(os.curdir)
 dictionary_path = "backend\\nlp-resources\\frequency_dictionary_en_82_765.txt"
 # term_index is the column of the term and count_index is the
 # column of the term frequency
@@ -190,6 +222,8 @@ links = {
     "transit" : "https://transitapp.com/region/niagara-region",
     "directory":"https://brocku.ca/directory/", 
     "store":"https://campusstore.brocku.ca/",
+    "masters":"https://brocku.ca/programs/graduate/",
+    "admission":"https://brocku.ca/admissions/",
     # to be accomodated for:
     "programs" : "https://discover.brocku.ca/programs",
     "service_direct" : "https://brocku.ca/directory/a-z/",
@@ -198,6 +232,23 @@ links = {
     "facts" : "https://brocku.ca/about/brock-facts/"
 }
 ###########################################################
+def multiQuestionCheck(matches, doc):
+    '''This method uses the matches and their corresponding priorities to see if the user has submitted multiple queries
+    Args:
+        matches: the list of matches returned from running the matcher on the document
+        doc: the user text processed by the NLP pipeline (spaCy Doc object https://spacy.io/api/doc)
+    Return:
+        returns true if there is likely multiple questions, otherwise false
+    '''
+    labels = []
+
+    for match_id, start, end in matches: 
+        labels.append(nlp.vocab.strings[match_id])
+    
+    if labels.count('question') > 1:
+        return False
+
+    return True
 
 
 def spellcheck(question, matches, doc): 
@@ -210,16 +261,23 @@ def spellcheck(question, matches, doc):
         matches: the list of matches after spellcheck has been applied (and the matcher has been re-run on the document)
         doc: the new Doc object (https://spacy.io/api/doc), run on the corrected string 
     '''
-    suggestions = sym_spell.lookup_compound(
-                question.lower(), max_edit_distance=2, ignore_non_words=True, ignore_term_with_digits=True)
-    merge = suggestions[0].term
-    doc = nlp(merge)
+    questionPieces = question.split(" ")
+    merge = ''
+    for q in questionPieces:
+        suggestion = sym_spell.lookup(q.lower(),Verbosity.TOP,max_edit_distance = 2,ignore_token= "[!@£#$%^&*();,.?:{}/|<>1234567890]")
+        if suggestion:
+            merge += suggestion+" "
+        else:
+            merge += q+" "
+    # suggestions = sym_spell.lookup_compound(
+    #             question.lower(), max_edit_distance=2, ignore_non_words=True, ignore_term_with_digits=True)
+    #merge = suggestions[0].term
+    doc = nlp(merge.strip())
     matches = matcher(doc)
     phrase_matches = phrase_matcher(doc)
     for match in phrase_matches: 
         matches.append(match)
     return matches, doc 
-
 
 def extractKeywords(question): 
     '''This method runs the matcher to extract key information from the query and add match labels
@@ -257,14 +315,35 @@ def processKeywords(matches, doc):
         a list of tuples containing the string version of the match_id and the matched text [(match_id_, match_text)]
     '''
     processedMatches = {}
+    high_prio = False
     for match_id, start, end in matches: 
         match_label = nlp.vocab.strings[match_id]
         match_text = doc[start:end]
-        processedMatches[match_label] = match_text
+        match_text = match_text.text
+        if not match_label == 'course component' and not match_label == 'question':
+            processedMatches[match_label] = match_text
+            if match_text._.prio == 0: 
+                high_prio = True
+            print("Match:", match_label, "\tMatch priority:", doc[start:end]._.prio)
+        elif match_label == 'course component':
+            comp = ''
+            num = ''
+            barred = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+            
+            for i in range(len(match_text)):
+                if match_text[i] in barred:
+                    num += match_text[i]
+                elif not i == " ":
+                    comp += match_text[i]
+            processedMatches['format'] = comp.strip()
+            processedMatches['format num'] = num
+            
     # use the NER to extract the people names from document
     for ent in doc.ents:
         if (ent.label_ == "PERSON"):
             processedMatches["person"] = ent.text 
+    if "description" in processedMatches.keys() and high_prio: 
+        processedMatches.pop("description")
     return processedMatches
 
 def getLink(matchedKeys):
@@ -288,8 +367,12 @@ def getLink(matchedKeys):
         matches.append(nlp.vocab.strings[match_id])
     if "prereqs" in matches:
         return temp.substitute({'x': links["prereqs"]})
+    elif "admission" in matches:
+        return temp2.substitute({'y' : "the Brock admissions", 'x': links["store"]})
     elif "store" in matches:
         return temp2.substitute({'y' : "the Brock Campus Store", 'x': links["store"]})
+    elif "masters" in matches:
+        return temp2.substitute({'y' : "Brock's graduate programs", 'x': links["masters"]})
     elif "directory" in matches:
         return temp2.substitute({'y' : "contacting individuals at Brock", 'x': links["directory"]})
     elif "food" in matches:
@@ -300,16 +383,16 @@ def getLink(matchedKeys):
         return temp2.substitute({'y' : "Brock's COVID-19 response", 'x': links["covid"]})
     elif "register" in matches:
         return temp2.substitute({'y' : "Brock's registration process", 'x': links["register"]})
-    elif "tuition" in matches:
-        return temp2.substitute({'y' : "tuition", 'x': links["tuition"]})
     elif "advisor" in matches:
         return temp2.substitute({'y' : "academic advisors", 'x': links["acad_advisor"]})
     elif "exam" in matches:
         return temp.substitute({'x': links["exam"]})
     elif "course component" in matches or "course code" in matches:
         return temp.substitute({'x': links["timetable"]})
+    elif "tuition" in matches:
+        return temp2.substitute({'y' : "tuition", 'x': links["tuition"]})
     elif "openerGreet" in matches:
-        return "Hello! What can I help you with today?"
+        return "What can I help you with today?"
     else:
         return temp.substitute({'x': links["brock"]})
 
@@ -348,7 +431,6 @@ def formResponse(database_answer, keys):
         if database_answer["prereq"] != "": 
             temp = Template("The prerequisites for $c are $p" )
             return temp.substitute({'c': database_answer["code"], 'p':database_answer["prereq"]})
-            
         else: 
             temp = Template("There are no prerequisites for $c")
             return temp.substitute({'c': database_answer["code"]})
@@ -366,11 +448,17 @@ def processQ(question):
         a response string to be output to the user
     '''
     matches, doc = extractKeywords(question)
-    processed = processKeywords(matches, doc)
-    from queryTables import doQueries
-    queryReturn = doQueries(processed)
-    myString = formResponse(queryReturn, matches)
-    if (myString != "" and myString != None):    
-        return {"message": myString}
+    if multiQuestionCheck(matches, doc):
+        processed = processKeywords(matches, doc)
+        from queryTables import doQueries
+        queryReturn = doQueries(processed)
+        myString = ""
+        if "hello" in question.lower():
+            myString += "Hello! "
+        myString += formResponse(queryReturn, matches)
+        if (myString != "" and myString != None):    
+            return {"message": myString}
+        else:
+            return {"message": "I am not quite sure what you're asking. Could you rephrase that?"}
     else:
-         return {"message": "I am not quite sure what you're asking. Could you rephrase that?"}
+        return {"message": "I'm sorry, that is a little too complicated for me. Please try rephrasing and limiting your questions to one at a time."}
