@@ -44,6 +44,18 @@ def scrapeCourseInfo(courseName, session, typ, driver):
 		dict = {}
 		dict["cc"] = course.get_attribute("data-cc").replace(',','')
 		dict["type"] = course.get_attribute("data-class_type").replace(',','')
+		temp = dict["type"].split()
+		comp = ''
+		num = ''
+		barred = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+		
+		for i in temp:
+			if i in barred:
+				num += i
+			elif not i == " ":
+				comp += i
+		dict['format'] = comp.strip()
+		dict['formatNum'] = num or ""
 		dict["duration"] = course.get_attribute("data-duration").replace(',','')
 		dict["sec"] = course.get_attribute("data-course_section").replace(',','')
 		dict["time"] = course.get_attribute("data-class_time").replace(',','')

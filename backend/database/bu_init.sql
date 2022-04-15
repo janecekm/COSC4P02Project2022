@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS offering;
 CREATE TABLE offering (
 	code CHAR(8),
 	format VARCHAR(8),
+	formatNum VARCHAR(4),
 	duration CHAR(2),
 	section CHAR(2),
 	days CHAR(7),

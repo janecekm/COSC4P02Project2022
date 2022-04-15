@@ -84,6 +84,13 @@ class Offering(db.Model):
         nullable=True
     )
 
+    formatNum = db.Column(
+        db.String(8),
+        index=True,
+        unique=False,
+        nullable=True
+    )
+
     duration = db.Column (
         db.String(2),
         index = True,
