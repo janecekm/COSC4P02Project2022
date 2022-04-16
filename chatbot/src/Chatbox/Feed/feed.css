@@ -23,6 +23,7 @@
 .userTools {
   display: flex;
   width: 100%;
+  bottom: 0px;
   /* background-color:#4a4a4a; */
   padding: 2px 2px 2px 2px;
 }
@@ -121,7 +122,7 @@
 }
 
 .feed{
-    margin-top: 10px;
+  margin-top: 10px;
     padding-top: 10px;
     /* padding-left: 5px; */
     /* padding-right: 5px; */

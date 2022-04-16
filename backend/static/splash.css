@@ -28,7 +28,6 @@ h1, .info  {
     height: 500px;
     filter: brightness(80%);
     left: 50%;
-    max-width: 100%;
     display: grid;
     align-items: center;
     justify-content: center;
@@ -54,6 +53,15 @@ h1, .info  {
     /* display: flex;
     justify-content: center; */
 }
+.context{
+    list-style: none;
+}
+.context li{
+    display: inline;
+}
+div li{
+    display: inline;
+}
 
 .canada{
     background-image: url(https://niagara2022games.ca/assets/img/n21-hero-cgp-lg.jpg);
@@ -71,7 +79,6 @@ h1, .info  {
 .title{
     text-align: center;
     z-index: 1;
-    position: absolute;
     width: 100%;
 
 }
