@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import Navbar from './Navbar/navbar';
 import Chatbox from './Chatbox/chatbox'
 import "./index.css";
-import langprocess from "./Language/Lanprocess"
 
 (async()=>{
   var url = window.location.href.toString();
@@ -14,11 +13,18 @@ import langprocess from "./Language/Lanprocess"
     await import("./canadacolor.css");
 })();
 
+window.addEventListener("offline",(Event)=>{//if the user is online
+  document.getElementById("inputField").contentEditable = false;
+})
+
+window.addEventListener("online",(Event)=>{//if the user is online
+  document.getElementById("inputField").contentEditable = true;
+})
+
 ReactDOM.render(
   <>
   <Navbar />
   <Chatbox />
-  <footer className='disclaimer'>{langprocess("disclaimer")}</footer>
   </>
   ,
   document.getElementById('root'),

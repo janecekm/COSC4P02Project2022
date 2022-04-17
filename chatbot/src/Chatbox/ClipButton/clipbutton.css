@@ -1,11 +1,10 @@
 .clip-button{
-    position: absolute;
-    top: 0;
-    right: 0;
+    /* position: absolute; */
+    border-radius: 10px;
     opacity: 20%;
     cursor: pointer;
 }
 
 .clip-button:hover{
-    opacity: 100%;
+    opacity: 70%;
 }

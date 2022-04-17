@@ -47,7 +47,7 @@ def assignPriority(matcher, doc, i, matches):
         or match_id == nlp.vocab.strings["question"]:
         doc[start:end]._.prio = 3
     elif match_id == nlp.vocab.strings["code"] \
-        or match_id == nlp.vocab.strings["course component"] \
+        or match_id == nlp.vocab.strings["format"] \
         or match_id == nlp.vocab.strings["buildingCode"] :
         doc[start:end]._.prio = 2
     elif match_id == nlp.vocab.strings["description"]: 
@@ -120,10 +120,10 @@ matcher.add("openerGreet", [openerMatch], on_match=assignPriority)
 progQuestion = [{'LOWER':'the'},{'OP':'*'},{'LOWER':'program'}]
 matcher.add("program question",[progQuestion], on_match=assignPriority)
 
-# course components -- offering table
+# formats -- offering table
 courseComp = [{'LEMMA': {"IN": ['sem', 'seminar', 'lab', 'tut', 'tutorial', 'lec', 'lecture', 'sec', 'section']}},
            {'LIKE_NUM': True, 'OP': '?'}]
-matcher.add("course component", [courseComp], greedy="LONGEST", on_match=assignPriority)
+matcher.add("format", [courseComp], greedy="LONGEST", on_match=assignPriority)
 
 # location -- offering or exam
 location = [[{'LOWER':'location'}],
@@ -320,12 +320,12 @@ def processKeywords(matches, doc):
         match_label = nlp.vocab.strings[match_id]
         match_text = doc[start:end]
         match_text = match_text.text
-        if not match_label == 'course component' and not match_label == 'question':
+        if not match_label == 'format' and not match_label == 'question':
             processedMatches[match_label] = match_text
             if match_text._.prio == 0: 
                 high_prio = True
             print("Match:", match_label, "\tMatch priority:", doc[start:end]._.prio)
-        elif match_label == 'course component':
+        elif match_label == 'format':
             comp = ''
             num = ''
             barred = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -335,8 +335,8 @@ def processKeywords(matches, doc):
                     num += match_text[i]
                 elif not i == " ":
                     comp += match_text[i]
-            processedMatches['format'] = comp.strip()
-            processedMatches['format num'] = num
+            processedMatches['format'] = comp
+            processedMatches['formatNum'] = num
             
     # use the NER to extract the people names from document
     for ent in doc.ents:
@@ -387,7 +387,7 @@ def getLink(matchedKeys):
         return temp2.substitute({'y' : "academic advisors", 'x': links["acad_advisor"]})
     elif "exam" in matches:
         return temp.substitute({'x': links["exam"]})
-    elif "course component" in matches or "course code" in matches:
+    elif "format" in matches or "course code" in matches:
         return temp.substitute({'x': links["timetable"]})
     elif "tuition" in matches:
         return temp2.substitute({'y' : "tuition", 'x': links["tuition"]})

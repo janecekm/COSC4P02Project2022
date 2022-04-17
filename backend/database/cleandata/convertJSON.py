@@ -1,7 +1,13 @@
 import json
+import sys
 
-filename = "examtimetable.txt"
+sys.stdout.reconfigure(encoding='utf-8')
+
+filename = "exams.txt"
 f = open(filename, 'r')
-for line in f.readlines():
-    temp = json.load(line)
-    print(json.dumps(temp))
+temp = json.loads(f.readlines())
+print(json.dumps(temp.decode("utf-8","ignore")))
+
+# for line in f.readlines():
+#     temp = json.load(line)
+#     print(json.dumps(temp))
