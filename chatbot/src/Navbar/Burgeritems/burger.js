@@ -1,44 +1,50 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Feed from '../../Chatbox/Feed/feed';
 import "./burgerstyle.css";
+import Popup from "../../popup/popup"
 import func from "../../Language/Lanprocess";
 function Burger (){
     const [open, setopen] = useState(false);//the state for if the menu bar is open or not
+    const [popupmenu, setpopupmenu] = useState(false);//this states keeps track of if help is needed.
+    const [popupmessage,setpopupmessage] = useState(null);
+    let menuRef = useRef();
+    let helpRef = useRef();
+    useEffect(()=>{
+        let handler = (Event)=>{
+            if(!popupmenu && !menuRef.current.contains(Event.target))//check if the menu is open and the click is not on the menu
+                setopen(false);
+            else if(popupmenu && !helpRef.current.contains(Event.target))//checks if we are on help and if the click is not on the box
+                setpopupmenu(false);
+        }
+        document.addEventListener("mousedown",handler);
+
+        return () =>{
+            document.removeEventListener("mousedown",handler);
+        }
+    },[open,popupmenu]);
     return (
         <>
-        <div className= {!open?'container':'container change'} onClick={()=>setopen(!open)}>
+        {popupmenu && <Popup message={popupmessage} setstate={setpopupmenu} helpref= {helpRef}/>}
+        <div ref={menuRef}>
+        <div  className= {!open?'container':'container change'} onClick={()=>setopen((open)=>!open)}>
             <div className='bar1'></div>
             <div className='bar2'></div>
             <div className='bar3'></div>
         </div>
-        <div className={!open?'closed':'open'}>
-            <Dropdownmenu />
+        <div ref={menuRef} className={!open?'closed':'open'}>
+            <Dropdownmenu state={popupmenu} func ={setpopupmenu} setmessage = {setpopupmessage}/>
+        </div>
         </div>
         </>
     );
 }
-function fontSizeDec(){
-    var temp = document.getElementById('root');
-    var len = getComputedStyle(temp).getPropertyValue('--text-size').length;
-    var num = parseInt(getComputedStyle(temp).getPropertyValue('--text-size').substring(0,len-2))-1;
-    var th = parseInt(getComputedStyle(temp).getPropertyValue('--thinking-size')) -1;
-    if (num > 9) {//the smallest size of the alphabets
-        temp.style.setProperty('--text-size',num+"px");
-        temp.style.setProperty('--thinking-size',th+"px");
-    }
+function disclaimer(state, setstate,setMessage){
+    setstate(!state);
+    setMessage([func("disclaimermenu"),func("disclaimertext")]);
 }
-function fontSizeInc(){
-    var temp = document.getElementById('root');
-    var len = getComputedStyle(temp).getPropertyValue('--text-size').length;
-    var num = parseInt(getComputedStyle(temp).getPropertyValue('--text-size').substring(0,len-2))+1;
-    var th = parseInt(getComputedStyle(temp).getPropertyValue('--thinking-size')) +1;
-    if (num < 26) {//the largest size of the alphabets 
-        temp.style.setProperty('--text-size',num+"px");//changes the size of the text
-        temp.style.setProperty('--thinking-size',th +"px");//changes the size of the thinking animation
-    }
-}
-function HelpButton () {
-    
+function HelpButton (state , setstate , setMessage) {
+    setstate(!state);
+    setMessage([func("mainhelpmenu"),func("helptext")]);
 }
 function changecolor(){
     
@@ -70,10 +76,9 @@ function Dropdownmenu(props){
     return (
         <>
         <div className= "dropdown">
-            <DropdownItem act ={HelpButton}><div>Help</div></DropdownItem>
-            <DropdownItem act ={fontSizeInc}><div>Font +</div></DropdownItem>
-            <DropdownItem act ={fontSizeDec}><div>Font -</div></DropdownItem>
-            <DropdownItem act = {changecolor}><div>Switch</div></DropdownItem>
+            <DropdownItem act = {()=>HelpButton(props.state, props.func , props.setmessage)}><div>{func("helpmenu")}</div></DropdownItem>      
+            <DropdownItem act ={()=>disclaimer(props.state,props.func,props.setmessage)}><div>{func("disclaimermenu")}</div></DropdownItem>
+            <DropdownItem act = {changecolor}><div>{func("switchbutton")}</div></DropdownItem>
         </div>
         </>
     );

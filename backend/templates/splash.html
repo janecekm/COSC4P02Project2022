@@ -1,71 +1,30 @@
 <html>
     <head>
-        <style>
-            .background {
-                background-color: snow;
-            }
-            h3, h1 {
-                text-align: center;
-            }
-            h1, .info  {
-                background-color: #103a88;
-                padding: 10px;
-                color: white;
-            }
-            .info {
-                margin-top: 50px;
-            }
-            ul {
-                list-style-type: none;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                margin: 20px;
-            }
-            li {
-                border-radius:5px;
-                flex:2;
-                display: inline;
-                width: 500px;
-                background-color: #103a88;
-                color: snow;
-                padding: 10px;
-                text-align: center;
-                margin: 5px;
-                margin-top: 25px;
-                box-shadow: 2px 2px 4px #272727;
-            }
-            .runner {
-                align-self: center;
-                box-shadow: 2px 2px 4px #272727;
-            }
-            .brock:hover {
-                background-color: #b30000;
-            }
-            .canada:hover {
-                background-color: #006BE6;
-            }
-            p {
-                margin: 3px;
-            }
-        </style>
         <title>Chatbot</title>
         <link rel="icon" href="icon.png">
-
+        <link rel="stylesheet" href="/static/splash.css">
+    
     </head>
     <body class = "background" display = "flex">
 
         <div class="runner">
-            <h1>Welcome to Chatbot</h1>
-            <h3>A COSC 4P02 project dedicated to helping students with finding information regarding Brock University and Canada Games</h3> 
-                
-            <h3>Pick your chatbot:</h3>
-            <ul>
-                <li class="brock" onclick="window.location.href=window.location.href+'brock'"><a>Brock University</a></li>
-                <li class="canada" onclick="window.location.href=window.location.href+'canada'"><a>Canada Games</a></li>
-            </ul>
+            <div class="title">
+                <h1>Welcome to Chatbot</h1>
+                <h3>Pick your chatbot:</h3>
+            </div>
             
+            <div class="container">
+                <div class="choice brock"onclick="window.location.href=window.location.href+'brock'">
+                    <h2> Brock University</h2>
+                </div>
+                <div class="choice canada" onclick="window.location.href=window.location.href+'canada'">
+                    <h2>Canada Games</h2>
+                </div> 
+            </div>
+
+
             <div class ="info">
+                A COSC 4P02 project dedicated to helping students with finding information regarding Brock University and Canada Games
                 Group Members:
                 <p>Greg Pogue</p>
                 <p>Joel Jacob</p>
