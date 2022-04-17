@@ -1,8 +1,5 @@
 import os
 import pytest
-import coverage
-
-cov = coverage.Coverage()
 
 #now we need to run python3 testing-skeleton
 def filepath():
@@ -15,7 +12,4 @@ list = []
 for name in os.listdir(filepath()):
     list.append(filepath()+name)
 
-cov.start()
 pytest.main(list)
-cov.stop()
-cov.save()
