@@ -52,8 +52,6 @@ def doQueries(keywords):
     elif 'exam' in keywords:
         try:
             if 'code' in keywords:
-                print("KEYWORDS: ")
-                print(keywords)
                 keywords['code'] = filterInputs(keywords, 'code')
                 temp = models.Exam.query.filter_by(code=keywords.get('code')).all()
                 queryReturn = {}
@@ -85,25 +83,28 @@ def doQueries(keywords):
                 # temp = models.Offering.query.filter_by(code=keywords.get('code')).first()
                 print(temp)
                 queryReturn = {}
+                rowsList = []
+                if 'format' in keywords.keys():
+                    keywords['format'] = filterInputs(keywords, 'format')
                 for row in temp:
                     queryRow = to_dict(row)
                     rowDict = {}
-                    rowsList = []
                     for key in (keywords.keys() & queryRow.keys()):
                         rowDict = {}
-                        if 'format' in keywords:
-                            keywords["format"] = filterInputs(keywords, 'format')
-                            if rowDict['format'] == queryRow['format']:
-                                rowDict[key] = queryRow[key]
+                        if 'format' in keywords.keys():
+                            if keywords['format'] == queryRow['format']:
+                                if not 'code' in rowsList:
+                                    rowDict[key] = queryRow[key]
                         else:
                             if key == 'time':
                                 rowDict[key] = queryRow[key]
                                 rowDict['days'] = queryRow["days"]
                             else:
                                 rowDict[key] = queryRow[key]
-                        queryReturn.update(rowDict)
-                        rowsList.append(rowDict)
-                    print(rowsList)
+                        if rowDict:
+                            queryReturn.update(rowDict)
+                            rowsList.append(rowDict)
+                print(rowsList)
                 print('Query Returned to botNLP: ')
                 print(queryReturn)
                 return queryReturn
