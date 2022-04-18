@@ -263,7 +263,7 @@ def spellcheck(question, matches, doc):
     for q in questionPieces:
         suggestion = sym_spell.lookup(q.lower(),Verbosity.TOP,max_edit_distance = 2,ignore_token= "[!@£#$%^&*();,.?:{}/|<>1234567890]")
         if suggestion:
-            merge += suggestion+" "
+            merge += suggestion[0].term+" "
         else:
             merge += q+" "
     # suggestions = sym_spell.lookup_compound(
@@ -316,10 +316,10 @@ def processKeywords(matches, doc):
     for match_id, start, end in matches: 
         match_label = nlp.vocab.strings[match_id]
         match_text = doc[start:end]
-        match_text = match_text.text
-        if not match_label == 'format' and not match_label == 'question':
+        # match_text = match_text.text
+        if not match_label == 'course component' and not match_label == 'question':
             processedMatches[match_label] = match_text
-            if match_text._.prio == 0: 
+            if doc[start:end]._.prio == 0: 
                 high_prio = True
             print("Match:", match_label, "\tMatch priority:", doc[start:end]._.prio)
         elif match_label == 'format':
@@ -327,13 +327,13 @@ def processKeywords(matches, doc):
             num = ''
             barred = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
             
-            for i in range(len(match_text)):
-                if match_text[i] in barred:
-                    num += match_text[i]
+            for i in range(len(match_text.text)):
+                if match_text[i].text in barred:
+                    num += match_text[i].text
                 elif not i == " ":
-                    comp += match_text[i]
-            processedMatches['format'] = comp
-            processedMatches['formatNum'] = num
+                    comp += match_text[i].text
+            processedMatches['format'] = comp.strip()
+            processedMatches['format num'] = num
             
     # use the NER to extract the people names from document
     for ent in doc.ents:
