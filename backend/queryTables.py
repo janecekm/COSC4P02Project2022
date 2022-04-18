@@ -97,12 +97,13 @@ def doQueries(keywords):
                                 rowDict[key] = queryRow[key]
                         else:
                             if key == 'time':
+                                rowDict[key] = queryRow[key]
                                 rowDict['days'] = queryRow["days"]
                             else:
                                 rowDict[key] = queryRow[key]
                         queryReturn.update(rowDict)
                         rowsList.append(rowDict)
-                print(rowsList)
+                    print(rowsList)
                 print('Query Returned to botNLP: ')
                 print(queryReturn)
                 return queryReturn
@@ -118,6 +119,9 @@ def doQueries(keywords):
 def filterInputs(keywords, key):
     temp = keywords.get(key).text
     temp = temp.upper()
+    temp = re.split(r'([0-9][A-Z][0-9][0-9])', temp, maxsplit=1)
+    temp = [t.strip() for t in temp]
+    temp = ' '.join(temp).strip()
     print('filtered input: '+temp)
     # keywords[key] = temp
     return temp
