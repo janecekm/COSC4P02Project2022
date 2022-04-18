@@ -266,7 +266,7 @@ def spellcheck(question, matches, doc):
     for q in questionPieces:
         suggestion = sym_spell.lookup(q.lower(),Verbosity.TOP,max_edit_distance = 2,ignore_token= "[!@£#$%^&*();,.?:{}/|<>1234567890]")
         if suggestion:
-            merge += suggestion+" "
+            merge += suggestion[0].term+" "
         else:
             merge += q+" "
     # suggestions = sym_spell.lookup_compound(
@@ -322,7 +322,7 @@ def processKeywords(matches, doc):
         match_text = match_text.text
         if not match_label == 'course component' and not match_label == 'question':
             processedMatches[match_label] = match_text
-            if match_text._.prio == 0: 
+            if doc[start:end]._.prio == 0: 
                 high_prio = True
             print("Match:", match_label, "\tMatch priority:", doc[start:end]._.prio)
         elif match_label == 'course component':
