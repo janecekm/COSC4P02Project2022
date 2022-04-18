@@ -108,29 +108,23 @@ def offering_populate(db='buchatbot.db'):
             #days, time, instructor location, room1, and room2 can all be NoneType and need to be checked. There may be a better way than this. 
             JSONDecodedRow = json.loads(line)
             code = JSONDecodedRow.get('courseCode')
-            format = JSONDecodedRow.get('format')
-            formatNum = JSONDecodedRow.get('formatNum')
-            duration = JSONDecodedRow.get('duration')
-            sec = JSONDecodedRow.get('sec')
+            format = JSONDecodedRow.get('format') or ""
+            formatNum = JSONDecodedRow.get('formatNum') or ""
+            duration = JSONDecodedRow.get('duration') or ""
+            sec = JSONDecodedRow.get('sec') or ""
             time = JSONDecodedRow.get('time') or ""
             days = JSONDecodedRow.get('days') or ""
             room1 = JSONDecodedRow.get('room1') or ""
             room2 = JSONDecodedRow.get('room2') or ""
             
-            location = JSONDecodedRow.get('loc')
-            if location == None:
-                location = ''
-            else:
-                if not room1 == "":
-                    # if room2 == None:
-                    #     location = location + ' ' + room1
-                    if not room2 == "":
-                        location = room1 + ' & ' + room2
-
-                
+            location = JSONDecodedRow.get('loc') or ""
+            if not location == "":
+                location = ' & '.join(location)
+            # if not room1 == "":
+            #     if not room2 == "":
+            #         location = room1 + ' & ' + room2
+ 
             instructor = JSONDecodedRow.get('instructor').replace("\'", "`") or ""
-            if instructor == None:
-                instructor = ''
 
             cursor.execute('INSERT OR IGNORE INTO offering(code, format, formatNum, duration, section, days, time, location, instructor) VALUES (\''+code+'\', \''+ format+'\', \''+ formatNum+'\', \''+duration+'\', \''+sec+'\', \''+ days+'\', \''+ time+'\', \''+ location+'\', \''+ instructor+'\')')
     
