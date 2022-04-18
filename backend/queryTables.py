@@ -10,7 +10,7 @@ def doQueries(keywords):
         try:
             print(keywords)
             keywords['code'] = filterInputs(keywords, 'buildingCode')
-            temp = models.Building.query.filter_by(code=keywords.get('buildingCode')).all()
+            temp = models.Building.query.filter_by(code=keywords.get('code')).all()
             print(temp)
             queryReturn = {}
             for row in temp:
@@ -18,7 +18,7 @@ def doQueries(keywords):
                 rowDict = {}
                 for key in (keywords.keys() & queryRow.keys()):
                     rowDict[key] = queryRow[key]
-                rowDict["code"] = queryRow["code"]
+                rowDict["buildingCode"] = queryRow["code"]
                 rowDict["name"] = queryRow["name"]
                 queryReturn.update(rowDict)
             print('Query Returned to botNLP: ')
@@ -52,8 +52,6 @@ def doQueries(keywords):
     elif 'exam' in keywords:
         try:
             if 'code' in keywords:
-                print("KEYWORDS: ")
-                print(keywords)
                 keywords['code'] = filterInputs(keywords, 'code')
                 temp = models.Exam.query.filter_by(code=keywords.get('code')).all()
                 queryReturn = {}
@@ -85,15 +83,17 @@ def doQueries(keywords):
                 # temp = models.Offering.query.filter_by(code=keywords.get('code')).first()
                 print(temp)
                 queryReturn = {}
+                rowsList = []
+                if 'format' in keywords.keys():
+                    keywords['format'] = filterInputs(keywords, 'format')
                 for row in temp:
                     queryRow = to_dict(row)
                     rowDict = {}
-                    rowsList = []
                     for key in (keywords.keys() & queryRow.keys()):
                         rowDict = {}
-                        if 'format' in keywords:
-                            keywords["format"] = filterInputs(keywords, 'format')
-                            if rowDict['format'] == queryRow['format']:
+                        if 'format' in keywords.keys():
+                            if keywords['format'] == queryRow['format']:
+                                # if not 'code' in rowsList:
                                 rowDict[key] = queryRow[key]
                         else:
                             if key == 'time':
@@ -101,9 +101,13 @@ def doQueries(keywords):
                                 rowDict['days'] = queryRow["days"]
                             else:
                                 rowDict[key] = queryRow[key]
-                        queryReturn.update(rowDict)
-                        rowsList.append(rowDict)
-                    print(rowsList)
+                        if rowDict:
+                            queryReturn.update(rowDict)
+                            rowsList.append(rowDict)
+                print(rowsList)
+                for r in rowsList:
+                    # if r.get('location'):
+                    print(r)
                 print('Query Returned to botNLP: ')
                 print(queryReturn)
                 return queryReturn
