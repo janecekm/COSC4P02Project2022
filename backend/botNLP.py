@@ -319,7 +319,7 @@ def processKeywords(matches, doc):
     for match_id, start, end in matches: 
         match_label = nlp.vocab.strings[match_id]
         match_text = doc[start:end]
-        match_text = match_text.text
+        # match_text = match_text.text
         if not match_label == 'course component' and not match_label == 'question':
             processedMatches[match_label] = match_text
             if doc[start:end]._.prio == 0: 
@@ -330,11 +330,11 @@ def processKeywords(matches, doc):
             num = ''
             barred = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
             
-            for i in range(len(match_text)):
-                if match_text[i] in barred:
-                    num += match_text[i]
+            for i in range(len(match_text.text)):
+                if match_text[i].text in barred:
+                    num += match_text[i].text
                 elif not i == " ":
-                    comp += match_text[i]
+                    comp += match_text[i].text
             processedMatches['format'] = comp.strip()
             processedMatches['format num'] = num
             
