@@ -1,7 +1,6 @@
 .inputBar {
   border: 1px solid #ccc;
   padding: 2px 6px;
-
   display: block;
   width: 100%;
   overflow: hidden;
@@ -12,11 +11,10 @@
   word-wrap: break-word;
   caret-color: black;
   background-color: #EBEDE8;
-  border-radius: 8px;
 }
 
 .inputBar[contenteditable]:empty::before {
-  color: gray;
+  color: EBEDE8;
   caret-color: black;
   content: attr(data-placeholder);
   overflow: scroll;
@@ -24,22 +22,24 @@
 
 .userTools {
   display: flex;
+  width: 100%;
+  /* background-color:#4a4a4a; */
   padding: 2px 2px 2px 2px;
-  border-radius: 10px;
 }
 
 .clearButton {
-  text-align: center;
+  vertical-align: middle;
   padding-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 0px;
   flex: 1;
   height: auto;
-  border-radius: 8px;
   cursor: pointer;
-  background-color: grey; 
+  background-color: #EBEDE8; 
   user-select: none;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 .clearButton:hover{
   background-color: var(--light-secondary-color);;
@@ -52,12 +52,14 @@
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 0px;
+  bottom: 0px;
   flex: 1;
   float:right;
   height: auto;
-  border-radius: 5px;
-  background-color: grey;
+  background-color: #EBEDE8;
   user-select: none;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 .enterButton:hover{
   background-color: var(--light-secondary-color);
@@ -75,6 +77,7 @@
   padding-left: 8px;
   padding-right: 8px;
   border-radius: 10px;
+  border-bottom-right-radius: 0px;
   margin-top:3px;
   margin-bottom:2px;
   margin-left: auto;
@@ -93,10 +96,22 @@
   padding-left: 8px;
   padding-right: 8px;
   border-radius: 10px;
+  border-bottom-left-radius: 0px;
   margin-top:3px;
   margin-bottom:5px;
   margin-left: 5px;
   caret-color: transparent;
+}
+.contextmenu{
+  position: absolute;
+  list-style: none;
+  top: 2px;
+  right: 2px;
+}
+
+.contextmenu li{
+  display: inline;
+  padding-right: 4px;
 }
 
 .end {
@@ -106,20 +121,24 @@
 }
 
 .feed{
-    border: 1px solid var(--primary-color);
     margin-top: 10px;
     padding-top: 10px;
+    /* padding-left: 5px; */
+    /* padding-right: 5px; */
     width: 100%;
-    height: 470px;
-    overflow-y: scroll;
+    height: 75vh;
+    background-color: #FFFFFF;
+    /* -ms-overflow-style: none; */
+    /* overflow:hidden; */
+    scrollbar-width: none;
     font-size: var(--text-size);
-    background-color: white;
     border-radius: 10px;
-    user-select: none;
 }
 
-::-webkit-scrollbar {
-    width: 7px;
+  ::-webkit-scrollbar {
+    width: 1px;
+    right: 1px;
+    visibility: hidden;
     border-radius: 25px;
   }
   
@@ -134,6 +153,7 @@
   }
 
   ::-webkit-scrollbar-thumb:hover {
+    visibility:visible;
     background: #555; 
     border-radius: 25px;
   }

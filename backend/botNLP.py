@@ -12,14 +12,11 @@ import os
 import platform
 
 #setting up path for various nlp-resources such as autocorrect dictionary
-if os.path.basename(os.getcwd()) == "backend" and platform.system()=="Windows": 
-    path = ".\\nlp-resources\\"
-elif os.path.basename(os.getcwd()) == "COSC4P02Project2022" and platform.system()=="Windows": 
-    path = ".\\backend\\nlp-resources\\"
-elif os.path.basename(os.getcwd()) == "backend" and platform.system()=="Linux": 
-    path = "./nlp-resources/"
-else: 
-    path = "./backend/nlp-resources/"
+def filepath():
+    if os.path.basename(os.getcwd()) =="backend":#we are in COSC4p02Project2022/backend
+        return "./nlp-resources/"
+    else:#we are in cosc4p02Project2022
+        return "./backend/nlp-resources/"
 # load spacy
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
@@ -29,7 +26,7 @@ phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 # This section sets up the PhraseMatcher
 # Currently the PhraseMatcher is used to extract only building codes
 buildings = []
-with open(path+"buildingCodesClean.txt", encoding="utf8") as f: 
+with open(filepath()+"buildingCodesClean.txt", encoding="utf8") as f: 
     for line in f:
         buildings.append(json.loads(line)["buildingCode"])
 patterns = list(nlp.pipe(buildings))
@@ -47,7 +44,7 @@ def assignPriority(matcher, doc, i, matches):
         or match_id == nlp.vocab.strings["question"]:
         doc[start:end]._.prio = 3
     elif match_id == nlp.vocab.strings["code"] \
-        or match_id == nlp.vocab.strings["course component"] \
+        or match_id == nlp.vocab.strings["format"] \
         or match_id == nlp.vocab.strings["buildingCode"] :
         doc[start:end]._.prio = 2
     elif match_id == nlp.vocab.strings["description"]: 
@@ -120,10 +117,10 @@ matcher.add("openerGreet", [openerMatch], on_match=assignPriority)
 progQuestion = [{'LOWER':'the'},{'OP':'*'},{'LOWER':'program'}]
 matcher.add("program question",[progQuestion], on_match=assignPriority)
 
-# course components -- offering table
+# formats -- offering table
 courseComp = [{'LEMMA': {"IN": ['sem', 'seminar', 'lab', 'tut', 'tutorial', 'lec', 'lecture', 'sec', 'section']}},
            {'LIKE_NUM': True, 'OP': '?'}]
-matcher.add("course component", [courseComp], greedy="LONGEST", on_match=assignPriority)
+matcher.add("format", [courseComp], greedy="LONGEST", on_match=assignPriority)
 
 # location -- offering or exam
 location = [[{'LOWER':'location'}],
@@ -200,7 +197,7 @@ matcher.add("store", store, on_match=assignPriority)
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
 print(os.curdir)
-dictionary_path = "backend\\nlp-resources\\frequency_dictionary_en_82_765.txt"
+dictionary_path = filepath()+"frequency_dictionary_en_82_765.txt"
 # term_index is the column of the term and count_index is the
 # column of the term frequency
 sym_spell.load_dictionary(dictionary_path, term_index=0, count_index=1)
@@ -325,7 +322,7 @@ def processKeywords(matches, doc):
             if doc[start:end]._.prio == 0: 
                 high_prio = True
             print("Match:", match_label, "\tMatch priority:", doc[start:end]._.prio)
-        elif match_label == 'course component':
+        elif match_label == 'format':
             comp = ''
             num = ''
             barred = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -387,7 +384,7 @@ def getLink(matchedKeys):
         return temp2.substitute({'y' : "academic advisors", 'x': links["acad_advisor"]})
     elif "exam" in matches:
         return temp.substitute({'x': links["exam"]})
-    elif "course component" in matches or "course code" in matches:
+    elif "format" in matches or "course code" in matches:
         return temp.substitute({'x': links["timetable"]})
     elif "tuition" in matches:
         return temp2.substitute({'y' : "tuition", 'x': links["tuition"]})

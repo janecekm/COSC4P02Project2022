@@ -3,7 +3,9 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import json
-	
+import sys
+
+sys.stdout.reconfigure(encoding='utf-8')
     
 # subjects = ['abed', 'abte', 'actg', 'aded', 'admi', 'adst', 'aesl', 'apco', 'arab', 'astr', 'bchm', 'biol', 'bmed', 'bphy', 'btec', 'btgd', 'cana', 'chem', 'chys', 'clas', 'comm', 'cosc', 'cpcf', 'dart', 'econ', 'edbe', 'educ', 'encw', 'engl', 'ensu', 'entr', 'ersc', 'esci', 'ethc', 'film', 'fnce', 'fren', 'geog', 'germ', 'gree', 'hist', 'hlsc', 'iasc', 'indg', 'intc', 'ital', 'itis', 'japa', 'kine', 'labr', 'lati', 'ling', 'mand', 'mars', 'math', 'mgmt', 'mktg', 'musi', 'neur', 'nusc', 'obhr', 'oevi', 'oper', 'pcul', 'phil', 'phys', 'pmpb', 'poli', 'port', 'psyc', 'recl', 'russ', 'scie', 'sclc', 'soci', 'span', 'spma', 'stac', 'swah', 'tour', 'visa', 'wgst', 'wrds']
 # 
@@ -32,8 +34,9 @@ for course in courses:
 for subject in subjects:
     # scrapeCourseInfo(subject,"fw","ex",examYear,examMonth,driver)
     driver.get("https://brocku.ca/guides-and-timetables/timetables/?session=fw&type=ex&level=all&program="+subject+"&academicyear=2021&period=april")
+    sleep(10)
     exams = driver.find_elements(By.XPATH,'//tr[contains(@class,"exam-row")]')
-    sleep(2)
+
     for exam in exams:
         solution = {}
         solution["code"] = exam.get_attribute("data-cc")
@@ -50,7 +53,7 @@ for subject in subjects:
             solution["location"] = exam.get_attribute("data-location")
         else:
             exam.click()
-            sleep(3)#don't know why it works
+            sleep(10)#don't know why it works
             lis = exam.find_elements(By.TAG_NAME,"li")
             solution["location"] = lis[len(lis)-1].text
         print(json.dumps(solution))

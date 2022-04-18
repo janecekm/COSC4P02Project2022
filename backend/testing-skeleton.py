@@ -1,24 +1,17 @@
-import botNLP
+import os
+import pytest
+from pytest import ExitCode
 
-error_message = "I'm sorry, I wasn't able to find what you were looking for. However, you might be able to find more information at: https://brocku.ca/"
-#botNLP.ProcessQ
-def testing_invalid_input_ProcessQ():
-    assert botNLP.processQ('raietweiaweeiiwnaeiugwe')['message'] == "I am not quite sure what you're asking. Could you rephrase that?"
-def testing_valid_input_ProcessQ():
-    assert 'COSC 1P02' in botNLP.processQ('What is the prereqs for COSC 1P03')['message']
-def testing_valid_misspelled_input_ProcessQ():
-    assert 'COSC 1P02' in botNLP.processQ('What aer the Prereq for COSC 1p03')['message']
-def testing_valid_more_misspelled_input_ProcessQ():
-    assert botNLP.processQ('Qjtat is jet prereq for COSC 1p03')['message'] == "I am not quite sure what you're asking. Could you rephrase that?"
-def testing_misspelled_wat_input_ProcessQ():
-    assert 'COSC 1P02' in botNLP.processQ('Wat is prereqs for COSC 1P03')['message'] 
-def testing_attempt_SQL_injection1_ProcessQ():
-    assert botNLP.processQ('What are the prereqs for *’-- 1P02')['message'] == error_message
-def testing_attempt_SQL_injection2_ProcessQ():
-    assert botNLP.processQ('What are the prereqs for /**/ *’--')['message'] == error_message
-def testing_single_hello_processQ():
-    assert botNLP.processQ('Hello Hello') == "Hello"
+#now we need to run python3 testing-skeleton
+def filepath():
+    if os.path.basename(os.getcwd()) =="backend":#we are in COSC4p02Project2022/backend
+        return "./testingFiles/"
+    else:#we are in cosc4p02Project2022
+        return "./backend/testingFiles/"
 
-#botNLP.getLink
-def testing_prereq_getLink():
-    assert 'https://brocku.ca/webcal/undergrad/' in botNLP.getLink({'prereq'})
+list = [] 
+for name in os.listdir(filepath()):
+    list.append(filepath()+name)
+
+exc = pytest.main(list)
+SystemExit(exc)

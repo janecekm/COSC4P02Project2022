@@ -5,9 +5,33 @@ import re
 def doQueries(keywords):
     print("Keywords received from botNLP: ")
     print(keywords)
-    if 'prereq' in keywords or 'description' in keywords or 'xlist' in keywords:
+    #Builing table
+    if 'buildingCode' in keywords:
         try:
-            filterCourseInputs(keywords)
+            print(keywords)
+            keywords['code'] = filterInputs(keywords, 'buildingCode')
+            temp = models.Building.query.filter_by(code=keywords.get('buildingCode')).all()
+            print(temp)
+            queryReturn = {}
+            for row in temp:
+                queryRow = to_dict(row)
+                rowDict = {}
+                for key in (keywords.keys() & queryRow.keys()):
+                    rowDict[key] = queryRow[key]
+                rowDict["code"] = queryRow["code"]
+                rowDict["name"] = queryRow["name"]
+                queryReturn.update(rowDict)
+            print('Query Returned to botNLP: ')
+            print(queryReturn)
+            return queryReturn
+        except Exception as e:
+            print(e)
+            print('building not found')
+            return 'not found'
+    #Course table, code must be in keywords
+    elif 'prereq' in keywords or 'description' in keywords or 'xlist' in keywords:
+        try:
+            keywords['code'] = filterInputs(keywords, 'code')
             temp = models.Course.query.filter_by(code=keywords.get('code')).first()
             queryRow = to_dict(temp)
             queryReturn = {}
@@ -24,12 +48,13 @@ def doQueries(keywords):
         except Exception as e:
             print(e)
             return 'more info required'
+    #Exam table
     elif 'exam' in keywords:
         try:
             if 'code' in keywords:
                 print("KEYWORDS: ")
                 print(keywords)
-                filterCourseInputs(keywords)
+                keywords['code'] = filterInputs(keywords, 'code')
                 temp = models.Exam.query.filter_by(code=keywords.get('code')).all()
                 queryReturn = {}
                 print(temp)
@@ -51,10 +76,11 @@ def doQueries(keywords):
             print(e)
             print('exam not found')
             return 'not found'
-    elif 'location' in keywords or 'instructor' in keywords or 'time' in keywords or 'course component' in keywords:
+    #Offering table
+    elif 'location' in keywords or 'instructor' in keywords or 'time' in keywords or 'format' in keywords:
         try:
             if 'code' in keywords:
-                filterCourseInputs(keywords)
+                keywords['code'] = filterInputs(keywords, 'code')
                 temp = models.Offering.query.filter_by(code=keywords.get('code')).all()
                 # temp = models.Offering.query.filter_by(code=keywords.get('code')).first()
                 print(temp)
@@ -62,17 +88,24 @@ def doQueries(keywords):
                 for row in temp:
                     queryRow = to_dict(row)
                     rowDict = {}
+                    rowsList = []
                     for key in (keywords.keys() & queryRow.keys()):
-                        if key == 'time':
-                            rowDict['days'] = queryRow["days"]
-                        rowDict[key] = queryRow[key]
-                    queryReturn.update(rowDict)
+                        rowDict = {}
+                        if 'format' in keywords:
+                            keywords["format"] = filterInputs(keywords, 'format')
+                            if rowDict['format'] == queryRow['format']:
+                                rowDict[key] = queryRow[key]
+                        else:
+                            if key == 'time':
+                                rowDict['days'] = queryRow["days"]
+                            else:
+                                rowDict[key] = queryRow[key]
+                        queryReturn.update(rowDict)
+                        rowsList.append(rowDict)
+                print(rowsList)
                 print('Query Returned to botNLP: ')
                 print(queryReturn)
                 return queryReturn
-            elif 'building' in keywords:
-                print('building found')
-                return 'placeholder return'
             else:
                 print('more info required')
                 return 'more info required'
@@ -82,14 +115,21 @@ def doQueries(keywords):
     return 'placeholder return'
 
 # filter to match database formatting
-def filterCourseInputs(keywords):
-    temp = keywords.get('code').text
+def filterInputs(keywords, key):
+    temp = keywords.get(key).text
+    temp = temp.upper()
+    print('filtered input: '+temp)
+    # keywords[key] = temp
+    return temp
+
+def filterBuildingCodes(keywords):
+    temp = keywords.get('buildingCode').text
     temp = temp.upper()
     temp = re.split(r'([0-9][A-Z][0-9][0-9])', temp, maxsplit=1)
     temp = [t.strip() for t in temp]
     temp = ' '.join(temp).strip()
     print('filtered input: '+temp)
-    keywords['code'] = temp
+    keywords['buildingCode'] = temp
     return None
 
 def queryReturn(keywords, temp):
