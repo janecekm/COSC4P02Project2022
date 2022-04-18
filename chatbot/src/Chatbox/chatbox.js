@@ -1,5 +1,5 @@
 import React from 'react';
-import "./chatbox.css"
+import "./chatscreen.css"
 import Feed from './Feed/feed';
 
 
