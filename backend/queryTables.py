@@ -10,7 +10,7 @@ def doQueries(keywords):
         try:
             print(keywords)
             keywords['code'] = filterInputs(keywords, 'buildingCode')
-            temp = models.Building.query.filter_by(code=keywords.get('buildingCode')).all()
+            temp = models.Building.query.filter_by(code=keywords.get('code')).all()
             print(temp)
             queryReturn = {}
             for row in temp:
@@ -18,7 +18,7 @@ def doQueries(keywords):
                 rowDict = {}
                 for key in (keywords.keys() & queryRow.keys()):
                     rowDict[key] = queryRow[key]
-                rowDict["code"] = queryRow["code"]
+                rowDict["buildingCode"] = queryRow["code"]
                 rowDict["name"] = queryRow["name"]
                 queryReturn.update(rowDict)
             print('Query Returned to botNLP: ')
