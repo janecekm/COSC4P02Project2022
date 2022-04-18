@@ -1,8 +1,6 @@
 import os
 import pytest
-import coverage
-
-cov = coverage.Coverage()
+from pytest import ExitCode
 
 #now we need to run python3 testing-skeleton
 def filepath():
@@ -15,7 +13,5 @@ list = []
 for name in os.listdir(filepath()):
     list.append(filepath()+name)
 
-cov.start()
-pytest.main(list)
-cov.stop()
-cov.save()
+exc = pytest.main(list)
+SystemExit(exc)

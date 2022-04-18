@@ -12,14 +12,11 @@ import os
 import platform
 
 #setting up path for various nlp-resources such as autocorrect dictionary
-if os.path.basename(os.getcwd()) == "backend" and platform.system()=="Windows": 
-    path = ".\\nlp-resources\\"
-elif os.path.basename(os.getcwd()) == "COSC4P02Project2022" and platform.system()=="Windows": 
-    path = ".\\backend\\nlp-resources\\"
-elif os.path.basename(os.getcwd()) == "backend" and platform.system()=="Linux": 
-    path = "./nlp-resources/"
-else: 
-    path = "./backend/nlp-resources/"
+def filepath():
+    if os.path.basename(os.getcwd()) =="backend":#we are in COSC4p02Project2022/backend
+        return "./nlp-resources/"
+    else:#we are in cosc4p02Project2022
+        return "./backend/nlp-resources/"
 # load spacy
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
@@ -29,7 +26,7 @@ phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 # This section sets up the PhraseMatcher
 # Currently the PhraseMatcher is used to extract only building codes
 buildings = []
-with open(path+"buildingCodesClean.txt", encoding="utf8") as f: 
+with open(filepath()+"buildingCodesClean.txt", encoding="utf8") as f: 
     for line in f:
         buildings.append(json.loads(line)["buildingCode"])
 patterns = list(nlp.pipe(buildings))
@@ -200,7 +197,7 @@ matcher.add("store", store, on_match=assignPriority)
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
 print(os.curdir)
-dictionary_path = "backend\\nlp-resources\\frequency_dictionary_en_82_765.txt"
+dictionary_path = filepath()+"frequency_dictionary_en_82_765.txt"
 # term_index is the column of the term and count_index is the
 # column of the term frequency
 sym_spell.load_dictionary(dictionary_path, term_index=0, count_index=1)
