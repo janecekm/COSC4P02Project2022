@@ -90,24 +90,30 @@ def doQueries(keywords):
                     queryRow = to_dict(row)
                     rowDict = {}
                     for key in (keywords.keys() & queryRow.keys()):
-                        rowDict = {}
                         if 'format' in keywords.keys():
                             if keywords['format'] == queryRow['format']:
-                                # if not 'code' in rowsList:
                                 rowDict[key] = queryRow[key]
-                        else:
+                                rowDict['days'] = queryRow['days']
+                        elif queryRow['format'] == 'LEC':
                             if key == 'time':
                                 rowDict[key] = queryRow[key]
                                 rowDict['days'] = queryRow["days"]
                             else:
                                 rowDict[key] = queryRow[key]
-                        if rowDict:
-                            queryReturn.update(rowDict)
-                            rowsList.append(rowDict)
+                        # if rowDict:
+                        #     queryReturn.update(rowDict)
+                    if rowDict:
+                        queryReturn.update(rowDict)
+                        rowsList.append(rowDict)
                 print(rowsList)
                 for r in rowsList:
-                    # if r.get('location'):
                     print(r)
+                # if 'format' in keywords.keys():
+                #     l = []
+                #     for r in rowsList:
+                #         # if r.get('location'):
+                            
+                #             print(r)
                 print('Query Returned to botNLP: ')
                 print(queryReturn)
                 return queryReturn

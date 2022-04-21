@@ -421,6 +421,13 @@ def formResponse(database_answer, keys):
         temp = Template("$c is taught by $i")
         return temp.substitute({'c':database_answer["code"], 'i':database_answer["instructor"]})
     if "time" in database_answer:
+        # string = ''
+        # for r in database_answer:
+        #     temp = Template("$c is at $t on $d")
+        #     temp.substitute({'c':r["code"], 't':r["time"], 'd':r["days"]})
+        #     string += temp
+        # return string
+    
         temp = Template("$c is at $t on $d")
         return temp.substitute({'c':database_answer["code"], 't':database_answer["time"], 'd':database_answer["days"]})
     if "location" in database_answer:
