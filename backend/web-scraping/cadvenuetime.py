@@ -39,17 +39,16 @@ for row in rows:
                 t["gender"] = tempevent[len(tempevent)-1]
                 t["specific-event"] = " ".join(tempevent[:len(tempevent)-1])
             # t["stage"] = det[6].text
-            tempstage = [x.strip() for x in det[6].text.split("-")]
-            t["round"] = tempstage[0]
-            t["game"] = " ".join(tempevent[1:])
+            tempstage = [x.strip() for x in det[6].text.split("|")]
+            tempstage = "-".join(tempstage)
+            tempstage = [x.strip() for x in tempstage.split("-")]
+            t["stage"] = tempstage[0]
+            t["game"] = " ".join(tempstage[1:])
+            # t["game"] = " ".join(tempevent[1:])
             t["venue"] = det[7].text
             print(json.dumps(t))
     else:
-        if not firstpass:
             name = row.text
-            # print(row.text)
-        else:
-            firstpass = False
 print(MainInfo)
 
 driver.close()
