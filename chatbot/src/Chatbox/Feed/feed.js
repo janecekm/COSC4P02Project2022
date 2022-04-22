@@ -54,7 +54,6 @@ const Feed = () => {
     console.log(query);
     query = query.trim();
     if (query !== "" & query !== "\n\n\n") {
-      console.log(query);
       setMessagesList( prevMessages =>
         prevMessages.concat(<Message key={messagesList.length} text = {query} type = "user_message"/>)
       );
@@ -62,7 +61,6 @@ const Feed = () => {
       // sending query
       await setQuestions(query);//triggers useEffect for questions
       //done query
-      console.log("query gotten");
 
       setQuestions(null);
       clearInput();

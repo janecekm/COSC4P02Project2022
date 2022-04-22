@@ -1,46 +1,73 @@
+* {
+    font-family: 'Open Sans', sans-serif;
+}
 h1 {
     top: 2rem;
+font-size: 5vh;
 }
 .splashtable{
     height: fit-content;
     padding: 1rem;
     --button-visible:hidden;
     --text-visible:none;
+    --texttitle: none;
     border-spacing: 0 0.7rem !important;
     border-collapse:separate;
+    font-size: 2vw;
 }
 .info{
     transition:  0.2s;
     display: var(--text-visible);
 }
+.texttitle{
+    text-decoration: var(--texttitle);
+}
 .text{
     text-align: center;
+    align-items: center;
     transition: 0.5s;
+    width: 60vw;
+    padding: 20px;
 }
 
 .image{
     padding: inherit;
     object-fit:contain;
+    width: 40vw;
 }
-
+.button{
+    padding-top: 40px;
+}
 button{
     border-radius: 10px;
+    padding: 10px;
     text-align: center;
     transition: 0.1s ease-in;
     visibility: var(--button-visible);
     cursor: pointer;
+    box-shadow: 2px 2px 4px black inset;
     border: 2px double;
+    font-size: 2vw;
+}
+button:hover{
+    box-shadow: 2px 2px 4px black;
+}
+.brockbutton{
+    background-color: #FF4D4D;
 }
 .brockbutton:hover{
     background-color: #FF0000;
 }
+.canadabutton{
+    background-color: #006DA155;
+}
 .canadabutton:hover{
-    background-color: #006DA1;
+    background-color: #80D6FF;
 }
 
 .runner {
     padding-top: 1rem;
-    box-shadow: 2px 2px 4px #272727;
+
     border-radius: 10px;
     background-color: white;
 }
@@ -63,6 +90,7 @@ button{
     --text-visible:block;
     transform: scale(1);
     box-shadow: 4px 4px 4px black;
+    --texttitle: underline;
 }
 
 .canada{

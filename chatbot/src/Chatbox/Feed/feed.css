@@ -130,8 +130,7 @@
     height: 75vh;
     background-color: #FFFFFF;
     /* -ms-overflow-style: none; */
-    /* overflow:hidden; */
-    scrollbar-width: none;
+    overflow:scroll;
     font-size: var(--text-size);
     border-radius: 10px;
 }
@@ -139,7 +138,6 @@
   ::-webkit-scrollbar {
     width: 1px;
     right: 1px;
-    visibility: hidden;
     border-radius: 25px;
   }
   
