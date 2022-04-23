@@ -434,7 +434,8 @@ def formResponse(database_answer, keys):
         string = ''
         temp = Template("$c is at $t on $d")
         for r in database_answer:
-            string += temp.substitute({'c':r["code"], 't':r["time"], 'd':r["days"]})
+            if not r["time"] == '':
+                string += temp.substitute({'c':r["code"], 't':r["time"], 'd':r["days"]})
         return string
     
         # temp = Template("$c is at $t on $d")

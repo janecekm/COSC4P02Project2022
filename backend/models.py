@@ -139,7 +139,7 @@ class Offering(db.Model):
     )
 
     def __repr__(self):
-        return '\nCode '+self.code+'\n Format '+self.format+'\n Duration'+self.duration+'\n Section'+self.section+'\n days'+self.days+'\n time'+self.time+'\n location'+self.location+'\n Instructor'+self.instructor
+        return '\nCode '+self.code+'\n Format '+self.format+'\n FormatNum '+self.formatNum+'\n Duration'+self.duration+'\n Section'+self.section+'\n days'+self.days+'\n time'+self.time+'\n location'+self.location+'\n Instructor'+self.instructor
 
 
 '''
