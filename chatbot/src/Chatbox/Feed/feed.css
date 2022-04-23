@@ -23,6 +23,7 @@
 .userTools {
   display: flex;
   width: 100%;
+  bottom: 0px;
   /* background-color:#4a4a4a; */
   padding: 2px 2px 2px 2px;
 }
@@ -121,7 +122,7 @@
 }
 
 .feed{
-    margin-top: 10px;
+  margin-top: 10px;
     padding-top: 10px;
     /* padding-left: 5px; */
     /* padding-right: 5px; */
@@ -129,8 +130,7 @@
     height: 75vh;
     background-color: #FFFFFF;
     /* -ms-overflow-style: none; */
-    /* overflow:hidden; */
-    scrollbar-width: none;
+    overflow:scroll;
     font-size: var(--text-size);
     border-radius: 10px;
 }
@@ -138,7 +138,6 @@
   ::-webkit-scrollbar {
     width: 1px;
     right: 1px;
-    visibility: hidden;
     border-radius: 25px;
   }
   

@@ -1,58 +1,96 @@
-h3, h1 {
-    color: white; 
-    top: 8px;
-
+* {
+    font-family: 'Open Sans', sans-serif;
 }
-h1, .info  {
-    /* background-color: #103a88; */
-    padding: 10px;
-    color: white;
+h1 {
+    top: 2rem;
+font-size: 5vh;
 }
-.info {
-    bottom: 0;
-    background-color: black;
-    width: 100%;
+.splashtable{
+    height: fit-content;
+    padding: 1rem;
+    --button-visible:hidden;
+    --text-visible:none;
+    --texttitle: none;
+    border-spacing: 0 0.7rem !important;
+    border-collapse:separate;
+    font-size: 2vw;
 }
-
-.container { 
-    display: flex;
+.info{
+    transition:  0.2s;
+    display: var(--text-visible);
 }
-
-.container > div { 
-    flex: 2;
-    margin: 1px; 
-    padding: 20px; 
+.texttitle{
+    text-decoration: var(--texttitle);
+}
+.text{
     text-align: center;
-    text-shadow: 1px 1px #000000;
-    font-size: larger;
-    height: 500px;
-    filter: brightness(80%);
-    left: 50%;
-    max-width: 100%;
-    display: grid;
     align-items: center;
-    justify-content: center;
-}   
+    transition: 0.5s;
+    width: 60vw;
+    padding: 20px;
+}
 
-.choice > h2 { 
-    filter: brightness(100%);
-    vertical-align: middle;
-    color: white;
+.image{
+    padding: inherit;
+    object-fit:contain;
+    width: 40vw;
+}
+.button{
+    padding-top: 40px;
+}
+button{
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    transition: 0.1s ease-in;
+    visibility: var(--button-visible);
+    cursor: pointer;
+    box-shadow: 2px 2px 4px black inset;
+    border: 2px double;
+    font-size: 2vw;
+}
+button:hover{
+    box-shadow: 2px 2px 4px black;
+}
+.brockbutton{
+    background-color: #FF4D4D;
+}
+.brockbutton:hover{
+    background-color: #FF0000;
+}
+.canadabutton{
+    background-color: #006DA155;
+}
+.canadabutton:hover{
+    background-color: #80D6FF;
 }
 
 .runner {
-    
-    box-shadow: 2px 2px 4px #272727;
+    padding-top: 1rem;
+
+    border-radius: 10px;
+    background-color: white;
+}
+.background{
+    background-color: whitesmoke;
 }
 
-.brock{
-    background-image: url(https://brocku.ca/brock-news/wp-content/uploads/2020/04/IMG_6885-RS-1600x1067.jpg?x70330);
-    background-size: cover;
-    text-align: center;
-    margin-right: 0;
-    cursor:pointer;
-    /* display: flex;
-    justify-content: center; */
+.context{
+    width: 100%;
+    background-color: #f5f5f5;
+    filter: brightness(70%);
+    transition: all 0.2s;
+    box-shadow: 2px 2px 4px black;
+    padding: 20px;
+    transform: scale(0.99);
+}
+.context:hover{
+    filter: brightness(90%);
+    --button-visible:visible;
+    --text-visible:block;
+    transform: scale(1);
+    box-shadow: 4px 4px 4px black;
+    --texttitle: underline;
 }
 
 .canada{
@@ -61,26 +99,13 @@ h1, .info  {
     cursor: pointer;
 }
 
-.container > div:hover{ 
-    transition: 0.1s;
-    filter: brightness(100%);
-}
 .choice:hover{
     vertical-align: text-top;
 }
 .title{
     text-align: center;
     z-index: 1;
-    position: absolute;
     width: 100%;
-
-}
-
-p {
-    margin: 3px;
-}
-.background { 
-    background-color: black;
 }
 
 @media only screen and (max-width:768px){

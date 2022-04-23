@@ -13,5 +13,5 @@ list = []
 for name in os.listdir(filepath()):
     list.append(filepath()+name)
 
-exc = pytest.main(list)
-SystemExit(exc)
+extc = pytest.main(list)
+raise SystemExit(extc)
