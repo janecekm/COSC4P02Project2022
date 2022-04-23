@@ -1,3 +1,4 @@
+from concurrent.futures import process
 from urllib import response
 import spacy
 from spacy.matcher import PhraseMatcher
@@ -6,19 +7,26 @@ from spacy.matcher import Matcher
 from symspellpy import SymSpell, Verbosity
 from string import Template
 import json
-import os
+
+from spacy.tokens import Span
+import os 
+import platform
 
 
+#setting up path for various nlp-resources such as autocorrect dictionary
 def filepath():
     if os.path.basename(os.getcwd()) =="backend":#we are in COSC4p02Project2022/backend
         return "./nlp-resources/"
     else:#we are in cosc4p02Project2022
         return "./backend/nlp-resources/"
+# load spacy
+nlp = spacy.load("en_core_web_md")
+matcher = Matcher(nlp.vocab)
+phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 
 ###################################
 # This section sets up the PhraseMatcher
 # Currently the PhraseMatcher is used to extract only building codes
-
 
 from brockMatcher import matcher
 from brockMatcher import nlp
@@ -26,7 +34,8 @@ from brockMatcher import phrase_matcher
 from brockMatcher import buildings
 
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
-dictionary_path = filepath() + "frequency_dictionary_en_82_765.txt"
+print(os.curdir)
+dictionary_path = filepath()+"frequency_dictionary_en_82_765.txt"
 # term_index is the column of the term and count_index is the
 # column of the term frequency
 sym_spell.load_dictionary(dictionary_path, term_index=0, count_index=1)
@@ -48,6 +57,8 @@ links = {
     "transit" : "https://transitapp.com/region/niagara-region",
     "directory":"https://brocku.ca/directory/", 
     "store":"https://campusstore.brocku.ca/",
+    "masters":"https://brocku.ca/programs/graduate/",
+    "admission":"https://brocku.ca/admissions/",
     # to be accomodated for:
     "programs" : "https://discover.brocku.ca/programs",
     "service_direct" : "https://brocku.ca/directory/a-z/",
@@ -56,6 +67,23 @@ links = {
     "facts" : "https://brocku.ca/about/brock-facts/"
 }
 ###########################################################
+def multiQuestionCheck(matches, doc):
+    '''This method uses the matches and their corresponding priorities to see if the user has submitted multiple queries
+    Args:
+        matches: the list of matches returned from running the matcher on the document
+        doc: the user text processed by the NLP pipeline (spaCy Doc object https://spacy.io/api/doc)
+    Return:
+        returns true if there is likely multiple questions, otherwise false
+    '''
+    labels = []
+
+    for match_id, start, end in matches: 
+        labels.append(nlp.vocab.strings[match_id])
+    
+    if labels.count('question') > 1:
+        return False
+
+    return True
 
 
 def spellcheck(question, matches, doc): 
@@ -68,16 +96,23 @@ def spellcheck(question, matches, doc):
         matches: the list of matches after spellcheck has been applied (and the matcher has been re-run on the document)
         doc: the new Doc object (https://spacy.io/api/doc), run on the corrected string 
     '''
-    suggestions = sym_spell.lookup_compound(
-                question.lower(), max_edit_distance=2, ignore_non_words=True, ignore_term_with_digits=True)
-    merge = suggestions[0].term
-    doc = nlp(merge)
+    questionPieces = question.split(" ")
+    merge = ''
+    for q in questionPieces:
+        suggestion = sym_spell.lookup(q.lower(),Verbosity.TOP,max_edit_distance = 2,ignore_token= "[!@£#$%^&*();,.?:{}/|<>1234567890]")
+        if suggestion:
+            merge += suggestion[0].term+" "
+        else:
+            merge += q+" "
+    # suggestions = sym_spell.lookup_compound(
+    #             question.lower(), max_edit_distance=2, ignore_non_words=True, ignore_term_with_digits=True)
+    #merge = suggestions[0].term
+    doc = nlp(merge.strip())
     matches = matcher(doc)
     phrase_matches = phrase_matcher(doc)
     for match in phrase_matches: 
         matches.append(match)
     return matches, doc 
-
 
 def extractKeywords(question): 
     '''This method runs the matcher to extract key information from the query and add match labels
@@ -115,14 +150,35 @@ def processKeywords(matches, doc):
         a list of tuples containing the string version of the match_id and the matched text [(match_id_, match_text)]
     '''
     processedMatches = {}
+    high_prio = False
     for match_id, start, end in matches: 
         match_label = nlp.vocab.strings[match_id]
         match_text = doc[start:end]
-        processedMatches[match_label] = match_text
+        # match_text = match_text.text
+        if not match_label == 'course component' and not match_label == 'question':
+            processedMatches[match_label] = match_text
+            if doc[start:end]._.prio == 0: 
+                high_prio = True
+            print("Match:", match_label, "\tMatch priority:", doc[start:end]._.prio)
+        elif match_label == 'format':
+            comp = ''
+            num = ''
+            barred = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+            
+            for i in range(len(match_text.text)):
+                if match_text[i].text in barred:
+                    num += match_text[i].text
+                elif not i == " ":
+                    comp += match_text[i].text
+            processedMatches['format'] = comp.strip()
+            processedMatches['format num'] = num
+            
     # use the NER to extract the people names from document
     for ent in doc.ents:
         if (ent.label_ == "PERSON"):
             processedMatches["person"] = ent.text 
+    if "description" in processedMatches.keys() and high_prio: 
+        processedMatches.pop("description")
     return processedMatches
 
 def getLink(matchedKeys):
@@ -146,8 +202,12 @@ def getLink(matchedKeys):
         matches.append(nlp.vocab.strings[match_id])
     if "prereqs" in matches:
         return temp.substitute({'x': links["prereqs"]})
+    elif "admission" in matches:
+        return temp2.substitute({'y' : "the Brock admissions", 'x': links["store"]})
     elif "store" in matches:
         return temp2.substitute({'y' : "the Brock Campus Store", 'x': links["store"]})
+    elif "masters" in matches:
+        return temp2.substitute({'y' : "Brock's graduate programs", 'x': links["masters"]})
     elif "directory" in matches:
         return temp2.substitute({'y' : "contacting individuals at Brock", 'x': links["directory"]})
     elif "food" in matches:
@@ -158,14 +218,16 @@ def getLink(matchedKeys):
         return temp2.substitute({'y' : "Brock's COVID-19 response", 'x': links["covid"]})
     elif "register" in matches:
         return temp2.substitute({'y' : "Brock's registration process", 'x': links["register"]})
-    elif "tuition" in matches:
-        return temp2.substitute({'y' : "tuition", 'x': links["tuition"]})
     elif "advisor" in matches:
         return temp2.substitute({'y' : "academic advisors", 'x': links["acad_advisor"]})
     elif "exam" in matches:
         return temp.substitute({'x': links["exam"]})
-    elif "course component" in matches or "course code" in matches:
+    elif "format" in matches or "course code" in matches:
         return temp.substitute({'x': links["timetable"]})
+    elif "tuition" in matches:
+        return temp2.substitute({'y' : "tuition", 'x': links["tuition"]})
+    elif "openerGreet" in matches:
+        return "What can I help you with today?"
     else:
         return temp.substitute({'x': links["brock"]})
 
@@ -177,7 +239,7 @@ def formResponse(database_answer, keys):
         returns a string to output as a response
     '''
     if "exam" in database_answer:
-        temp = Template("$c has an exam on $m $d at $t in $l")
+        temp = Template("$c has an exam on $m $d at $t $l")
         return temp.substitute({'c': database_answer["code"], 'm':database_answer["month"], 'd':database_answer["dayNum"], 't':database_answer["time"], 'l':database_answer["location"]})
     # basic response for course descriptions
     if "description" in database_answer: 
@@ -204,7 +266,6 @@ def formResponse(database_answer, keys):
         if database_answer["prereq"] != "": 
             temp = Template("The prerequisites for $c are $p" )
             return temp.substitute({'c': database_answer["code"], 'p':database_answer["prereq"]})
-            
         else: 
             temp = Template("There are no prerequisites for $c")
             return temp.substitute({'c': database_answer["code"]})
@@ -222,11 +283,17 @@ def processQ(question):
         a response string to be output to the user
     '''
     matches, doc = extractKeywords(question)
-    processed = processKeywords(matches, doc)
-    from queryTables import doQueries
-    queryReturn = doQueries(processed)
-    myString = formResponse(queryReturn, matches)
-    if (myString != "" and myString != None):    
-        return {"message": myString}
+    if multiQuestionCheck(matches, doc):
+        processed = processKeywords(matches, doc)
+        from queryTables import doQueries
+        queryReturn = doQueries(processed)
+        myString = ""
+        if "hello" in question.lower():
+            myString += "Hello! "
+        myString += formResponse(queryReturn, matches)
+        if (myString != "" and myString != None):    
+            return {"message": myString}
+        else:
+            return {"message": "I am not quite sure what you're asking. Could you rephrase that?"}
     else:
-         return {"message": "I am not quite sure what you're asking. Could you rephrase that?"}
+        return {"message": "I'm sorry, that is a little too complicated for me. Please try rephrasing and limiting your questions to one at a time."}

@@ -1,8 +1,10 @@
 import models
-
+import re
 # keywords is a dictionary of match_id and match_text
 # print(models.Course.query.all())
 def doQueries(keywords):
+    print("Keywords received from botNLP: ")
+    print(keywords)
     #Builing table
     if 'buildingCode' in keywords:
         try:
@@ -86,7 +88,9 @@ def doQueries(keywords):
                 for row in temp:
                     queryRow = to_dict(row)
                     rowDict = {}
+                    rowsList = []
                     for key in (keywords.keys() & queryRow.keys()):
+                        rowDict = {}
                         if 'format' in keywords:
                             keywords["format"] = filterInputs(keywords, 'format')
                             if rowDict['format'] == queryRow['format']:
@@ -96,7 +100,9 @@ def doQueries(keywords):
                                 rowDict['days'] = queryRow["days"]
                             else:
                                 rowDict[key] = queryRow[key]
-                    queryReturn.update(rowDict)
+                        queryReturn.update(rowDict)
+                        rowsList.append(rowDict)
+                print(rowsList)
                 print('Query Returned to botNLP: ')
                 print(queryReturn)
                 return queryReturn
@@ -119,6 +125,9 @@ def filterInputs(keywords, key):
 def filterBuildingCodes(keywords):
     temp = keywords.get('buildingCode').text
     temp = temp.upper()
+    temp = re.split(r'([0-9][A-Z][0-9][0-9])', temp, maxsplit=1)
+    temp = [t.strip() for t in temp]
+    temp = ' '.join(temp).strip()
     print('filtered input: '+temp)
     keywords['buildingCode'] = temp
     return None

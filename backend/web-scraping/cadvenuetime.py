@@ -1,7 +1,8 @@
 import json
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-driver = webdriver.Chrome()
+#driver = webdriver.Chrome()
+driver = webdriver.Firefox()
 driver.get("https://cg2022.gems.pro/Result/Calendar.aspx?SetLanguage=en-CA&Grouping=S")
 driver.title
 
