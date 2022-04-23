@@ -1,40 +1,22 @@
-from concurrent.futures import process
-from urllib import response
-import spacy
-from spacy.matcher import PhraseMatcher
-import pkg_resources #resource for symspellpy
-from spacy.matcher import Matcher
 from symspellpy import SymSpell, Verbosity
 from string import Template
-import json
-
-from spacy.tokens import Span
 import os 
-import platform
+import spacy
+from spacy.matcher import Matcher
+from spacy.matcher import PhraseMatcher
 
-
+nlp = spacy.load("en_core_web_md")
+matcher = Matcher(nlp.vocab)
+phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 #setting up path for various nlp-resources such as autocorrect dictionary
 def filepath():
     if os.path.basename(os.getcwd()) =="backend":#we are in COSC4p02Project2022/backend
         return "./nlp-resources/"
     else:#we are in cosc4p02Project2022
         return "./backend/nlp-resources/"
-# load spacy
-nlp = spacy.load("en_core_web_md")
-matcher = Matcher(nlp.vocab)
-phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 
 ###################################
-# This section sets up the PhraseMatcher
-# Currently the PhraseMatcher is used to extract only building codes
-
-from brockMatcher import matcher
-from brockMatcher import nlp
-from brockMatcher import phrase_matcher
-from brockMatcher import buildings
-
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
-print(os.curdir)
 dictionary_path = filepath()+"frequency_dictionary_en_82_765.txt"
 # term_index is the column of the term and count_index is the
 # column of the term frequency
@@ -44,28 +26,6 @@ sym_spell.load_dictionary(dictionary_path, term_index=0, count_index=1)
 # sym_spell.create_dictionary_entry("is",8569404971)
 ###########################################################
 # links for when nothing is returned from the database
-links = {
-    "prereqs" : "https://brocku.ca/webcal/undergrad/",
-    "exam" : "https://brocku.ca/guides-and-timetables/exams/#more-exam-info",
-    "timetable" : "https://brocku.ca/guides-and-timetables/timetables/",
-    "brock" : "https://brocku.ca/", 
-    "acad_advisor": "https://brocku.ca/academic-advising/find-your-advisor/",
-    "tuition" : "https://brocku.ca/safa/tuition-and-fees/overview/", 
-    "covid" : "https://brocku.ca/coronavirus/", 
-    "food": "https://brocku.ca/dining-services/dining-on-campus/locations-on-campus-and-hours-of-operation/",
-    "register" : "https://discover.brocku.ca/registration/",
-    "transit" : "https://transitapp.com/region/niagara-region",
-    "directory":"https://brocku.ca/directory/", 
-    "store":"https://campusstore.brocku.ca/",
-    "masters":"https://brocku.ca/programs/graduate/",
-    "admission":"https://brocku.ca/admissions/",
-    # to be accomodated for:
-    "programs" : "https://discover.brocku.ca/programs",
-    "service_direct" : "https://brocku.ca/directory/a-z/",
-    "news" : "https://brocku.ca/brock-news/", 
-    "events" : "https://experiencebu.brocku.ca/",
-    "facts" : "https://brocku.ca/about/brock-facts/"
-}
 ###########################################################
 def multiQuestionCheck(matches, doc):
     '''This method uses the matches and their corresponding priorities to see if the user has submitted multiple queries
@@ -101,12 +61,9 @@ def spellcheck(question, matches, doc):
     for q in questionPieces:
         suggestion = sym_spell.lookup(q.lower(),Verbosity.TOP,max_edit_distance = 2,ignore_token= "[!@£#$%^&*();,.?:{}/|<>1234567890]")
         if suggestion:
-            merge += suggestion[0].term+" "
+            merge += suggestion[0].term + " "
         else:
-            merge += q+" "
-    # suggestions = sym_spell.lookup_compound(
-    #             question.lower(), max_edit_distance=2, ignore_non_words=True, ignore_term_with_digits=True)
-    #merge = suggestions[0].term
+            merge += q + " "
     doc = nlp(merge.strip())
     matches = matcher(doc)
     phrase_matches = phrase_matcher(doc)
@@ -181,6 +138,7 @@ def processKeywords(matches, doc):
         processedMatches.pop("description")
     return processedMatches
 
+# the getLink method will also need to be modularized out to correspond to the appropriate chatbot
 def getLink(matchedKeys):
     '''A method for if the info was not found in the database
     Args: 
@@ -274,14 +232,26 @@ def formResponse(database_answer, keys):
         return getLink(keys)
     return ""
 
-
-def processQ(question):
-    '''Main entry point to the NLP module. This is called by the server. 
+def processQ(question, flag=0):
+    '''Main entry point to the NLP module. This is called by the server.
     Args:
         question: the string of query text input by the user
+        flag: an integer indicating which chatbot is sending the request/which match patterns to use
+              0 (default) indicates the Brock chat bot
+              1 indicates Canada Games chat bot 
+              ** Note: this functionality is not yet completely implemented
     Return: 
         a response string to be output to the user
     '''
+    global matcher, phrase_matcher, links
+    if flag == 0: # we need to deconstruct the matcher each time to match the chat bot we are using
+        import brockMatcher
+        from brockMatcher import links as brock_links
+        links = brock_links
+    elif flag == 1:
+        import canadaMatcher
+        from canadaMatcher import links as canada_links
+        links = canada_links
     matches, doc = extractKeywords(question)
     if multiQuestionCheck(matches, doc):
         processed = processKeywords(matches, doc)

@@ -1,12 +1,9 @@
-import spacy
-from spacy.matcher import Matcher
-from spacy.matcher import PhraseMatcher
+from spacy.tokens import Span
 import os
 import json
-nlp = spacy.load("en_core_web_md")
-matcher = Matcher(nlp.vocab)
-phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
-
+from botNLP import nlp
+from botNLP import phrase_matcher
+from botNLP import matcher
 def filepath():
     if os.path.basename(os.getcwd()) =="backend":#we are in COSC4p02Project2022/backend
         return "./nlp-resources/"
@@ -20,119 +17,139 @@ with open(filepath()+"buildingCodesClean.txt", encoding="utf8") as f:
 patterns = list(nlp.pipe(buildings))
 phrase_matcher.add("buildingCode", patterns)
 
-
 ###################################
 # This section defines all the patterns for the Matcher
 
-# course codes -- course/offering/exam
+if not Span.has_extension("prio"): 
+    Span.set_extension("prio", default=100)
+
+def assignPriority(matcher, doc, i, matches): 
+    match_id, start, end = matches[i]
+    if match_id == nlp.vocab.strings["openerGreet"]\
+        or match_id == nlp.vocab.strings["question"]:
+        doc[start:end]._.prio = 3
+    elif match_id == nlp.vocab.strings["code"] \
+        or match_id == nlp.vocab.strings["format"] \
+        or match_id == nlp.vocab.strings["buildingCode"] :
+        doc[start:end]._.prio = 2
+    elif match_id == nlp.vocab.strings["description"]: 
+        doc[start:end]._.prio = 1
+    else: # every other question term is more specific so it is highest prio
+        doc[start:end]._.prio = 0
+
+# course codes -- course/offering/exam 
 courseCode = [[{'IS_ALPHA': True, 'LENGTH': 4},
-               {'SHAPE': {'IN': ['dxdd', 'dXdd']}}],
-             [{"SHAPE":  {'IN': ["xxxxdxdd", "Xxxxdxdd", "xXxxdxdd", "XXxxdxdd", "xxXxdxdd", "XxXxdxdd", "xXXxdxdd", "XXXxdxdd", "xxxXdxdd",
-             "XxxXdxdd", "xXxXdxdd", "XXxXdxdd", "xxXXdxdd", "xXXXdxdd", "XXXXdxdd", "xxxxdXdd", "XxxxdXdd", "xXxxdXdd", "XXxxdXdd", "xxXxdXdd",
-             "XxXxdXdd", "xXXxdXdd", "xxxXdXdd", "XxxXdXdd", "xXxXdXdd", "XXxXdXdd", "xxXXdXdd", "XxXXdXdd", "xXXXdXdd", "XXXXdXdd" ]}}]]
-matcher.add("code", courseCode)
+              {'SHAPE': {'IN': ['dxdd', 'dXdd']}}],
+            [{"SHAPE":  {'IN': ["xxxxdxdd", "Xxxxdxdd", "xXxxdxdd", "XXxxdxdd", "xxXxdxdd", "XxXxdxdd", "xXXxdxdd", "XXXxdxdd", "xxxXdxdd",
+            "XxxXdxdd", "xXxXdxdd", "XXxXdxdd", "xxXXdxdd", "xXXXdxdd", "XXXXdxdd", "xxxxdXdd", "XxxxdXdd", "xXxxdXdd", "XXxxdXdd", "xxXxdXdd",
+            "XxXxdXdd", "xXXxdXdd", "xxxXdXdd", "XxxXdXdd", "xXxXdXdd", "XXxXdXdd", "xxXXdXdd", "XxXXdXdd", "xXXXdXdd", "XXXXdXdd" ]}}]]
+matcher.add("code", courseCode, on_match=assignPriority)
 
 # who teaches, who is teaching, who is the instructor, who is the professor
 # offering table
 teaching = [[{'LOWER': 'who'},
             {'LEMMA': 'be', 'OP': '?'},
             {'LEMMA': 'teach'}],
-           [{'LOWER': 'who'},
+          [{'LOWER': 'who'},
             {'OP': '*'},
             {'LOWER': 'instructor'}],
-           [{'LOWER': 'who'},
+          [{'LOWER': 'who'},
             {'OP': '*'},
-            {'LOWER': 'professor'}]]
-matcher.add("instructor", teaching)
+            {'LOWER': 'professor'}],
+          [{'LOWER': 'who'},
+            {'OP': '*'},
+            {'LOWER': 'prof'}]]
+matcher.add("instructor", teaching, on_match=assignPriority)
 
 # when is, when are, what time is
 when = [[{'LOWER': 'when'},
-         {'LEMMA': 'be', "OP": "?"}],
+        {'LEMMA': 'be', "OP": "?"}],
         [{'LOWER': 'what'},
-         {'LOWER': 'time'},
-         {'LEMMA': 'be'}]]
-matcher.add("time", when, greedy="LONGEST")
+        {'LOWER': 'time'},
+        {'LEMMA': 'be'}]]
+matcher.add("time", when, greedy="LONGEST", on_match=assignPriority)
+
+# question
+question = [[{'LOWER': 'who'}], 
+                [{'LOWER': 'what'}],
+                [{'LOWER': 'when'}],
+                [{'LOWER': 'where'}], 
+                [{'LOWER': 'why'}]]
+matcher.add("question", question, on_match=assignPriority)
 
 # what are the prereq(uisites) -- course table
-prerequisites = [[{'LOWER': 'what'},
-                  {'OP': '?'},
-                  {'OP': '?'},
-                  {'LEMMA': 'prerequisite'}], 
-                [{'LOWER': 'what'},
-                  {'OP': '?'},
-                  {'OP': '?'},
-                  {'LEMMA': 'prereq'}]]
-matcher.add("prereq", prerequisites)
+prerequisites = [[{'LEMMA': 'prerequisite'}], 
+                [{'LEMMA': 'prereq'}]]
+matcher.add("prereq", prerequisites, on_match=assignPriority)
 
-crosslist = [[{'LOWER': 'what'},
-                  {'OP': '?'},
-                  {'OP': '?'},
-                  {'LEMMA': 'crosslist'}], 
+crosslist = [[{'LOWER': 'crosslist'}], 
+                [{'LOWER': 'crosslisted'}], 
+                [{'LEMMA': 'crosslisting'}], 
                 [{'LOWER': 'what'},
                   {'OP': '?'},
                   {'OP': '?'},
                   {'LEMMA': 'xlist'}]]
-matcher.add("xlist", crosslist)
+matcher.add("xlist", crosslist, on_match=assignPriority)
 
-# generally the descriptions
+# general descriptions
 generalInfo = [ [{'LOWER':'tell'},{'LOWER':'me'},{'LOWER':'about'}], 
                 [{'LOWER':'information'},{'LOWER':'on'}],
                 [{'LOWER':'info'},{'LOWER':'on'}], 
                 [{'LOWER': 'what'}, {'LOWER': 'is'}]]
-matcher.add("description", generalInfo)
+matcher.add("description", generalInfo, on_match=assignPriority)
 
 openerMatch = [{"LOWER": {"IN": ['hello','hi','hey','howdy','yo','sup','hiya','heyo']}}]
-matcher.add("openerGreet", [openerMatch])
+matcher.add("openerGreet", [openerMatch], on_match=assignPriority)
 
 # don't have table
 progQuestion = [{'LOWER':'the'},{'OP':'*'},{'LOWER':'program'}]
-matcher.add("program question",[progQuestion])
+matcher.add("program question",[progQuestion], on_match=assignPriority)
 
-# course components -- offering table
+# formats -- offering table
 courseComp = [{'LEMMA': {"IN": ['sem', 'seminar', 'lab', 'tut', 'tutorial', 'lec', 'lecture', 'sec', 'section']}},
-           {'LIKE_NUM': True, 'OP': '?'}]
-matcher.add("format", [courseComp], greedy="LONGEST")
+          {'LIKE_NUM': True, 'OP': '?'}]
+matcher.add("format", [courseComp], greedy="LONGEST", on_match=assignPriority)
 
 # location -- offering or exam
 location = [[{'LOWER':'location'}],
             [{'LOWER':'what'}, {'LOWER':'building'}], 
             [{'LOWER': 'where'}]]
-matcher.add("location", location)
+matcher.add("location", location, on_match=assignPriority)
 
 # exam table
 exam = [{'LEMMA':'exam'}]
-matcher.add("exam", [exam])
+matcher.add("exam", [exam], on_match=assignPriority)
 
 reqQuestion = [{'LOWER':'the'},{'LOWER':'program','OP':'?'},{'LOWER':'requirements'},{'LOWER':'for'}]
 
-matcher.add("requirement question",[reqQuestion])
+matcher.add("requirement question",[reqQuestion], on_match=assignPriority)
 
 # advisor table
 advisor = [{'LEMMA':'advisor'}]
-matcher.add("advisor", [advisor])
+matcher.add("advisor", [advisor], on_match=assignPriority)
 
 # covid information
 covid = [[{'LOWER':'covid'}],[{'LOWER':'covid19'}],[{'LOWER':'covid-19'}]
             ,[{'LOWER':'coronavirus'}],[{'LOWER':'quarantine'}],[{'LOWER':'lockdown'}]]
-matcher.add("covid", covid)
+matcher.add("covid", covid, on_match=assignPriority)
 
 # tuition
 tuition = [[{'LEMMA':'cost'}],[{'LOWER':'tuition'}],[{'LEMMA':'price'}],[{'LOWER':'money'}],[{'LEMMA':'dollar'}],
             [{'LEMMA':'pay'}]]
-matcher.add("tuition", tuition)
+matcher.add("tuition", tuition, on_match=assignPriority)
 
 # food
 food = [[{'LEMMA':'eat'}],[{'LOWER':'food'}],[{'LOWER':'breakfast'}],[{'LOWER':'lunch'}],[{'LOWER':'dinner'}],
             [{'LOWER':'meal'}],[{'LOWER':'mealplan'}],[{'LEMMA':'dining'}],[{'LEMMA':'snack'}]]
-matcher.add("food", food)
+matcher.add("food", food, on_match=assignPriority)
 
 # transportation, "How do I get to..."
-transport = [[{'LEMMA':'travel'}],[{'LEMMA':'bus'}],[{'LEMMA':'transport'}],[{'LEMMA':'transportation'}],
+transport = [[{'LEMMA':'transit'}],[{'LEMMA':'travel'}],[{'LEMMA':'bus'}],[{'LEMMA':'transport'}],[{'LEMMA':'transportation'}],
                 [{'LOWER': 'how'},
                   {'OP': '*'},
                   {'LEMMA': 'get'},
                   {'LEMMA': 'to'}]]
-matcher.add("transport", transport)
+matcher.add("transport", transport, on_match=assignPriority)
 
 # registration
 register = [[{'LEMMA':'register'}],[{'LEMMA':'registration'}],
@@ -140,14 +157,53 @@ register = [[{'LEMMA':'register'}],[{'LEMMA':'registration'}],
                 [{'LOWER': 'pick'},{'OP': '?'},{'LEMMA': 'class'},],
                 [{'LOWER': 'choose'},{'OP': '?'},{'LEMMA': 'classes'},],
                 [{'LOWER': 'pick'},{'OP': '?'},{'LEMMA': 'classes'},]]
-matcher.add("register", register)
+matcher.add("register", register, on_match=assignPriority)
 
 # directory
 directory = [[{'LEMMA':'contact'}], [{'LOWER':'call'}], [{'LOWER':'phone'}], 
             [{'LOWER':'email'}], [{'LEMMA': 'speak'},{'LOWER': 'to'},]]
-matcher.add("directory", directory)
+matcher.add("directory", directory, on_match=assignPriority)
+
+# masters
+masters = [[{'LOWER':'graduate'}, {'LOWER':"program"}], 
+            [{'LOWER':'graduate'}, {'LOWER':"studies"}], 
+            [{'LOWER':'masters'}], [{'LOWER':'msc'}], 
+            [{'LOWER':'mba'}], [{'LOWER': 'ma'}], [{'LOWER':'macc'}], [{'LOWER':'mag'}]
+            ,[{'LOWER':'mbe'}], [{'LOWER':'mph'}]]
+matcher.add("masters", masters, on_match=assignPriority)
+
+
+admission = [[{'LEMMA':'apply'}], 
+            [{'LEMMA':'admit'}], [{'LEMMA':'addmission'}] ]
+matcher.add("admission", admission, on_match=assignPriority)
+
 
 # store
 store = [[{'LOWER':'store'}], [{'LEMMA':'textbook'}], [{'LEMMA':'booklist'}]]
-matcher.add("store", store)
-# end of Matcher pattern defintions
+matcher.add("store", store, on_match=assignPriority)
+  # end of Matcher pattern defintions
+
+
+links = {
+    "prereqs" : "https://brocku.ca/webcal/undergrad/",
+    "exam" : "https://brocku.ca/guides-and-timetables/exams/#more-exam-info",
+    "timetable" : "https://brocku.ca/guides-and-timetables/timetables/",
+    "brock" : "https://brocku.ca/", 
+    "acad_advisor": "https://brocku.ca/academic-advising/find-your-advisor/",
+    "tuition" : "https://brocku.ca/safa/tuition-and-fees/overview/", 
+    "covid" : "https://brocku.ca/coronavirus/", 
+    "food": "https://brocku.ca/dining-services/dining-on-campus/locations-on-campus-and-hours-of-operation/",
+    "register" : "https://discover.brocku.ca/registration/",
+    "transit" : "https://transitapp.com/region/niagara-region",
+    "directory":"https://brocku.ca/directory/", 
+    "store":"https://campusstore.brocku.ca/",
+    "masters":"https://brocku.ca/programs/graduate/",
+    "admission":"https://brocku.ca/admissions/",
+    # to be accomodated for:
+    "programs" : "https://discover.brocku.ca/programs",
+    "service_direct" : "https://brocku.ca/directory/a-z/",
+    "news" : "https://brocku.ca/brock-news/", 
+    "events" : "https://experiencebu.brocku.ca/",
+    "facts" : "https://brocku.ca/about/brock-facts/"
+}
+

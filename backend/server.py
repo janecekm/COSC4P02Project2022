@@ -54,8 +54,8 @@ def brockpost():
 
 @app.route("/canada", methods = ['POST'])
 def canadapost():
-    print(json.loads(request.data)['message'])
-    return bN.processQ(json.loads(request.data)['message'])
+    print(json.loads(request.data)['message'],1)
+    return bN.processQ(json.loads(request.data)['message'],1)
 
 @app.route("/",methods=['GET'])
 def splashart():
