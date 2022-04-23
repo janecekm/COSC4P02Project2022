@@ -400,6 +400,8 @@ def formResponse(database_answer, keys):
     Return: 
         returns a string to output as a response
     '''
+    if not database_answer:
+        return ""
     if "buildingCode" in database_answer:
         temp = Template("$c is the building code for $n. For more details see $l.")
         return temp.substitute({'c':database_answer["buildingCode"], 'n':database_answer["name"], 'l':"https://brocku.ca/blogs/campus-map/"})
@@ -417,12 +419,27 @@ def formResponse(database_answer, keys):
         else:
             temp = Template("There are no crosslistings for $c")
             return temp.substitute({'c': database_answer["code"]})
-    if "instructor" in database_answer:
+    if "instructor" in database_answer[0]:
+        # string = database_answer[0]["code"] + " is taught by "
+        # for r in database_answer:
+        #     string += r["instructor"] + " "
+        # return string
+        from queryTables import compressList
+        database_answer = compressList(database_answer)
         temp = Template("$c is taught by $i")
+        if database_answer["instructor"] == '':
+            return "There are no listed instructors for this course"
         return temp.substitute({'c':database_answer["code"], 'i':database_answer["instructor"]})
-    if "time" in database_answer:
+    if "time" in database_answer[0]:
+        string = ''
         temp = Template("$c is at $t on $d")
-        return temp.substitute({'c':database_answer["code"], 't':database_answer["time"], 'd':database_answer["days"]})
+        for r in database_answer:
+            if not r["time"] == '':
+                string += temp.substitute({'c':r["code"], 't':r["time"], 'd':r["days"]})
+        return string
+    
+        # temp = Template("$c is at $t on $d")
+        # return temp.substitute({'c':database_answer["code"], 't':database_answer["time"], 'd':database_answer["days"]})
     if "location" in database_answer:
         temp = Template("$c is in room $l")
         return temp.substitute({'c':database_answer["code"], 'l':database_answer["location"]})

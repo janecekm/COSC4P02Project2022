@@ -1,5 +1,5 @@
 import React from "react";
-import "./popup.css"
+import "./popUp.css"
 import func from "../Language/Lanprocess"
 function Popup(props){
   return (

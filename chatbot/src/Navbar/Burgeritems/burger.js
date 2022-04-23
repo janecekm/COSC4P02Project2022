@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Feed from '../../Chatbox/Feed/feed';
 import "./burgerstyle.css";
-import Popup from "../../popup/popup"
+import Popup from "../../popup/popUp"
 import func from "../../Language/Lanprocess";
 function Burger (){
     const [open, setopen] = useState(false);//the state for if the menu bar is open or not
