@@ -9,6 +9,7 @@ nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
 phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 #setting up path for various nlp-resources such as autocorrect dictionary
+localflag = 10
 def filepath():
     if os.path.basename(os.getcwd()) =="backend":#we are in COSC4p02Project2022/backend
         return "./nlp-resources/"
@@ -214,17 +215,23 @@ def processQ(question, flag=0):
     Return: 
         a response string to be output to the user
     '''
-    global matcher, phrase_matcher, links, getLink
-    if flag == 0: # we need to deconstruct the matcher each time to match the chat bot we are using
+    '''
+    matcher : the matcher that is used for NLP pipeline, and this is build by the appropriate file, i.e. brockMatcher and canadaMatcher
+    phrase_matcher : the phrase_matcher created by the appropriate file, i.e. brockMatcher or canadaMatcher
+    getLink : the rule set applied to the links that needs to be returned if a answer is not found.
+    localflag : this is too indicate if brock match pattern has already been build or the canada games match pattern has been already build.
+    '''
+    global matcher, phrase_matcher, links, getLink, localflag
+    if flag == 0 and localflag!=flag: # we need to deconstruct the matcher each time to match the chat bot we are using
         import brockMatcher
         from brockMatcher import getLink
-        from brockMatcher import links as brock_links
-        links = brock_links
-    elif flag == 1:
+        from brockMatcher import links 
+        localflag = flag
+    elif flag == 1 and localflag != flag:
         import canadaMatcher 
         from canadaMatcher import getLink # this function is abstracted so that the rules to define when we see a particular unknown case, we send them the link
-        from canadaMatcher import links as canada_links
-        links = canada_links
+        from canadaMatcher import links
+        localflag = flag#this is done so that, if we build canada games matcher, we shouldn't be building it again
     matches, doc = extractKeywords(question)
     if multiQuestionCheck(matches, doc):
         processed = processKeywords(matches, doc)
