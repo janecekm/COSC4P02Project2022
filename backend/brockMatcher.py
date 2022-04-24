@@ -4,6 +4,7 @@ import json
 from botNLP import nlp
 from botNLP import phrase_matcher
 from botNLP import matcher
+from string import Template
 def filepath():
     if os.path.basename(os.getcwd()) =="backend":#we are in COSC4p02Project2022/backend
         return "./nlp-resources/"
@@ -207,3 +208,53 @@ links = {
     "facts" : "https://brocku.ca/about/brock-facts/"
 }
 
+# the getLink method will also need to be modularized out to correspond to the appropriate chatbot
+def getLink(matchedKeys):
+    '''A method for if the info was not found in the database
+    Args: 
+        matchedKeys: the list of matches produced from extractKeywords 
+                     [(match_id, start, end)]
+                      match_id is a hashed value representing the type of match 
+                      start is the start index of the matched span (set of tokens)
+                      end is the end index of the matched span (set of tokens)
+    Return: 
+        returns a string to output as a response
+    '''
+    temp = Template("I'm sorry, I wasn't able to find what you were looking for. However, you might be able to find more information at: $x")
+    # for queries that we will exclusively be giving links to 
+    temp2 = Template("Information regarding $y can be found at: $x")
+
+    matches = []
+    for match_id, start, end in matchedKeys:
+        print(nlp.vocab.strings[match_id])
+        matches.append(nlp.vocab.strings[match_id])
+    if "prereqs" in matches:
+        return temp.substitute({'x': links["prereqs"]})
+    elif "admission" in matches:
+        return temp2.substitute({'y' : "the Brock admissions", 'x': links["store"]})
+    elif "store" in matches:
+        return temp2.substitute({'y' : "the Brock Campus Store", 'x': links["store"]})
+    elif "masters" in matches:
+        return temp2.substitute({'y' : "Brock's graduate programs", 'x': links["masters"]})
+    elif "directory" in matches:
+        return temp2.substitute({'y' : "contacting individuals at Brock", 'x': links["directory"]})
+    elif "food" in matches:
+        return temp2.substitute({'y' : "the dining options at Brock", 'x': links["food"]})
+    elif "transport" in matches:
+        return temp2.substitute({'y' : "local public transportation", 'x': links["transit"]})
+    elif "covid" in matches:
+        return temp2.substitute({'y' : "Brock's COVID-19 response", 'x': links["covid"]})
+    elif "register" in matches:
+        return temp2.substitute({'y' : "Brock's registration process", 'x': links["register"]})
+    elif "advisor" in matches:
+        return temp2.substitute({'y' : "academic advisors", 'x': links["acad_advisor"]})
+    elif "exam" in matches:
+        return temp.substitute({'x': links["exam"]})
+    elif "format" in matches or "course code" in matches:
+        return temp.substitute({'x': links["timetable"]})
+    elif "tuition" in matches:
+        return temp2.substitute({'y' : "tuition", 'x': links["tuition"]})
+    elif "openerGreet" in matches:
+        return "What can I help you with today?"
+    else:
+        return temp.substitute({'x': links["brock"]})

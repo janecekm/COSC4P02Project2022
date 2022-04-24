@@ -85,6 +85,26 @@ links = {
 }
 # we will also need to implement a "getLink(keywords)"
 
+def getLink(matchedKeys):
+    '''
+    A method for if the info was not found in the database
+    Args: 
+        matchedKeys: the list of matches produced from extractKeywords 
+                     [(match_id, start, end)]
+                      match_id is a hashed value representing the type of match 
+                      start is the start index of the matched span (set of tokens)
+                      end is the end index of the matched span (set of tokens)
+    Return: 
+        returns a string to output as a response
+    '''
+    matches = []
+    for match_id, start, end in matchedKeys:
+        print(nlp.vocab.strings[match_id])
+        matches.append(nlp.vocab.strings[match_id])
+    if "openerGreet" in matches:
+        return "Hello there"
+    return links["hi"]
+
 # dictionary updates: fonthill -> foothills, NOTL -> not 
 
 
