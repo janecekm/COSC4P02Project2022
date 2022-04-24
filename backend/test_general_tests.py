@@ -1,4 +1,3 @@
-from queryTables import doQueries
 from numpy import extract
 from py import process
 import botNLP
