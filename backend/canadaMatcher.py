@@ -102,7 +102,7 @@ def getLink(matchedKeys):
         print(nlp.vocab.strings[match_id])
         matches.append(nlp.vocab.strings[match_id])
     if "openerGreet" in matches:
-        return "Hello there"
+        return "What can I help you with today?"
     return links["hi"]
 
 # dictionary updates: fonthill -> foothills, NOTL -> not 
