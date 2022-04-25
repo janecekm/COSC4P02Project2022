@@ -1,23 +1,24 @@
 {
   "files": {
-    "main.css": "/static/react/css/main.989cb385.css",
-    "main.js": "/static/react/js/main.90238306.js",
+    "main.css": "/static/react/css/main.bfee2789.css",
+    "main.js": "/static/react/js/main.92acd3c1.js",
     "css/342.50fb4257.chunk.css": "/static/react/css/342.50fb4257.chunk.css",
     "js/342.d9417126.chunk.js": "/static/react/js/342.d9417126.chunk.js",
     "css/194.e15ecbc8.chunk.css": "/static/react/css/194.e15ecbc8.chunk.css",
     "js/194.aaaccb33.chunk.js": "/static/react/js/194.aaaccb33.chunk.js",
+    "media/noborderbadger.png": "/static/react/media/noborderbadger.46cf71aa326c3ef82a8a.png",
     "media/clipboard.svg": "/static/react/media/clipboard.2d36d079abf2f13be5a5dc9e690b173d.svg",
     "media/backarrowimage.svg": "/static/react/media/backarrowimage.9e13dd41876fa17f00f4eb7f1c94a938.svg",
     "../../templates/index.html": "/static/react/../../templates/index.html",
-    "main.989cb385.css.map": "/static/react/css/main.989cb385.css.map",
-    "main.90238306.js.map": "/static/react/js/main.90238306.js.map",
+    "main.bfee2789.css.map": "/static/react/css/main.bfee2789.css.map",
+    "main.92acd3c1.js.map": "/static/react/js/main.92acd3c1.js.map",
     "342.50fb4257.chunk.css.map": "/static/react/css/342.50fb4257.chunk.css.map",
     "342.d9417126.chunk.js.map": "/static/react/js/342.d9417126.chunk.js.map",
     "194.e15ecbc8.chunk.css.map": "/static/react/css/194.e15ecbc8.chunk.css.map",
     "194.aaaccb33.chunk.js.map": "/static/react/js/194.aaaccb33.chunk.js.map"
   },
   "entrypoints": [
-    "css/main.989cb385.css",
-    "js/main.90238306.js"
+    "css/main.bfee2789.css",
+    "js/main.92acd3c1.js"
   ]
 }

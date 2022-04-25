@@ -3,6 +3,7 @@ import "./Navbardesign.css"
 import Burger from './Burgeritems/burger';
 import func from "../Language/Lanprocess";
 import Backarrowbutton from './backarrow/backarrowbutton'
+import image from "./noborderbadger.png"
 
 function Navbar(){//this is the navbar component
     return(
@@ -13,7 +14,9 @@ function Navbar(){//this is the navbar component
             </div>
 
             <div className='ChatbotName'>
-                    {func("name")}
+                    <img className='badger' src= {image} width='5%' />
+                    {func("name")}  
+                                   
             </div>
 
             <div className= 'BurgerMenu'>

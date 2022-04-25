@@ -13,7 +13,7 @@ def testing_spelling_mistake():
     # matches, docs = correcting_english("waht there")
     assert correcting_english("waht there") == "what there"
     # matches, docs = correcting_english("helo there, hw is it going?")
-    assert correcting_english("helo there, hw is it going?") == "hello there, how is it going"
+    assert correcting_english("hello there, hoe is it going?") == "hello there, how is it going"
     assert correcting_english("wht are prere for Math 4p61") == "what are prereqs for math 4p61"
 
 def testing_course_spelling():

@@ -1,8 +1,9 @@
+from brockMatcher import getLink
 import botNLP
 
 def getQueries(question):
     matches, doc = botNLP.extractKeywords(question)
-    return botNLP.getLink(matches)
+    return getLink(matches)
 
 def testing_get_link_general():
     assert "https://brocku.ca/" in getQueries("what is prereq?")
