@@ -1,6 +1,6 @@
 from symspellpy import SymSpell, Verbosity
 from string import Template
-import os 
+import os
 import spacy
 from spacy.matcher import Matcher
 from spacy.matcher import PhraseMatcher
@@ -225,20 +225,25 @@ def processQ(question, flag=0):
     if flag == 0 and localflag!=flag: # we need to deconstruct the matcher each time to match the chat bot we are using
         import brockMatcher
         from brockMatcher import getLink
-        from brockMatcher import links 
+        from brockMatcher import links
         localflag = flag
     elif flag == 1 and localflag != flag:
-        import canadaMatcher 
+        import canadaMatcher
         from canadaMatcher import getLink # this function is abstracted so that the rules to define when we see a particular unknown case, we send them the link
         from canadaMatcher import links
         localflag = flag#this is done so that, if we build canada games matcher, we shouldn't be building it again
     matches, doc = extractKeywords(question)
+    polite = False
+    for match_id, start, end in matches:
+        if "openerGreet".__contains__(nlp.vocab.strings[match_id]):
+            polite = True
+            break
     if multiQuestionCheck(matches, doc):
         processed = processKeywords(matches, doc)
         from queryTables import doQueries
         queryReturn = doQueries(processed)
         myString = ""
-        if "hello" in question.lower():
+        if polite:
             myString += "Hello! "
         myString += formResponse(queryReturn, matches)
         if (myString != "" and myString != None):    
