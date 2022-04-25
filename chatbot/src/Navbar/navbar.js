@@ -14,7 +14,7 @@ function Navbar(){//this is the navbar component
             </div>
 
             <div className='ChatbotName'>
-                    <img className='badger' src= {image} width='5%' />
+                    <img className='badger' src= {image} width='45rem' />
                     {func("name")}  
                                    
             </div>
