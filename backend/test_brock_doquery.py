@@ -1,5 +1,6 @@
 from queryTables import doQueries
 import botNLP
+import brockMatcher
 #queryTables.doQuery testing. 
 
 #Course code comparisons are being weird
