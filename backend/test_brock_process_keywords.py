@@ -20,9 +20,9 @@ def testing_spaces_between_course():
     assert temp["prereq"].text == "what are prereq" and temp["code"].text == "math 1p67"
 
 def testing_processing_speltwrong():
-    matches, doc = botNLP.extractKeywords("what are prereq for Math 1p67?")
+    matches, doc = botNLP.extractKeywords("what are prereqst for Math 1p67?")
     temp2 = botNLP.processKeywords(matches,doc)
-    assert temp2["prereq"].text == "what are prereq" and temp2["code"].text == "math 1p67"
+    assert temp2["prereq"].text == "prereqs" and temp2["code"].text == "math 1p67"
 
 ##need to test crosslisting, and need to know how to test it.
 
@@ -34,10 +34,10 @@ def testing_processing_exam():
 def testing_processing_crosslisting():
     matches, doc = botNLP.extractKeywords("what is COSC 4p61 crosslisted as?")
     temp = botNLP.processKeywords(matches, doc)
-    assert temp["xlist"].text == "crosslisted" and temp["code"].text == "cosc 4p61"
+    assert temp["xlist"].text == "crosslisting" and temp["code"].text == "cosc 4p61"
     matches, doc = botNLP.extractKeywords("what are the crosslisting of Cosc 4p61")
     temp = botNLP.processKeywords(matches,doc)
-    assert temp["xlist"].text == "crosslisted" and temp["code"].text == "cosc 4p61"
+    assert temp["xlist"].text == "crosslisting" and temp["code"].text == "cosc 4p61"
 
 def testing_processing_location_courses():
     matches, doc = botNLP.extractKeywords("where is cosc 3p98 class")
