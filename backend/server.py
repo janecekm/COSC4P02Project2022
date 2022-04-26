@@ -1,3 +1,4 @@
+from doctest import REPORT_NDIFF
 import sqlite3
 from flask import Flask, render_template, request, json
 from flask_sqlalchemy import SQLAlchemy
@@ -49,13 +50,19 @@ def brockfront():
 
 @app.route("/brock", methods = ['POST'])
 def brockpost():
-    print(json.loads(request.data)['message'])
-    return bN.processQ(json.loads(request.data)['message'])
+    try:
+        response = bN.processQ(json.loads(request.data)['message'])
+    except:
+        response = "I am not quite sure what you're asking. Could you rephrase that?"
+    return response
 
 @app.route("/canada", methods = ['POST'])
 def canadapost():
-    print(json.loads(request.data)['message'],1)
-    return bN.processQ(json.loads(request.data)['message'],1)
+    try:
+        response = bN.processQ(json.loads(request.data)['message'],1)
+    except:
+        response = "I am not quite sure what you're asking. Could you rephrase that?"
+    return 
 
 @app.route("/",methods=['GET'])
 def splashart():

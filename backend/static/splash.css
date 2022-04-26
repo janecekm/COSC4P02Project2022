@@ -29,6 +29,12 @@ font-size: 5vh;
     width: 60vw;
     padding: 20px;
 }
+.badger{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    opacity: 0.5;
+}
 
 .image{
     padding: inherit;
@@ -69,7 +75,6 @@ button:hover{
     padding-top: 1rem;
 
     border-radius: 10px;
-    background-color: white;
 }
 .background{
     background-color: whitesmoke;
@@ -106,6 +111,11 @@ button:hover{
     text-align: center;
     z-index: 1;
     width: 100%;
+}
+footer{
+    text-align: center;
+    background-color: #fff5f4;
+    box-shadow: 3px 3px black;
 }
 
 @media only screen and (max-width:768px){
