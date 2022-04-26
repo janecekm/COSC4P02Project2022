@@ -43,19 +43,26 @@ db = SQLAlchemy(app)
 def canadafront():
     return render_template("index.html")
 
+
 @app.route("/brock",methods = ['GET'])
 def brockfront():
     return render_template("index.html")
 
 @app.route("/brock", methods = ['POST'])
 def brockpost():
-    print(json.loads(request.data)['message'])
-    return bN.processQ(json.loads(request.data)['message'])
+    # print(bN.processQ(json.loads(request.data)['message']))
+    try:
+        return bN.processQ(json.loads(request.data)['message'])
+    except:
+        return {'message':"I am not quite sure what you're asking. Could you rephrase that?"}
+    
 
 @app.route("/canada", methods = ['POST'])
 def canadapost():
-    print(json.loads(request.data)['message'],1)
-    return bN.processQ(json.loads(request.data)['message'],1)
+    try:
+        return bN.processQ(json.loads(request.data)['message'],1)
+    except:
+        return {'message':"I am not quite sure what you're asking. Could you rephrase that?"}
 
 @app.route("/",methods=['GET'])
 def splashart():

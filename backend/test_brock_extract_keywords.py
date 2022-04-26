@@ -2,6 +2,7 @@ from queryTables import doQueries
 from numpy import extract
 from py import process
 import botNLP
+import brockMatcher
 #botNLP.extractKeywords - TESTING matcher hash correctness and positional matching
 '''
 MATCHER can do 

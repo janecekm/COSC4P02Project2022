@@ -1,5 +1,6 @@
 from queryTables import doQueries
 import botNLP
+import brockMatcher
 #queryTables.doQuery testing. 
 
 #Course code comparisons are being weird
@@ -39,7 +40,7 @@ def testing_doQuery_loc():
     matches, doc = botNLP.extractKeywords("where is MCJ")
     temp = botNLP.processKeywords(matches,doc)
     dict = doQueries(temp)
-    assert "Mackenzie Chown" in dict
+    assert "Mackenzie Chown" in dict['name']
 
 def testing_doQuery_component():
     matches, doc = botNLP.extractKeywords("when is econ 2p30 lab")

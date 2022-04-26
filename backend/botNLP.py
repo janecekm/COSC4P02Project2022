@@ -167,7 +167,7 @@ def formResponse(database_answer, keys):
         else:
             temp = Template("There are no crosslistings for $c")
             return temp.substitute({'c': database_answer["code"]})
-    if "instructor" in database_answer[0]:
+    if isinstance(database_answer,list) and "instructor" in database_answer[0]:
         # string = database_answer[0]["code"] + " is taught by "
         # for r in database_answer:
         #     string += r["instructor"] + " "
@@ -178,7 +178,7 @@ def formResponse(database_answer, keys):
         if database_answer["instructor"] == '':
             return "There are no listed instructors for this course"
         return temp.substitute({'c':database_answer["code"], 'i':database_answer["instructor"]})
-    if "time" in database_answer[0]:
+    if isinstance(database_answer,list) and "time" in database_answer[0]:
         string = ''
         temp = Template("$c is at $t on $d")
         for r in database_answer:

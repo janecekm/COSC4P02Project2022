@@ -173,19 +173,24 @@ masters = [[{'LOWER':'graduate'}, {'LOWER':"program"}],
             ,[{'LOWER':'mbe'}], [{'LOWER':'mph'}]]
 matcher.add("masters", masters, on_match=assignPriority)
 
+# accessible washrooms
+a_washrooms = [[{'LOWER':'accessible'}, {'LEMMA':"washroom"}],
+    [{'LOWER':'accessible'}], [{'LEMMA':'bathroom'}]]
+matcher.add("a_washrooms", a_washrooms, on_match=assignPriority)
 
+# admissions
 admission = [[{'LEMMA':'apply'}], 
             [{'LEMMA':'admit'}], [{'LEMMA':'addmission'}] ]
 matcher.add("admission", admission, on_match=assignPriority)
 
-
 # store
 store = [[{'LOWER':'store'}], [{'LEMMA':'textbook'}], [{'LEMMA':'booklist'}]]
 matcher.add("store", store, on_match=assignPriority)
-  # end of Matcher pattern defintions
 
+# end of Matcher pattern defintions
 
 links = {
+    "a_washrooms":"https://brocku.ca/blogs/campus-map/category/brock-university/accessibility/accessibility-washrooms",
     "prereqs" : "https://brocku.ca/webcal/undergrad/",
     "exam" : "https://brocku.ca/guides-and-timetables/exams/#more-exam-info",
     "timetable" : "https://brocku.ca/guides-and-timetables/timetables/",
@@ -199,13 +204,7 @@ links = {
     "directory":"https://brocku.ca/directory/", 
     "store":"https://campusstore.brocku.ca/",
     "masters":"https://brocku.ca/programs/graduate/",
-    "admission":"https://brocku.ca/admissions/",
-    # to be accomodated for:
-    "programs" : "https://discover.brocku.ca/programs",
-    "service_direct" : "https://brocku.ca/directory/a-z/",
-    "news" : "https://brocku.ca/brock-news/", 
-    "events" : "https://experiencebu.brocku.ca/",
-    "facts" : "https://brocku.ca/about/brock-facts/"
+    "admission":"https://brocku.ca/admissions/"
 }
 
 # the getLink method will also need to be modularized out to correspond to the appropriate chatbot
@@ -230,6 +229,8 @@ def getLink(matchedKeys):
         matches.append(nlp.vocab.strings[match_id])
     if "prereqs" in matches:
         return temp.substitute({'x': links["prereqs"]})
+    elif "a_washrooms" in matches:
+        return temp2.substitute({'y' : "the accesible washrooms at Brock", 'x': links["a_washrooms"]})
     elif "admission" in matches:
         return temp2.substitute({'y' : "the Brock admissions", 'x': links["store"]})
     elif "store" in matches:
