@@ -1,16 +1,17 @@
 # File Structure
-The files are split into different components and different files for better modularization of the code.
+The components are split into different files and folders for better modularization of the code.
+
 ## CSS files for front end.
-For the colors of the two different front ends, Canada games and Brock Chatbots, we have two files 
-`brockcolor.css` and `canadacolor.css` which holds the color for the appropriate websites.
+When it comes to the colour pallets of the Canada Games and Brock Chatbots, we have two files; `brockcolor.css` and `canadacolor.css`.
 
 ## Chatbox 
-The directory Chat box contains different components that is contained with the chatbox area, which includes, a clipbutton, the feed, the thinking animation, the zoomin, and the zoomout buttons. These offer functionality for the user.
+The directory Chatbox contains different components that are contained with the chatbox area. These include a clipbutton, the feed, the thinking animation, as well as the the zoom in and zoom out buttons.
 
 ## Language
 This directory is used to store static words which appear on the front end. This is done so that we can support multiple languages in the future for this software. The way this is organized is, there exist 3 files, which are BrockInfo.js, CanadaInfo.js and Lanprocess.js
+
 ### BrockInfo.js and CanadaInfo.js
-Below is given how the file is structured, where the primarily key represents which language these are going to be in, i.e. `en` and then it contains a dictionary for words within the actually frontend.<br/> 
+Below is given how the language files are structured, where the primarily key represents which language these are going to be in (e.g. `en` for English. It then contains a dictionary for wordsthat are included in the frontend.<br/> 
 ``` json
 "en":{
     "name":"BrockChatBOT",
@@ -46,10 +47,10 @@ below are the given definition of the words<br>
 This script identifies which url we are in, and go grabs the appropriate key from the file that is requested.
 
 ## Navbar
-This directory contains all the components for the Navigation bar for the software.<br>
-The only two components for the navbar is the backarrow, which is used to go back to the splash page, and the burgeritems, which is for the burger menu on the navbar.<br>
+This directory contains all the components for the Navigation bar.<br>
+The only two components for the navbar are the backarrow, which is used to go back to the splash page, and the burgeritems, which is for the burger menu on the navbar.<br>
 
-In addition to that, all the necessary functions to be run for the appropriate buttons should also exist within the burger.js. 
+In addition to this, all the necessary functions to be run for the appropriate buttons should also exist within the burger.js. 
 ```javascript
 <div className= "dropdown">
             <DropdownItem act = {()=>HelpButton(props.state, props.func , props.setmessage)}>
@@ -61,5 +62,5 @@ new buttons can be added by adding
 The Navbar also uses the [Popup](../src/popup/popUp.js) to display different popup for information, such as the help me button, the disclaimer button, and the about us button.
 
 ## Popup
-This directory contains the component for building a popup for the appropriate button that is being pushed, the parameters that this is expecting is the title, and the message to be displayed, both of which has to be in text format.
+This directory contains the components for building a popup for the appropriate button, whether it be the help, disclaimer, or about us button. The expected parameters include the title and the message to be displayed, both of which have to be in text format.
  
