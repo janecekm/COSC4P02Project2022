@@ -190,7 +190,7 @@ matcher.add("store", store, on_match=assignPriority)
 # end of Matcher pattern defintions
 
 links = {
-    "a_washrooms":"https://brocku.ca/blogs/campus-map/category/brock-university/accessibility/accessibility-washrooms/#:~:text=These%20washrooms%20are%20on%20every,extra%20large%20facilities%20and%20handrails",
+    "a_washrooms":"https://brocku.ca/blogs/campus-map/category/brock-university/accessibility/accessibility-washrooms",
     "prereqs" : "https://brocku.ca/webcal/undergrad/",
     "exam" : "https://brocku.ca/guides-and-timetables/exams/#more-exam-info",
     "timetable" : "https://brocku.ca/guides-and-timetables/timetables/",
@@ -204,13 +204,7 @@ links = {
     "directory":"https://brocku.ca/directory/", 
     "store":"https://campusstore.brocku.ca/",
     "masters":"https://brocku.ca/programs/graduate/",
-    "admission":"https://brocku.ca/admissions/",
-    # to be accomodated for:
-    "programs" : "https://discover.brocku.ca/programs",
-    "service_direct" : "https://brocku.ca/directory/a-z/",
-    "news" : "https://brocku.ca/brock-news/", 
-    "events" : "https://experiencebu.brocku.ca/",
-    "facts" : "https://brocku.ca/about/brock-facts/"
+    "admission":"https://brocku.ca/admissions/"
 }
 
 # the getLink method will also need to be modularized out to correspond to the appropriate chatbot

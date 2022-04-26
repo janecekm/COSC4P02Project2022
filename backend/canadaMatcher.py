@@ -3,6 +3,7 @@ import os
 from botNLP import nlp
 from botNLP import matcher
 from botNLP import phrase_matcher 
+from string import Template
 
 def filepath():
     if os.path.basename(os.getcwd()) == "backend":# we are in COSC4p02Project2022/backend
@@ -79,9 +80,32 @@ matcher.add("which_sport", which, greedy="LONGEST")
 
 # is sport at venue?
 
+# tickets
+ticket = [[{'LEMMA':'ticket'}]]
+matcher.add("ticket", ticket, on_match=assignPriority)
+
+# volunteer
+volunteer = [[{'LEMMA':'volunteer'}]]
+matcher.add("volunteer", volunteer, on_match=assignPriority)
+
+# transportation, "How do I get to..."
+transport = [[{'LEMMA':'transit'}],[{'LEMMA':'travel'}],[{'LEMMA':'bus'}],[{'LEMMA':'transport'}],[{'LEMMA':'transportation'}],
+                [{'LOWER': 'how'},
+                  {'OP': '*'},
+                  {'LEMMA': 'get'},
+                  {'LEMMA': 'to'}]]
+matcher.add("transport", transport, on_match=assignPriority)
+
+
+
 # we will need to add an appropriate links table here, similar to the one in brockMatcher
 links = {
-    "hi":"bye"
+    "transit" : "https://transitapp.com/region/niagara-region",
+    "schedule" : "https://cg2022.gems.pro/Result/Calendar.aspx",
+    "location" : "https://niagara2022games.ca/sports/", 
+    "ticket" : "https://niagara2022games.ca/tickets/", 
+    "default" : "https://www.canadagames.ca/", 
+    "volunteer" : "https://www.canadagames.ca/about/faq?tab=volunteers#faq"
 }
 # we will also need to implement a "getLink(keywords)"
 
@@ -97,14 +121,27 @@ def getLink(matchedKeys):
     Return: 
         returns a string to output as a response
     '''
+    temp = Template("I'm sorry, I wasn't able to find what you were looking for. However, you might be able to find more information at: $x")
+    # for queries that we will exclusively be giving links to 
+    temp2 = Template("Information regarding $y can be found at: $x")
+
     matches = []
     for match_id, start, end in matchedKeys:
         print(nlp.vocab.strings[match_id])
         matches.append(nlp.vocab.strings[match_id])
-    if "openerGreet" in matches:
-        return "What can I help you with today?"
-    return links["hi"]
 
+    if "ticket" in matches:
+        return temp2.substitute({'y':"tickets",'x':links["ticket"]})
+    elif "volunteer" in matches:
+        return temp.substitute({'x': links["volunteer"]})
+    elif "location" in matches:
+        return temp.substitute({'x': links["location"]})
+    elif "time" in matches:
+        return temp.substitute({'x': links["schedule"]})
+    elif "transport" in matches:
+        return temp2.substitute({'y' : "local public transportation", 'x': links["transit"]})
+    else: 
+        return temp.substitute({'x': links["default"]})
 # dictionary updates: fonthill -> foothills, NOTL -> not 
 
 
