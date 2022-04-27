@@ -4,6 +4,7 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
+import re
 
 driver = webdriver.Chrome()
 '''
@@ -44,7 +45,8 @@ def scrapeCourseInfo(courseName, session, typ, driver):
 		dict = {}
 		dict["cc"] = course.get_attribute("data-cc").replace(',','')
 		dict["type"] = course.get_attribute("data-class_type").replace(',','')
-		temp = dict["type"].split(" ")
+		# temp = dict["type"].split(" ") #re.split()
+		temp = dict["type"].split()
 		dict["format"] = temp[0]
 		try:
 			dict['formatNum'] = temp[1]
