@@ -300,9 +300,13 @@ def formResponse(database_answer, keys):
     if isinstance(database_answer,list) and "time" in database_answer[0]:
         string = ''
         temp = Template("$c is at $t on $d")
+        temp2 = Template("$c $f $fn is at $t on $d")
         for r in database_answer:
             if not r["time"] == '':
-                string += temp.substitute({'c':r["code"], 't':r["time"], 'd':r["days"]}) + '\n'
+                if "formatNum" in r:
+                    string += temp2.substitute({'c':r["code"], 't':r["time"], 'd':r["days"], 'f':r["format"], 'fn':r["formatNum"]}) + '\n'
+                else:
+                    string += temp.substitute({'c':r["code"], 't':r["time"], 'd':r["days"]}) + '\n'
         return string
     
         # temp = Template("$c is at $t on $d")
@@ -310,9 +314,13 @@ def formResponse(database_answer, keys):
     if isinstance(database_answer,list) and "location" in database_answer[0]:
         string = ''
         temp = Template("$c is in room $l on $d")
+        temp2 = Template("$c $f $fn is in room $l on $d")
         for r in database_answer:
             # if not r["location"] == '':
-            string += temp.substitute({'c':r["code"], 'l':r["location"], 'd':r["days"]}) + '\n'
+            if "formatNum" in r:
+                string += temp2.substitute({'c':r["code"], 'l':r["location"], 'd':r["days"], 'f':r["format"], 'fn':r["formatNum"]}) + '\n'
+            else:
+                string += temp.substitute({'c':r["code"], 'l':r["location"], 'd':r["days"]}) + '\n'
         print(string)
         return string
         # return temp.substitute({'c':database_answer["code"], 'l':database_answer["location"]})
