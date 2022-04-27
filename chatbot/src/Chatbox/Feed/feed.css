@@ -102,6 +102,7 @@
   margin-bottom:5px;
   margin-left: 5px;
   caret-color: transparent;
+  white-space: pre-wrap;
 }
 .contextmenu{
   position: absolute;

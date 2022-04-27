@@ -27,7 +27,7 @@ def doQueries(keywords):
         except Exception as e:
             print(e)
             print('building not found')
-            return 'not found'
+            return None
     #Course table, code must be in keywords
     elif 'prereq' in keywords or 'description' in keywords or 'xlist' in keywords:
         try:
@@ -44,10 +44,10 @@ def doQueries(keywords):
         except AttributeError as a:
             print(a)
             print(keywords)
-            return 'more info required'
+            return None
         except Exception as e:
             print(e)
-            return 'more info required'
+            return None
     #Exam table
     elif 'exam' in keywords:
         try:
@@ -73,7 +73,7 @@ def doQueries(keywords):
         except Exception as e:
             print(e)
             print('exam not found')
-            return 'not found'
+            return None
     #Offering table
     elif 'location' in keywords or 'instructor' in keywords or 'time' in keywords or 'format' in keywords:
         try:
@@ -100,6 +100,10 @@ def doQueries(keywords):
                                 rowDict['days'] = queryRow["days"]
                             else:
                                 rowDict[key] = queryRow[key]
+                                if 'location' in keywords.keys():
+                                    rowDict["days"] = queryRow["days"]
+                        # if 'location' in keywords.keys():
+                        #     rowDict["days"] = queryRow["days"]
                         # if rowDict:
                         #     queryReturn.update(rowDict)
                     if rowDict:
@@ -121,11 +125,15 @@ def doQueries(keywords):
                 return rowsList
             else:
                 print('more info required')
-                return 'more info required'
+                return None
         except Exception as e:
             print(e)
-            return 'not found'
-    return 'placeholder return'
+            return None
+    return None
+
+def cgQueries(keywords):
+    print(keywords)
+    return None
 
 # filter to match database formatting
 def filterInputs(keywords, key):

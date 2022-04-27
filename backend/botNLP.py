@@ -149,7 +149,7 @@ def formResponse(database_answer, keys):
         returns a string to output as a response
     '''
     if not database_answer:
-        return ""
+        return getLink(keys)
     if "buildingCode" in database_answer:
         temp = Template("$c is the building code for $n. For more details see $l.")
         return temp.substitute({'c':database_answer["buildingCode"], 'n':database_answer["name"], 'l':"https://brocku.ca/blogs/campus-map/"})
@@ -183,14 +183,20 @@ def formResponse(database_answer, keys):
         temp = Template("$c is at $t on $d")
         for r in database_answer:
             if not r["time"] == '':
-                string += temp.substitute({'c':r["code"], 't':r["time"], 'd':r["days"]})
+                string += temp.substitute({'c':r["code"], 't':r["time"], 'd':r["days"]}) + '\n'
         return string
     
         # temp = Template("$c is at $t on $d")
         # return temp.substitute({'c':database_answer["code"], 't':database_answer["time"], 'd':database_answer["days"]})
-    if "location" in database_answer:
-        temp = Template("$c is in room $l")
-        return temp.substitute({'c':database_answer["code"], 'l':database_answer["location"]})
+    if isinstance(database_answer,list) and "location" in database_answer[0]:
+        string = ''
+        temp = Template("$c is in room $l on $d")
+        for r in database_answer:
+            # if not r["location"] == '':
+            string += temp.substitute({'c':r["code"], 'l':r["location"], 'd':r["days"]}) + '\n'
+        print(string)
+        return string
+        # return temp.substitute({'c':database_answer["code"], 'l':database_answer["location"]})
     # response for prereqs (not great for single course prereqs or multi part questions?)
     if "prereq" in database_answer: 
         if database_answer["prereq"] != "": 
@@ -199,9 +205,6 @@ def formResponse(database_answer, keys):
         else: 
             temp = Template("There are no prerequisites for $c")
             return temp.substitute({'c': database_answer["code"]})
-    if database_answer == 'more info required' or database_answer == 'im in danger' or database_answer == "placeholder return": 
-        # if no response from database
-        return getLink(keys)
     return ""
 
 def processQ(question, flag=0):
@@ -240,8 +243,12 @@ def processQ(question, flag=0):
             break
     if multiQuestionCheck(matches, doc):
         processed = processKeywords(matches, doc)
-        from queryTables import doQueries
-        queryReturn = doQueries(processed)
+        if flag == 0:
+            from queryTables import doQueries
+            queryReturn = doQueries(processed)
+        elif flag == 1:
+            from queryTables import cgQueries
+            queryReturn = cgQueries(processed)
         myString = ""
         if polite:
             myString += "Hello! "

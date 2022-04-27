@@ -6,6 +6,9 @@ import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/buchatbot.db'
+app.config['SQLALCHEMY_BINDS'] = {
+    'canada':   'sqlite:///database/cgchatbot.db'
+}
 db = SQLAlchemy(app)
 # db = sqlite3.connect('sqlite:///database/buchatbot.db')
 
@@ -54,7 +57,8 @@ def brockpost():
     try:
         return bN.processQ(json.loads(request.data)['message'])
     except:
-        return {'message':"I am not quite sure what you're asking. Could you rephrase that?"}
+        # return {'message':"I am not quite sure what you're asking. Could you rephrase that?"}
+        return {'message':"something horrible has happened"}
     
 
 @app.route("/canada", methods = ['POST'])
@@ -62,7 +66,7 @@ def canadapost():
     try:
         return bN.processQ(json.loads(request.data)['message'],1)
     except:
-        return {'message':"I am not quite sure what you're asking. Could you rephrase that?"}
+        return {'message':"something horrible has happened"}
 
 @app.route("/",methods=['GET'])
 def splashart():
