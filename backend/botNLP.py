@@ -141,72 +141,6 @@ def processKeywords(matches, doc):
 
 
 
-def formResponse(database_answer, keys):
-    '''A method to form a very simple response 
-    Args: 
-        matchedKeys: the list of match info as a result of processing
-    Return: 
-        returns a string to output as a response
-    '''
-    if not database_answer:
-        return getLink(keys)
-    if "buildingCode" in database_answer:
-        temp = Template("$c is the building code for $n. For more details see $l.")
-        return temp.substitute({'c':database_answer["buildingCode"], 'n':database_answer["name"], 'l':"https://brocku.ca/blogs/campus-map/"})
-    if "exam" in database_answer:
-        temp = Template("$c has an exam on $m $d at $t $l")
-        return temp.substitute({'c': database_answer["code"], 'm':database_answer["month"], 'd':database_answer["dayNum"], 't':database_answer["time"], 'l':database_answer["location"]})
-    # basic response for course descriptions
-    if "description" in database_answer: 
-        temp = Template("$c is $t and it's about $d")
-        return temp.substitute({'c':database_answer["code"], 't':database_answer["title"], 'd':database_answer["description"]})
-    if "xlist" in database_answer:
-        if database_answer["xlist"] != "":
-            temp = Template("$c is crosslisted as $x")
-            return temp.substitute({'c':database_answer["code"], 'x':database_answer["xlist"]})
-        else:
-            temp = Template("There are no crosslistings for $c")
-            return temp.substitute({'c': database_answer["code"]})
-    if isinstance(database_answer,list) and "instructor" in database_answer[0]:
-        # string = database_answer[0]["code"] + " is taught by "
-        # for r in database_answer:
-        #     string += r["instructor"] + " "
-        # return string
-        from queryTables import compressList
-        database_answer = compressList(database_answer)
-        temp = Template("$c is taught by $i")
-        if database_answer["instructor"] == '':
-            return "There are no listed instructors for this course"
-        return temp.substitute({'c':database_answer["code"], 'i':database_answer["instructor"]})
-    if isinstance(database_answer,list) and "time" in database_answer[0]:
-        string = ''
-        temp = Template("$c is at $t on $d")
-        for r in database_answer:
-            if not r["time"] == '':
-                string += temp.substitute({'c':r["code"], 't':r["time"], 'd':r["days"]}) + '\n'
-        return string
-    
-        # temp = Template("$c is at $t on $d")
-        # return temp.substitute({'c':database_answer["code"], 't':database_answer["time"], 'd':database_answer["days"]})
-    if isinstance(database_answer,list) and "location" in database_answer[0]:
-        string = ''
-        temp = Template("$c is in room $l on $d")
-        for r in database_answer:
-            # if not r["location"] == '':
-            string += temp.substitute({'c':r["code"], 'l':r["location"], 'd':r["days"]}) + '\n'
-        print(string)
-        return string
-        # return temp.substitute({'c':database_answer["code"], 'l':database_answer["location"]})
-    # response for prereqs (not great for single course prereqs or multi part questions?)
-    if "prereq" in database_answer: 
-        if database_answer["prereq"] != "": 
-            temp = Template("The prerequisites for $c are $p" )
-            return temp.substitute({'c': database_answer["code"], 'p':database_answer["prereq"]})
-        else: 
-            temp = Template("There are no prerequisites for $c")
-            return temp.substitute({'c': database_answer["code"]})
-    return ""
-
 def processQ(question, flag=0):
     '''Main entry point to the NLP module. This is called by the server.
     Args:
@@ -224,16 +158,14 @@ def processQ(question, flag=0):
     getLink : the rule set applied to the links that needs to be returned if a answer is not found.
     localflag : this is too indicate if brock match pattern has already been build or the canada games match pattern has been already build.
     '''
-    global matcher, phrase_matcher, links, getLink, localflag
+    global matcher, phrase_matcher, formResponse, localflag
     if flag == 0 and localflag!=flag: # we need to deconstruct the matcher each time to match the chat bot we are using
         import brockMatcher
-        from brockMatcher import getLink
-        from brockMatcher import links
+        from brockMatcher import formResponse
         localflag = flag
     elif flag == 1 and localflag != flag:
         import canadaMatcher
-        from canadaMatcher import getLink # this function is abstracted so that the rules to define when we see a particular unknown case, we send them the link
-        from canadaMatcher import links
+        from canadaMatcher import formResponse # this function is abstracted so that the rules to define when we see a particular unknown case, we send them the link
         localflag = flag#this is done so that, if we build canada games matcher, we shouldn't be building it again
     matches, doc = extractKeywords(question)
     polite = False

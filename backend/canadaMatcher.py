@@ -144,4 +144,15 @@ def getLink(matchedKeys):
         return temp.substitute({'x': links["default"]})
 # dictionary updates: fonthill -> foothills, NOTL -> not 
 
+def formResponse(database_answer, keys):#this function needs to be filled out for the chatbot to know how to form response.
+    '''A method to form a very simple response 
+    Args: 
+        matchedKeys: the list of match info as a result of processing
+    Return: 
+        returns a string to output as a response
+    '''
+    if not database_answer:
+        return getLink(keys)
+    return None
+
 
