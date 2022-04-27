@@ -2,7 +2,7 @@ import json
 
 from numpy import DataSource
 
-file = open("offeringpre.txt",'r', encoding="utf-8")
+file = open("off_old.txt",'r', encoding="utf-8")
 Days ={"M":"Monday","T":"Tuesday","W":"Wednesday","R":"Thursday","F":"Friday","S":"Saturday","Sun.":"Sunday"}
 def addSpaceToLocations(locationName):
     numberInBuildingName = False

@@ -92,8 +92,14 @@ def doQueries(keywords):
                     for key in (keywords.keys() & queryRow.keys()):
                         if 'format' in keywords.keys():
                             if keywords['format'] == queryRow['format']:
-                                rowDict[key] = queryRow[key]
-                                rowDict['days'] = queryRow['days']
+                                if 'formatNum' in keywords.keys():
+                                    if keywords['formatNum'] == queryRow['formatNum']:
+                                        rowDict[key] = queryRow[key]
+                                        rowDict['days'] = queryRow['days']
+                                else:
+                                    rowDict[key] = queryRow[key]
+                                    rowDict['days'] = queryRow['days']
+                                    rowDict['formatNum'] = queryRow['formatNum']
                         elif queryRow['format'] == 'LEC' or queryRow['format'] == 'SYN' or queryRow['format'] == 'ASY' or queryRow['format'] == 'BLD' or queryRow['format'] == 'HYF' or queryRow['format'] == 'PRO' or queryRow['format'] == 'INT' or queryRow['format'] == 'LEC2':
                             if key == 'time':
                                 rowDict[key] = queryRow[key]
@@ -133,6 +139,12 @@ def doQueries(keywords):
 
 def cgQueries(keywords):
     print(keywords)
+    if "time" in keywords:
+        temp = models.Schedule.query.filter_by(sport=keywords.get('sport')).all()
+        print(temp)
+        return None
+    if "location" in keywords:
+        return None
     return None
 
 # filter to match database formatting
