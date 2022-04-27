@@ -114,7 +114,23 @@ def processKeywords(matches, doc):
         match_text = doc[start:end]
         # match_text = match_text.text
         if not match_label == 'course component' and not match_label == 'question':
-            processedMatches[match_label] = match_text
+            if match_label == 'format':
+                comp = ''
+                num = ''
+                barred = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+                print(match_text.text)
+                # for i in range(len(match_text)):
+                #     if match_text[i].text in range(20):
+                #         num += match_text[i].text
+                #         print(num)
+                #     elif not i == " ":
+                #         comp += match_text[i].text
+                temp = match_text.text.split(' ')
+                processedMatches['format'] = temp[0]
+                if len(temp) > 1:
+                    processedMatches['formatNum'] = temp[1]
+            else:
+                processedMatches[match_label] = match_text.text
             if doc[start:end]._.prio == 0: 
                 high_prio = True
             print("Match:", match_label, "\tMatch priority:", doc[start:end]._.prio)
@@ -129,7 +145,7 @@ def processKeywords(matches, doc):
                 elif not i == " ":
                     comp += match_text[i].text
             processedMatches['format'] = comp.strip()
-            processedMatches['format num'] = num
+            processedMatches['formatNum'] = num
             
     # use the NER to extract the people names from document
     for ent in doc.ents:

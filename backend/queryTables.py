@@ -94,7 +94,7 @@ def doQueries(keywords):
                             if keywords['format'] == queryRow['format']:
                                 rowDict[key] = queryRow[key]
                                 rowDict['days'] = queryRow['days']
-                        elif queryRow['format'] == 'LEC' or queryRow['format'] == 'SYN' or queryRow['format'] == 'ASY':
+                        elif queryRow['format'] == 'LEC' or queryRow['format'] == 'SYN' or queryRow['format'] == 'ASY' or queryRow['format'] == 'BLD' or queryRow['format'] == 'HYF' or queryRow['format'] == 'PRO' or queryRow['format'] == 'INT' or queryRow['format'] == 'LEC2':
                             if key == 'time':
                                 rowDict[key] = queryRow[key]
                                 rowDict['days'] = queryRow["days"]
@@ -137,7 +137,7 @@ def cgQueries(keywords):
 
 # filter to match database formatting
 def filterInputs(keywords, key):
-    temp = keywords.get(key).text
+    temp = keywords.get(key)
     temp = temp.upper()
     temp = re.split(r'([0-9][A-Z][0-9][0-9])', temp, maxsplit=1)
     temp = [t.strip() for t in temp]
@@ -147,7 +147,7 @@ def filterInputs(keywords, key):
     return temp
 
 def filterBuildingCodes(keywords):
-    temp = keywords.get('buildingCode').text
+    temp = keywords.get('buildingCode')
     temp = temp.upper()
     temp = re.split(r'([0-9][A-Z][0-9][0-9])', temp, maxsplit=1)
     temp = [t.strip() for t in temp]
@@ -155,6 +155,19 @@ def filterBuildingCodes(keywords):
     print('filtered input: '+temp)
     keywords['buildingCode'] = temp
     return None
+
+def filterFormat(keywords):
+    comp = ''
+    num = ''
+    barred = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    
+    for i in range(len(keywords["format"])):
+        if keywords["format"][i] in barred:
+            num += keywords["format"][i]
+        elif not i == " ":
+            comp += keywords["format"][i]
+    keywords['format'] = comp.strip()
+    keywords['formatNum'] = num
 
 def compressList(input):
     compressed = {}

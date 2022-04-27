@@ -56,9 +56,9 @@ def brockpost():
     # print(bN.processQ(json.loads(request.data)['message']))
     try:
         return bN.processQ(json.loads(request.data)['message'])
-    except:
+    except Exception as e:
         # return {'message':"I am not quite sure what you're asking. Could you rephrase that?"}
-        return {'message':"something horrible has happened"}
+        return {'message':str(e)}
     
 
 @app.route("/canada", methods = ['POST'])
