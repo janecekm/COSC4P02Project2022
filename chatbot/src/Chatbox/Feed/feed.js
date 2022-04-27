@@ -4,13 +4,19 @@ import ClipButton from '../ClipButton/clipbutton';
 import Thinking from '../Thinking/thinking';
 import func from "../../Language/Lanprocess";
 import Zoomin from '../Zoomin/zoomin';
-import Zoomout from '../Zoomout/zoomout'
+import Zoomout from '../Zoomout/zoomout';
+import Linkify from 'react-linkify';
 
 class Message extends React.Component {
   render() {
-    return (
-      <div className={this.props.type}>{this.props.text}</div>
-    );
+    if(this.props.type=="response")
+      return (
+        <Linkify><div className={this.props.type}>{this.props.text}</div></Linkify>//linkify takes any text given and makes the link clickable
+      );
+    else
+      return (
+        <div className={this.props.type}>{this.props.text}</div>
+      );
   }
 };
 
@@ -46,6 +52,7 @@ const Feed = () => {
       document.getElementById("inputField").style.setProperty("caret-color", "black");
     }
   );//triggers use effect for reply
+    var urlRegex = /(https?:\/\/[^\s]+)/g;
 
   };},[questions])//the trigger happens when there is a change of questions
 

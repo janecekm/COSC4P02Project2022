@@ -84,6 +84,7 @@
   margin-left: auto;
   margin-right: 5px;
   caret-color: transparent;
+  user-select: none;
 }
 
 .response{
@@ -103,6 +104,7 @@
   margin-left: 5px;
   caret-color: transparent;
   white-space: pre-wrap;
+  user-select: none;
 }
 .contextmenu{
   position: absolute;

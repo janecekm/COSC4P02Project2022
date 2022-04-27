@@ -219,7 +219,7 @@ def getLink(matchedKeys):
     Return: 
         returns a string to output as a response
     '''
-    temp = Template("I'm sorry, I wasn't able to find what you were looking for. However, you might be able to find more information at: $x")
+    temp = Template("I'm sorry, I wasn't able to find what you were looking for. However, you might be able to find more information at: $x ")
     # for queries that we will exclusively be giving links to 
     temp2 = Template("Information regarding $y can be found at: $x")
 
