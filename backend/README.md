@@ -26,4 +26,37 @@ The commands to run if you are on windows is.
 
 However, if you have linux environment installed, the command to run is.
 > pytest .
+ 
+ The naming convention we use is 
+ > test_sitename_function.py
+
+ Then we use a package called coverage to test how much of the code is tested by the tests we have set up.
+
+ ## Coverage
+
+This is a framework developed to help developers measure how much of the code has been tested by the [pytest](#pytest) framework. You can read more about Coverage [here](https://coverage.readthedocs.io/en/6.3.2/)
+
+The way this is run is by,
+
+For windows 
+> python -m coverage run -m pytest .
+
+For linux environment
+> coverage run -m pytest .
+
+Then there are many ways to view the final report. The command line version of it is by,
+>coverage report
+
+## Docker
+Docker is an amazing tool, which can be used to containarize software and easily be able to be deployed into different environment or platforms. 
+
+You can read more about docker [here](https://www.docker.com/)
+
+The file in which our image is contained is -
+
+- [DockerFile](../Dockerfile)
+
+This has to exist in the most external folder so that the ennvironment we are deploying into can grab that file easily.
+
+
 

@@ -1,6 +1,7 @@
 from queryTables import doQueries
 import botNLP
 import brockMatcher
+from brockMatcher import formResponse
 
 ## formQuery testing     #####
 
@@ -8,7 +9,7 @@ def getQueries(question):
     matches, doc = botNLP.extractKeywords(question)
     process = botNLP.processKeywords(matches,doc)
     query = doQueries(process)
-    return botNLP.formResponse(query,matches)
+    return formResponse(query,matches)
 
 def testing_descriptions_response():
     temp = getQueries("What is VISA 1p95")
