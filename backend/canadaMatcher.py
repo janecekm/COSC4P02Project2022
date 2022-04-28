@@ -1,9 +1,11 @@
 from spacy.tokens import Span
 import os
 from botNLP import nlp
-from botNLP import matcher
-from botNLP import phrase_matcher 
+from spacy.matcher import Matcher,PhraseMatcher
 from string import Template
+
+matcher = Matcher(nlp.vocab)
+phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 
 def filepath():
     if os.path.basename(os.getcwd()) == "backend":# we are in COSC4p02Project2022/backend

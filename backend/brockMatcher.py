@@ -2,15 +2,15 @@ from spacy.tokens import Span
 import os
 import json
 from botNLP import nlp
-from botNLP import phrase_matcher
-from botNLP import matcher
+from spacy.matcher import Matcher,PhraseMatcher
 from string import Template
 def filepath():
     if os.path.basename(os.getcwd()) =="backend":# we are in COSC4p02Project2022/backend
         return "./nlp-resources/"
     else:# we are in cosc4p02Project2022
         return "./backend/nlp-resources/"
-
+matcher = Matcher(nlp.vocab)
+phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 ###########################
 # This section defines patterns and callback functions for the PhraseMatcher
 buildings = []

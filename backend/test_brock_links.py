@@ -1,6 +1,11 @@
 from brockMatcher import getLink
 import botNLP
 import brockMatcher
+from brockMatcher import matcher,phrase_matcher
+
+botNLP.matcher = matcher
+botNLP.phrase_matcher = phrase_matcher
+
 def getQueries(question):
     matches, doc = botNLP.extractKeywords(question)
     return getLink(matches)
