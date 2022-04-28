@@ -138,11 +138,15 @@ def doQueries(keywords):
                 compressed = compressList(rowsList)
                 print(compressed)
                 return rowsList
-            elif 'programName' in keywords:
+            else:
+                print('more info required')
+                return None
+        except Exception as e:
+            print(e)
+            return None
+    elif 'programName' in keywords:
                 try:
-                    print(keywords.get('programName'))
                     temp = models.Program.query.filter_by(program=keywords.get('programName')).first()
-                    print(temp)
                     queryReturn = {}
                     if temp:
                         queryRow = to_dict(temp)
@@ -156,12 +160,6 @@ def doQueries(keywords):
                 except Exception as e:
                     print(e)
                     return None
-            else:
-                print('more info required')
-                return None
-        except Exception as e:
-            print(e)
-            return None
     return None
 
 def cgQueries(keywords):

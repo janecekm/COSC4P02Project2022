@@ -373,4 +373,7 @@ def formResponse(database_answer, keys):
         else: 
             temp = Template("There are no prerequisites for $c")
             return temp.substitute({'c': database_answer["code"]})
+    if "programName" in database_answer:
+        temp = Template("You can find the information about this program by following this link $c")
+        return temp.substitute({'c':database_answer["link"]})
     return None

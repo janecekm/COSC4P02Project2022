@@ -110,6 +110,9 @@
 .response a { 
   color: #fff5f4;
 }
+.response a:visited{
+  color: purple;
+}
 
 .contextmenu{
   position: absolute;

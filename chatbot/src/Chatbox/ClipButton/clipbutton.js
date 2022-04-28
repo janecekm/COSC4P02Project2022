@@ -9,7 +9,7 @@ async function myfunc(messages){
         s = s+"\n";
     });
     await navigator.clipboard.writeText(s);
-    alert("text is copied");
+    alert("Text is copied to clipboard.");
 }
 
 function ClipButton(props){
