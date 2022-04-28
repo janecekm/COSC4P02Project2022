@@ -7,25 +7,8 @@ def doQueries(keywords):
     print("Keywords received from botNLP: ")
     print(keywords)
     #Builing table
-    if 'programName' in keywords:
-        try:
-            print(keywords.get('programName'))
-            temp = models.Program.query.filter_by(program=keywords.get('programName')).first()
-            print(temp)
-            queryReturn = {}
-            if temp:
-                queryRow = to_dict(temp)
-                queryReturn["programName"] = queryRow["program"]
-                queryReturn["link"] = queryRow["link"]
-            else:
-                return None
-            print('Query Returned to botNLP: ')
-            print(queryReturn)
-            return queryReturn
-        except Exception as e:
-            print(e)
-            return None
-    elif 'buildingCode' in keywords:
+    
+    if 'buildingCode' in keywords:
         try:
             print(keywords)
             keywords['code'] = filterInputs(keywords, 'buildingCode')
@@ -155,6 +138,24 @@ def doQueries(keywords):
                 compressed = compressList(rowsList)
                 print(compressed)
                 return rowsList
+            elif 'programName' in keywords:
+                try:
+                    print(keywords.get('programName'))
+                    temp = models.Program.query.filter_by(program=keywords.get('programName')).first()
+                    print(temp)
+                    queryReturn = {}
+                    if temp:
+                        queryRow = to_dict(temp)
+                        queryReturn["programName"] = queryRow["program"]
+                        queryReturn["link"] = queryRow["link"]
+                    else:
+                        return None
+                    print('Query Returned to botNLP: ')
+                    print(queryReturn)
+                    return queryReturn
+                except Exception as e:
+                    print(e)
+                    return None
             else:
                 print('more info required')
                 return None
