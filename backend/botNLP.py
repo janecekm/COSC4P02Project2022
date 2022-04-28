@@ -15,7 +15,7 @@ def filepath():
     elif os.path.basename(os.getcwd())=="cosc4p02Project2022":# we are in cosc4p02Project2022
         return "./backend/nlp-resources/"
     else:
-        return "./nlp-resources"
+        return "./nlp-resources/"
 
 ###################################
 sym_spell = SymSpell(max_dictionary_edit_distance=2, prefix_length=7)
