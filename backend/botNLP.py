@@ -1,19 +1,18 @@
 from symspellpy import SymSpell, Verbosity
-from string import Template
 import os
 import spacy
 from spacy.matcher import Matcher
 from spacy.matcher import PhraseMatcher
-
+# load spaCy + create Matcher and PhraseMatcher objects
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
 phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 #setting up path for various nlp-resources such as autocorrect dictionary
 localflag = 10
 def filepath():
-    if os.path.basename(os.getcwd()) =="backend":#we are in COSC4p02Project2022/backend
+    if os.path.basename(os.getcwd()) =="backend":# we are in COSC4p02Project2022/backend
         return "./nlp-resources/"
-    else:#we are in cosc4p02Project2022
+    else:# we are in cosc4p02Project2022
         return "./backend/nlp-resources/"
 
 ###################################
@@ -22,14 +21,10 @@ dictionary_path = filepath()+"frequency_dictionary_en_82_765.txt"
 # term_index is the column of the term and count_index is the
 # column of the term frequency
 sym_spell.load_dictionary(dictionary_path, term_index=0, count_index=1)
-#sym_spell.create_dictionary_entry("cosc 1p02",50)
-#play with words, adjust values accordingly. look into saving updated dictionary
-# sym_spell.create_dictionary_entry("is",8569404971)
 ###########################################################
-# links for when nothing is returned from the database
-###########################################################
+
 def multiQuestionCheck(matches, doc):
-    '''This method uses the matches and their corresponding priorities to see if the user has submitted multiple queries
+    '''Uses the matches and their corresponding priorities to see if the user has submitted multiple queries
     Args:
         matches: the list of matches returned from running the matcher on the document
         doc: the user text processed by the NLP pipeline (spaCy Doc object https://spacy.io/api/doc)
@@ -48,7 +43,7 @@ def multiQuestionCheck(matches, doc):
 
 
 def spellcheck(question): 
-    '''This method performs a spellcheck on the question submitted by the user
+    '''Performs a spellcheck on the question submitted by the user
     Args: 
         question: the original question string from the user
     Return: 
@@ -65,7 +60,7 @@ def spellcheck(question):
     return merge.strip()
 
 def extractKeywords(question): 
-    '''This method runs the matcher to extract key information from the query and add match labels
+    '''Runs the matcher to extract key information from the query and add match labels
     Args:
         question: the string text to extract info from 
     Return: 
@@ -146,8 +141,6 @@ def processKeywords(matches, doc):
         processedMatches.pop("description")
     return processedMatches
 
-
-
 def processQ(question, flag=0):
     '''Main entry point to the NLP module. This is called by the server.
     Args:
@@ -155,15 +148,14 @@ def processQ(question, flag=0):
         flag: an integer indicating which chatbot is sending the request/which match patterns to use
               0 (default) indicates the Brock chat bot
               1 indicates Canada Games chat bot 
-              ** Note: this functionality is not yet completely implemented
     Return: 
         a response string to be output to the user
     '''
     '''
-    matcher : the matcher that is used for NLP pipeline, and this is build by the appropriate file, i.e. brockMatcher and canadaMatcher
-    phrase_matcher : the phrase_matcher created by the appropriate file, i.e. brockMatcher or canadaMatcher
-    getLink : the rule set applied to the links that needs to be returned if a answer is not found.
-    localflag : this is too indicate if brock match pattern has already been build or the canada games match pattern has been already build.
+    matcher: the matcher that is used for NLP pipeline, and this is build by the appropriate file, i.e. brockMatcher and canadaMatcher
+    phrase_matcher: the phrase_matcher created by the appropriate file, i.e. brockMatcher or canadaMatcher
+    formResponse: a method to form an appropriate response for the chatbot being used (specific to the keywords/data relevant to that chatbot)
+    localflag: this is too indicate if brock match pattern has already been build or the canada games match pattern has been already build.
     '''
     global matcher, phrase_matcher, formResponse, localflag
     if flag == 0 and localflag!=flag: # we need to deconstruct the matcher each time to match the chat bot we are using

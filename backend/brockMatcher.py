@@ -11,6 +11,8 @@ def filepath():
     else:# we are in cosc4p02Project2022
         return "./backend/nlp-resources/"
 
+###########################
+# This section defines patterns and callback functions for the PhraseMatcher
 buildings = []
 buildingNames =[]
 with open(filepath()+"buildingCodesClean.txt", encoding="utf8") as f: 
@@ -41,7 +43,6 @@ def disambiguateProgram(matcher, doc, i, matches):
                 matches.pop(idx) # remove the shorter program from the match list
         idx += 1      
 
-    
 programNames = []
 with open(filepath()+"program-links.txt", encoding="utf8") as f:
     for line in f: 
@@ -53,10 +54,14 @@ with open(filepath()+"program-links.txt", encoding="utf8") as f:
 ###################################
 # This section defines all the patterns for the Matcher
 
+# if extension has not been set, create extension
 if not Span.has_extension("prio"): 
     Span.set_extension("prio", default=100)
 
 def assignPriority(matcher, doc, i, matches): 
+    '''Assigns a priority value to the matched spans. Priority values indicate the importance of the question component. 
+    Lower values indicate higher priority. 
+    '''
     match_id, start, end = matches[i]
     if match_id == nlp.vocab.strings["openerGreet"]\
         or match_id == nlp.vocab.strings["question"]:
@@ -240,7 +245,7 @@ links = {
     "map": "https://brocku.ca/blogs/campus-map/"
 }
 
-# the getLink method will also need to be modularized out to correspond to the appropriate chatbot
+# getLink method for the relevant links for Brock
 def getLink(matchedKeys):
     '''A method for if the info was not found in the database
     Args: 
@@ -296,11 +301,12 @@ def getLink(matchedKeys):
         return temp.substitute({'x': links["brock"]})
 
 def formResponse(database_answer, keys):
-    '''A method to form a very simple response 
+    '''A method to form a response given the database answer and the matched keywords
     Args: 
-        matchedKeys: the list of match info as a result of processing
+        database_answer: response from the database, will be of type dictionary, list or None if no response from database
+        keys: the list of match info as a result of processing
     Return: 
-        returns a string to output as a response
+        a string to output as a response, or None if no response is generated (something unexpected happened)
     '''
     if not database_answer:
         return getLink(keys)

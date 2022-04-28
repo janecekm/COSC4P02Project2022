@@ -1,5 +1,6 @@
 import models
 import re
+import json
 # keywords is a dictionary of match_id and match_text
 # print(models.Course.query.all())
 def doQueries(keywords):
@@ -104,7 +105,13 @@ def doQueries(keywords):
                 queryReturn = {}
                 rowsList = []
                 if 'format' in keywords.keys():
+                    # open the brockdictionary.json file to standardize the format of the course component
+                    from botNLP import filepath
+                    changer = open(filepath()+"brockdictionary.json","r") # loading the brock dictionary for word substitutions
+                    changer = json.load(changer) # since we are using a json file, load instead of loads
                     keywords['format'] = filterInputs(keywords, 'format')
+                    t = keywords['format'].lower() # converts into lower to match the dictionary.
+                    keywords['format'] = changer[t].upper() # converts into uppper to match the database.
                 for row in temp:
                     queryRow = to_dict(row)
                     rowDict = {}

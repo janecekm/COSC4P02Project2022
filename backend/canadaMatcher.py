@@ -12,6 +12,7 @@ def filepath():
         return "./backend/nlp-resources/"
 
 ###################################
+# PhraseMatcher initialization
 sports = []
 with open(filepath()+"sports-list.txt", encoding="utf-8") as f: 
     for line in f: 
@@ -39,7 +40,11 @@ with open(filepath()+"town-list.txt",encoding="utf-8") as t:
 if not Span.has_extension("prio"): 
     Span.set_extension("prio", default=100)
 
+# not currently used for CanadaGames?? 
 def assignPriority(matcher, doc, i, matches): 
+    '''Assigns priorities to matched spans based on component importantance. 
+    Lower prio values correspond to higher priorities. 
+    '''
     match_id, start, end = matches[i]
     if match_id == nlp.vocab.strings["openerGreet"]\
         or match_id == nlp.vocab.strings["question"]:
@@ -98,7 +103,7 @@ matcher.add("transport", transport, on_match=assignPriority)
 
 
 
-# we will need to add an appropriate links table here, similar to the one in brockMatcher
+# link table for questions that should give link responses
 links = {
     "transit" : "https://transitapp.com/region/niagara-region",
     "schedule" : "https://cg2022.gems.pro/Result/Calendar.aspx",
@@ -107,8 +112,8 @@ links = {
     "default" : "https://www.canadagames.ca/", 
     "volunteer" : "https://www.canadagames.ca/about/faq?tab=volunteers#faq"
 }
-# we will also need to implement a "getLink(keywords)"
 
+# getLink method that utilizes the appropriate link table and key values for Canada Games
 def getLink(matchedKeys):
     '''
     A method for if the info was not found in the database
@@ -145,9 +150,10 @@ def getLink(matchedKeys):
 # dictionary updates: fonthill -> foothills, NOTL -> not 
 
 def formResponse(database_answer, keys):#this function needs to be filled out for the chatbot to know how to form response.
-    '''A method to form a very simple response 
+    '''A method to form a response 
     Args: 
-        matchedKeys: the list of match info as a result of processing
+        database_answer: response from the database, will be of type dictionary, list or None if no response from database
+        keys: the list of match info as a result of processing
     Return: 
         returns a string to output as a response
     '''
