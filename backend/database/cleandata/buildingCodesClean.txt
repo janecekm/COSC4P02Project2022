@@ -9,7 +9,6 @@
 {"buildingCode": "CRN", "buildingName": "Cairns' Family Health and Bioscience Research Complex"}
 {"buildingCode": "CUB", "buildingName": "Central Utilities Building"}
 {"buildingCode": "DEC", "buildingName": "Decew Residence"}
-{"buildingCode": "DHOWES", "buildingName": "David S. Howes Theatre"}
 {"buildingCode": "DNLD", "buildingName": "DNLD - McDonald's"}
 {"buildingCode": "DOWNTOWN", "buildingName": "St. Catharines, Downtown Campus"}
 {"buildingCode": "EA-1", "buildingName": "EA-1 - East Academic - Building 1"}
