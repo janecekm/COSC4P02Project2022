@@ -57,4 +57,3 @@ def testing_get_directory():
 def testing_get_store():
     assert "https://campusstore.brocku.ca/" in getQueries("store")
     assert "https://campusstore.brocku.ca/" in getQueries("textbook")
-    assert "https://campusstore.brocku.ca/" in getQueries("booklist")

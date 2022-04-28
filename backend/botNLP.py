@@ -47,15 +47,12 @@ def multiQuestionCheck(matches, doc):
     return True
 
 
-def spellcheck(question, matches, doc): 
-    '''This method performs a spellcheck on the question submitted by the user, after existing matches have been removed
+def spellcheck(question): 
+    '''This method performs a spellcheck on the question submitted by the user
     Args: 
         question: the original question string from the user
-        matches: the list of matches returned from running the matcher on the document
-        doc: the spaCy Doc object (https://spacy.io/api/doc) returned after running the string through the NLP pipeline
     Return: 
-        matches: the list of matches after spellcheck has been applied (and the matcher has been re-run on the document)
-        doc: the new Doc object (https://spacy.io/api/doc), run on the corrected string 
+        The spellcorrected user query as a string
     '''
     questionPieces = question.split(" ")
     merge = ''
@@ -65,12 +62,7 @@ def spellcheck(question, matches, doc):
             merge += suggestion[0].term + " "
         else:
             merge += q + " "
-    doc = nlp(merge.strip())
-    matches = matcher(doc)
-    phrase_matches = phrase_matcher(doc)
-    for match in phrase_matches: 
-        matches.append(match)
-    return matches, doc 
+    return merge.strip()
 
 def extractKeywords(question): 
     '''This method runs the matcher to extract key information from the query and add match labels
@@ -84,15 +76,15 @@ def extractKeywords(question):
             end is the end index of the matched span (set of tokens)
         doc: the user input, processed by the NLP pipeline (output as a spaCy Doc object https://spacy.io/api/doc)
     '''
+    print("Prior to correction:", question)
+    question = spellcheck(question)
+    print("Post correction:", question)
     doc = nlp(question)
     matches = matcher(doc)
     # get the phrase_matches and add them to the match list
     phrase_matches = phrase_matcher(doc) 
     for match in phrase_matches: 
         matches.append(match)
-    print("Prior to correction:", doc.text)
-    matches, doc = spellcheck(question, matches, doc)
-    print("Post correction:", doc.text)
     return matches, doc
 
 def processKeywords(matches, doc):
@@ -112,7 +104,6 @@ def processKeywords(matches, doc):
     for match_id, start, end in matches: 
         match_label = nlp.vocab.strings[match_id]
         match_text = doc[start:end]
-        # match_text = match_text.text
         if not match_label == 'course component' and not match_label == 'question':
             if match_label == 'format':
                 comp = ''
@@ -182,7 +173,7 @@ def processQ(question, flag=0):
     elif flag == 1 and localflag != flag:
         import canadaMatcher
         from canadaMatcher import formResponse # this function is abstracted so that the rules to define when we see a particular unknown case, we send them the link
-        localflag = flag#this is done so that, if we build canada games matcher, we shouldn't be building it again
+        localflag = flag # this is done so that, if we build canada games matcher, we shouldn't be building it again
     matches, doc = extractKeywords(question)
     polite = False
     for match_id, start, end in matches:

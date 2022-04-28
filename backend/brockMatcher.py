@@ -6,17 +6,49 @@ from botNLP import phrase_matcher
 from botNLP import matcher
 from string import Template
 def filepath():
-    if os.path.basename(os.getcwd()) =="backend":#we are in COSC4p02Project2022/backend
+    if os.path.basename(os.getcwd()) =="backend":# we are in COSC4p02Project2022/backend
         return "./nlp-resources/"
-    else:#we are in cosc4p02Project2022
+    else:# we are in cosc4p02Project2022
         return "./backend/nlp-resources/"
 
 buildings = []
+buildingNames =[]
 with open(filepath()+"buildingCodesClean.txt", encoding="utf8") as f: 
     for line in f:
-        buildings.append(json.loads(line)["buildingCode"])
+        obj = json.loads(line)
+        buildings.append(obj["buildingCode"])
+        buildingNames.append(obj["buildingName"])
 patterns = list(nlp.pipe(buildings))
 phrase_matcher.add("buildingCode", patterns)
+patterns = list(nlp.pipe(buildingNames))
+phrase_matcher.add("buildingNames", patterns)
+
+def disambiguateProgram(matcher, doc, i, matches): 
+    '''Callback function for phrase matcher. Removes overlapping programName matches, keeps longest match
+    Ex. "computer science" and "science" are both matches, removes "science" from the match list
+    '''
+    max_len_match = (-1, -1) # idx, len
+    idx = 0
+    for match_id, start, end in matches:
+        print(idx, nlp.vocab.strings[match_id], doc[start:end]) 
+        if nlp.vocab.strings[match_id] == "programName": 
+            l = end - start
+            if l > max_len_match[1]: 
+                if max_len_match[0] != -1:
+                    matches.pop(max_len_match[0]) # remove the shorter program from the match list
+                max_len_match = (idx, end-start) # update max
+            else: 
+                matches.pop(idx) # remove the shorter program from the match list
+        idx += 1      
+
+    
+programNames = []
+with open(filepath()+"program-links.txt", encoding="utf8") as f:
+    for line in f: 
+        obj = json.loads(line)
+        programNames.append((list(obj.keys())[0]))
+    patterns = list(nlp.pipe(programNames))
+    phrase_matcher.add("programName", patterns, on_match=disambiguateProgram)
 
 ###################################
 # This section defines all the patterns for the Matcher
@@ -204,7 +236,8 @@ links = {
     "directory":"https://brocku.ca/directory/", 
     "store":"https://campusstore.brocku.ca/",
     "masters":"https://brocku.ca/programs/graduate/",
-    "admission":"https://brocku.ca/admissions/"
+    "admission":"https://brocku.ca/admissions/",
+    "map": "https://brocku.ca/blogs/campus-map/"
 }
 
 # the getLink method will also need to be modularized out to correspond to the appropriate chatbot
@@ -227,7 +260,7 @@ def getLink(matchedKeys):
     for match_id, start, end in matchedKeys:
         print(nlp.vocab.strings[match_id])
         matches.append(nlp.vocab.strings[match_id])
-    if "prereqs" in matches:
+    if "prereq" in matches:
         return temp.substitute({'x': links["prereqs"]})
     elif "a_washrooms" in matches:
         return temp2.substitute({'y' : "the accesible washrooms at Brock", 'x': links["a_washrooms"]})
@@ -255,6 +288,8 @@ def getLink(matchedKeys):
         return temp.substitute({'x': links["timetable"]})
     elif "tuition" in matches:
         return temp2.substitute({'y' : "tuition", 'x': links["tuition"]})
+    elif "buildingNames" in matches: 
+        return temp2.substitute({'y': "locations on campus", 'x': links["map"]})
     elif "openerGreet" in matches:
         return "What can I help you with today?"
     else:

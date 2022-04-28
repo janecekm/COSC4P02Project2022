@@ -1,32 +1,51 @@
 {"buildingCode": "AL", "buildingName": "Alphie's Trough"}
-{"buildingCode": "BAR_A", "buildingName": "BAR-A - Barn - A"}
-{"buildingCode": "BAR_B", "buildingName": "BAR-B - Barn - B"}
-{"buildingCode": "CAR", "buildingName": "CAR - Carpentry Shop"}
+{"buildingCode": "BAR_A", "buildingName": "Barn - A"}
+{"buildingCode": "BAR_B", "buildingName": "Barn - B"}
+{"buildingCode": "CAR", "buildingName": "Carpentry Shop"}
 {"buildingCode": "CJD", "buildingName": "Brock Research and Innovation Centre \"BRIC\""}
+{"buildingCode": "CJD", "buildingName": "BRIC"}
 {"buildingCode": "CLS", "buildingName": "Concordia Lutheran Seminary"}
 {"buildingCode": "CRN", "buildingName": "Cairns' Family Health and Bioscience Research Complex"}
+{"buildingCode": "CRN", "buildingName": "Cairns' Complex"}
+{"buildingCode": "CRN", "buildingName": "Cairns Complex"}
+{"buildingCode": "CRN", "buildingName": "Cairns'"}
+{"buildingCode": "CRN", "buildingName": "Cairns"}
 {"buildingCode": "CUB", "buildingName": "Central Utilities Building"}
 {"buildingCode": "DEC", "buildingName": "Decew Residence"}
+{"buildingCode": "DEC", "buildingName": "Decew"}
 {"buildingCode": "DNLD", "buildingName": "DNLD - McDonald's"}
+{"buildingCode": "DNLD", "buildingName": "McDonald's"}
 {"buildingCode": "DOWNTOWN", "buildingName": "St. Catharines, Downtown Campus"}
+{"buildingCode": "EA-1", "buildingName": "East Academic"}
 {"buildingCode": "EA-1", "buildingName": "EA-1 - East Academic - Building 1"}
 {"buildingCode": "EA-2", "buildingName": "EA-2 - East Academic - Building 2"}
 {"buildingCode": "EA-3", "buildingName": "EA-3 - East Academic - Building 3"}
 {"buildingCode": "EAST", "buildingName": "St. Catharines, East Academic"}
 {"buildingCode": "ERP", "buildingName": "Alan Earp Residence"}
+{"buildingCode": "ERP", "buildingName": "Earp Residence"}
+{"buildingCode": "ERP", "buildingName": "Earp"}
 {"buildingCode": "GH", "buildingName": "GH - Alumni Greenhouse"}
+{"buildingCode": "GH", "buildingName": "Alumni Greenhouse"}
 {"buildingCode": "GLN_A", "buildingName": "GLN-A - 573 Glenridge"}
+{"buildingCode": "GLN_A", "buildingName": "573 Glenridge"}
 {"buildingCode": "GLN_B", "buildingName": "International Centre"}
 {"buildingCode": "GSB", "buildingName": "Goodman School of Business"}
+{"buildingCode": "GSB", "buildingName": "Goodman"}
 {"buildingCode": "GWY", "buildingName": "GWY - Gateway Residence"}
+{"buildingCode": "GWY", "buildingName": "Gateway Residence"}
 {"buildingCode": "HAM", "buildingName": "Hamilton Campus"}
 {"buildingCode": "HH", "buildingName": "Harrison Hall"}
 {"buildingCode": "HPP", "buildingName": "HPP - Heritage Place Plaza"}
+{"buildingCode": "HPP", "buildingName": "Heritage Place Plaza"}
 {"buildingCode": "HRTN", "buildingName": "HRTN - Tim Hortons"}
+{"buildingCode": "HRTN", "buildingName": "Tim Hortons"}
 {"buildingCode": "HS", "buildingName": "HS - 140 Lockhart"}
+{"buildingCode": "HS", "buildingName": "140 Lockhart"}
 {"buildingCode": "IH", "buildingName": "Inniskillin Hall"}
 {"buildingCode": "KC", "buildingName": "Kenmore Centre"}
 {"buildingCode": "LOW", "buildingName": "Arnie Lowenberger Residence"}
+{"buildingCode": "LOW", "buildingName": "Lowenberger Residence"}
+{"buildingCode": "LOW", "buildingName": "Lowenberger"}
 {"buildingCode": "MAIN", "buildingName": "St. Catharines, Main Campus"}
 {"buildingCode": "MCA", "buildingName": "MCA - Mackenzie Chown Block \u2018A\u2019"}
 {"buildingCode": "MCB", "buildingName": "MCB - Mackenzie Chown Block \u2018B\u2019"}
@@ -47,25 +66,38 @@
 {"buildingCode": "QV_4", "buildingName": "QV-4 - Quarryview Residence - Block 4"}
 {"buildingCode": "QV_5", "buildingName": "QV-5 - Quarryview Residence - Block 5"}
 {"buildingCode": "QV_6", "buildingName": "QV-6 - Quarryview Residence - Block 6"}
+{"buildingCode": "QV", "buildingName": "Quarryview Residence"}
+{"buildingCode": "QV", "buildingName": "Quarryview"}
 {"buildingCode": "RBC", "buildingName": "Rosalind Blauer Centre"}
 {"buildingCode": "RFP", "buildingName": "Rankin Family Pavilion"}
 {"buildingCode": "RH", "buildingName": "Rodman Hall"}
 {"buildingCode": "SBH", "buildingName": "Scotiabank Hall"}
 {"buildingCode": "SC", "buildingName": "Student - Alumni Centre"}
+{"buildingCode": "SC", "buildingName": "Student-Alumni Centre"}
+{"buildingCode": "SC", "buildingName": "Alumni Centre"}
 {"buildingCode": "SH", "buildingName": "Theal House"}
 {"buildingCode": "SITE", "buildingName": "SITE - Grounds & Roads"}
 {"buildingCode": "ST", "buildingName": "Arthur Schmon Tower"}
+{"buildingCode": "ST", "buildingName": "Schmon Tower"}
 {"buildingCode": "STH", "buildingName": "South Block"}
 {"buildingCode": "TA", "buildingName": "Taro Hall"}
 {"buildingCode": "TH", "buildingName": "Thistle Complex"}
+{"buildingCode": "TH", "buildingName": "Thistle"}
 {"buildingCode": "TRL", "buildingName": "TRL - Trillium Lane"}
+{"buildingCode": "TRL", "buildingName": "Trillium Lane"}
 {"buildingCode": "VAL", "buildingName": "Gordon/Betty Vallee Residence"}
+{"buildingCode": "VAL", "buildingName": "Vallee Residence"}
+{"buildingCode": "VAL", "buildingName": "Vallee"}
 {"buildingCode": "VIL_A", "buildingName": "VIL-A - Village Residence (Courts 1 \u2013 6)"}
 {"buildingCode": "VIL_B", "buildingName": "VIL-B - Village Residence (Courts 7 - 9)"}
 {"buildingCode": "VIL_C", "buildingName": "VIL-C - Village Residence (Courts 10 - 12)"}
 {"buildingCode": "VILL", "buildingName": "VILL - All Village Locations"}
+{"buildingCode": "VILL", "buildingName": "Village Residence"}
+{"buildingCode": "VILL", "buildingName": "Village"}
 {"buildingCode": "WC_A", "buildingName": "WC-A - Walker Complex - Physical Education Centre"}
 {"buildingCode": "WC_B", "buildingName": "WC-B - Walker Complex - Eleanor Misener Aquatic Centre"}
 {"buildingCode": "WC_C", "buildingName": "WC-C - Walker Complex - Storage Bldg. (at Ball Diamonds)"}
 {"buildingCode": "WC_D", "buildingName": "WC-D - Walker Complex - Field House"}
+{"buildingCode": "WC", "buildingName": "Walker Complex"}
 {"buildingCode": "WH", "buildingName": "Robert S.K. Welch Hall"}
+{"buildingCode": "WH", "buildingName": "Welch Hall"}
