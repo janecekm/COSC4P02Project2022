@@ -7,7 +7,7 @@ const values = {
         "disclaimer":"All information taken from Canada games websites",
         "helptext":"You can ask questions about where to find tickets \n you can ask about where the events are and when they occur \n the chatbot will give you the appropriate links to the website.",
         "disclaimermenu":"Disclaimer",
-        "disclaimertext":"The Info you have available here is scraped from Canada Games official websites",
+        "disclaimertext":"The info you have available here is scraped from the Canada Games official websites",
         "helpmenu":"Help",
         "aboutusmenu":"About Us",
         "aboutustext":"We are a group of people",

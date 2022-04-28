@@ -1,3 +1,5 @@
+{"buildingCode": "DHOWES", "buildingName": "David S. Howes Theatre"}
+{"buildingCode": "SOS", "buildingName": "Sean O'Sullivan Theatre"}
 {"buildingCode": "AL", "buildingName": "Alphie's Trough"}
 {"buildingCode": "BAR_A", "buildingName": "BAR-A - Barn - A"}
 {"buildingCode": "BAR_B", "buildingName": "BAR-B - Barn - B"}
