@@ -106,6 +106,11 @@
   white-space: pre-wrap;
   user-select: none;
 }
+
+.response a { 
+  color: #fff5f4;
+}
+
 .contextmenu{
   position: absolute;
   list-style: none;

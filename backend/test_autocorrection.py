@@ -7,7 +7,7 @@ def correcting_english(question):
     phrases_matched = botNLP.phrase_matcher(doc)
     for match in phrases_matched:
         matches.append(match)
-    return botNLP.spellcheck(question,matches,doc)[1].text
+    return botNLP.spellcheck(question)
 
 def testing_spelling_mistake():
     # matches, docs = correcting_english("waht there")

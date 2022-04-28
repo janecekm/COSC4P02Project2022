@@ -1,0 +1,114 @@
+{"Accounting": "https://brocku.ca/programs/undergraduate/accounting/"}
+{"Adult Education": "https://brocku.ca/programs/undergraduate/adult-education/"}
+{"Applied Computing": "https://brocku.ca/programs/undergraduate/applied-computing/"}
+{"Applied Linguistics": "https://brocku.ca/programs/undergraduate/applied-linguistics/"}
+{"Biochemistry": "https://brocku.ca/programs/undergraduate/biochemistry/"}
+{"Biological Sciences": "https://brocku.ca/programs/undergraduate/biological-sciences/"}
+{"Biomedical Sciences": "https://brocku.ca/programs/undergraduate/biomedical-sciences/"}
+{"Biophysics": "https://brocku.ca/programs/undergraduate/biophysics/"}
+{"Biotechnology": "https://brocku.ca/programs/undergraduate/biotechnology/"}
+{"Business":"https://brocku.ca/programs/#filter=gsb"}
+{"Business Administration": "https://brocku.ca/programs/undergraduate/business-administration/"}
+{"Business Administration Co-op International Double Degree": "https://brocku.ca/programs/undergraduate/business-administration-international/"}
+{"Business Communication": "https://brocku.ca/programs/undergraduate/business-communication/"}
+{"Business Economics": "https://brocku.ca/programs/undergraduate/business-economics/"}
+{"Canadian Studies": "https://brocku.ca/programs/undergraduate/canadian-studies/"}
+{"Chemistry": "https://brocku.ca/programs/undergraduate/chemistry/"}
+{"Child and Youth Studies": "https://brocku.ca/programs/undergraduate/child-and-youth-studies/"}
+{"Child Health": "https://brocku.ca/programs/undergraduate/child-health/"}
+{"Classics": "https://brocku.ca/programs/undergraduate/classics/"}
+{"Community Health": "https://brocku.ca/programs/undergraduate/community-health/"}
+{"Computer Science": "https://brocku.ca/programs/undergraduate/computer-science/"}
+{"Comp Sci": "https://brocku.ca/programs/undergraduate/computer-science/"}
+{"Computer Science and Mathematics": "https://brocku.ca/programs/undergraduate/computer-science-and-mathematics/"}
+{"Computing and Business": "https://brocku.ca/programs/undergraduate/computing-and-business/"}
+{"Computing and Network Communications": "https://brocku.ca/programs/undergraduate/computing-and-network-communications/"}
+{"Concurrent Teacher Education \u2013 Intermediate/Senior (Grades 7-12)": "https://brocku.ca/programs/undergraduate/concurrent-education-intermediatesenior-grades-7-12/"}
+{"Concurrent Teacher Education \u2013 Junior/Intermediate (Grades 4-10)": "https://brocku.ca/programs/undergraduate/concurrent-education-juniorintermediate-grades-4-10/"}
+{"Concurrent Teacher Education \u2013 Primary/Junior (Grades K-6)": "https://brocku.ca/programs/undergraduate/concurrent-education-primary-junior-grades-k-6/"}
+{"Concurrent Education": "https://brocku.ca/programs/#filter=foe"}
+{"Con Ed":"https://brocku.ca/programs/#filter=foe"}
+{"Critical Criminology": "https://brocku.ca/programs/undergraduate/critical-criminology/"}
+{"Criminology": "https://brocku.ca/programs/undergraduate/critical-criminology/"}
+{"Dramatic Arts": "https://brocku.ca/programs/undergraduate/dramatic-arts/"}
+{"Drama": "https://brocku.ca/programs/undergraduate/dramatic-arts/"}
+{"Early Childhood Education": "https://brocku.ca/programs/undergraduate/early-childhood-education-2/"}
+{"Earth Sciences": "https://brocku.ca/programs/undergraduate/earth-sciences/"}
+{"Economics": "https://brocku.ca/programs/undergraduate/economics/"}
+{"Econ": "https://brocku.ca/programs/undergraduate/economics/"}
+{"Education":"https://brocku.ca/programs/#filter=foe"}
+{"Engineering Science": "https://brocku.ca/programs/undergraduate/engineering-science/"}
+{"English Language and Literature": "https://brocku.ca/programs/undergraduate/english-language-and-literature/"}
+{"Environmental Geoscience": "https://brocku.ca/programs/undergraduate/environmental-geoscience/"}
+{"Environmental Sustainability": "https://brocku.ca/programs/undergraduate/environmental-sustainability/"}
+{"Film Studies": "https://brocku.ca/programs/undergraduate/film-studies/"}
+{"Film": "https://brocku.ca/programs/undergraduate/film-studies/"}
+{"Forensic Psychology and Criminal Justice": "https://brocku.ca/programs/undergraduate/forensic-psychology-and-criminal-justice/"}
+{"Criminal Justice": "https://brocku.ca/programs/undergraduate/forensic-psychology-and-criminal-justice/"}
+{"Forensic Psychology": "https://brocku.ca/programs/undergraduate/forensic-psychology-and-criminal-justice/"}
+{"French Studies": "https://brocku.ca/programs/undergraduate/french-studies/"}
+{"French": "https://brocku.ca/programs/undergraduate/french-studies/"}
+{"Game Design": "https://brocku.ca/programs/undergraduate/game-design/"}
+{"Game Programming": "https://brocku.ca/programs/undergraduate/game-programming/"}
+{"General Humanities": "https://brocku.ca/programs/undergraduate/general-humanities/"}
+{"Humanities": "https://brocku.ca/programs/undergraduate/general-humanities/"}
+{"Geography": "https://brocku.ca/programs/undergraduate/human-geography/"}
+{"Geo": "https://brocku.ca/programs/undergraduate/human-geography/"}
+{"German": "https://brocku.ca/programs/undergraduate/german/"}
+{"Hispanic and Latin American Studies": "https://brocku.ca/programs/undergraduate/hispanic-and-latin-american-studies/"}
+{"History": "https://brocku.ca/programs/undergraduate/history/"}
+{"Indigenous Education": "https://brocku.ca/programs/undergraduate/indigenous-adult-education-and-native-teacher-education/"}
+{"Interactive Arts and Science": "https://brocku.ca/programs/undergraduate/interactive-arts-and-science/"}
+{"Italian Studies": "https://brocku.ca/programs/undergraduate/italian-studies/"}
+{"Italian": "https://brocku.ca/programs/undergraduate/italian-studies/"}
+{"Kinesiology": "https://brocku.ca/programs/undergraduate/kinesiology/"}
+{"Kinesiology \u2013 Accelerate Into Master\u2019s": "https://brocku.ca/programs/undergraduate/kinesiology-aim/"}
+{"Labour Studies": "https://brocku.ca/programs/undergraduate/labour-studies/"}
+{"Mathematics and Statistics": "https://brocku.ca/programs/undergraduate/mathematics-and-statistics/"}
+{"Media and Communication Studies": "https://brocku.ca/programs/undergraduate/media-and-communication-studies/"}
+{"Media and Communication": "https://brocku.ca/programs/undergraduate/media-and-communication-studies/"}
+{"Media": "https://brocku.ca/programs/undergraduate/media-and-communication-studies/"}
+{"Communication": "https://brocku.ca/programs/undergraduate/media-and-communication-studies/"}
+{"Medical Sciences": "https://brocku.ca/programs/undergraduate/medical-sciences/"}
+{"Med Sci": "https://brocku.ca/programs/undergraduate/medical-sciences/"}
+{"Medieval and Renaissance Studies": "https://brocku.ca/programs/undergraduate/medieval-and-renaissance-studies/"}
+{"Medieval and Renaissance": "https://brocku.ca/programs/undergraduate/medieval-and-renaissance-studies/"}
+{"Music": "https://brocku.ca/programs/undergraduate/music/"}
+{"Neuroscience": "https://brocku.ca/programs/undergraduate/neuroscience/"}
+{"Nursing": "https://brocku.ca/programs/undergraduate/nursing/"}
+{"Oenology and Viticulture": "https://brocku.ca/programs/undergraduate/oenology-and-viticulture/"}
+{"Philosophy": "https://brocku.ca/programs/undergraduate/philosophy/"}
+{"Physical Education": "https://brocku.ca/programs/undergraduate/physical-education/"}
+{"Physical Ed": "https://brocku.ca/programs/undergraduate/physical-education/"}
+{"Phys Ed": "https://brocku.ca/programs/undergraduate/physical-education/"}
+{"Physics": "https://brocku.ca/programs/undergraduate/physics/"}
+{"Political Science": "https://brocku.ca/programs/undergraduate/political-science/"}
+{"Poli Sci": "https://brocku.ca/programs/undergraduate/political-science/"}
+{"Popular Culture": "https://brocku.ca/programs/undergraduate/popular-culture/"}
+{"Pop Culture": "https://brocku.ca/programs/undergraduate/popular-culture/"}
+{"Psychology": "https://brocku.ca/programs/undergraduate/psychology/"}
+{"Public Health": "https://brocku.ca/programs/undergraduate/public-health/"}
+{"Public Health \u2013 Accelerate Into Master\u2019s": "https://brocku.ca/programs/undergraduate/public-health-aim/"}
+{"Recreation and Leisure Studies": "https://brocku.ca/programs/undergraduate/recreation-and-leisure-studies/"}
+{"Rec and Leisure": "https://brocku.ca/programs/undergraduate/recreation-and-leisure-studies/"}
+{"Recreation and Leisure": "https://brocku.ca/programs/undergraduate/recreation-and-leisure-studies/"}
+{"Recreation":"https://brocku.ca/programs/undergraduate/recreation-and-leisure-studies/"}
+{"Leisure":"https://brocku.ca/programs/undergraduate/recreation-and-leisure-studies/"}
+{"Sciences": "https://brocku.ca/programs/undergraduate/sciences/"}
+{"Science": "https://brocku.ca/programs/undergraduate/sciences/"}
+{"Social Sciences": "https://brocku.ca/programs/undergraduate/social-sciences/"}
+{"Social Science": "https://brocku.ca/programs/undergraduate/social-sciences/"}
+{"Sociology": "https://brocku.ca/programs/undergraduate/sociology/"}
+{"Sport Management": "https://brocku.ca/programs/undergraduate/sport-management/"}
+{"Sports Management": "https://brocku.ca/programs/undergraduate/sport-management/"}
+{"Studies in Arts and Culture": "https://brocku.ca/programs/undergraduate/studies-in-arts-and-culture/"}
+{"Arts and Culture": "https://brocku.ca/programs/undergraduate/studies-in-arts-and-culture/"}
+{"Teacher Education \u2013 Consecutive": "https://brocku.ca/programs/undergraduate/teacher-education-consecutive/"}
+{"Consecutive Ed": "https://brocku.ca/programs/undergraduate/teacher-education-consecutive/"}
+{"Consecutive Education": "https://brocku.ca/programs/undergraduate/teacher-education-consecutive/"}
+{"Technological Education": "https://brocku.ca/programs/undergraduate/technological-education/"}
+{"Tourism Studies": "https://brocku.ca/programs/undergraduate/tourism-environment/"}
+{"Tourism":"https://brocku.ca/programs/undergraduate/tourism-environment/"}
+{"Visual Arts": "https://brocku.ca/programs/undergraduate/visual-arts/"}
+{"Visual Art":"https://brocku.ca/programs/undergraduate/visual-arts/"}
+{"Women\u2019s and Gender Studies": "https://brocku.ca/programs/undergraduate/womens-and-gender-studies/"}

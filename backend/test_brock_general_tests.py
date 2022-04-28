@@ -1,6 +1,7 @@
 from numpy import extract
 from py import process
 import botNLP
+from brockMatcher import getLink
 import os
 
 error_message_1 = "I'm sorry, I wasn't able to find what you were looking for. However, you might be able to find more information at: https://brocku.ca/"
@@ -29,7 +30,7 @@ def testing_spacefor_course():
 #botNLP.getLink 
 #FAILED testingFiles/general_tests.py::testing_prereq_getLink - ValueError: not enough values to unpack (expected 3, got 1)
 def testing_prereq_getLink():
-    assert 'https://brocku.ca/webcal/undergrad/' in botNLP.getLink('prereq')
+    assert 'https://brocku.ca/webcal/undergrad/' in getLink(botNLP.extractKeywords("what are the prereqs for")[0])
 
 def filepath():
     if os.path.basename(os.getcwd()) =="backend":#we are in COSC4p02Project2022/backend
