@@ -4,9 +4,7 @@ import clipboard from "./clipboard.svg"
 async function myfunc(messages){
     var s = "";
     messages.forEach(message => {
-        s = s + message["props"]["type"] + " : "+ message["props"]["text"];
-        if(message["props"]["type"] === "response")
-        s = s+"\n";
+        s = s + message["props"]["type"] + " : "+ message["props"]["text"] + "\n";
     });
     await navigator.clipboard.writeText(s);
     alert("Text is copied to clipboard.");
