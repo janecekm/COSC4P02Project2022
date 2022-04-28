@@ -117,9 +117,9 @@ def doQueries(keywords):
                                 rowDict['duration'] = queryRow['duration']
                             else:
                                 rowDict[key] = queryRow[key]
+                                rowDict['duration'] = queryRow['duration']
                                 if 'location' in keywords.keys():
                                     rowDict["days"] = queryRow["days"]
-                                    rowDict['duration'] = queryRow['duration']
                         # if 'location' in keywords.keys():
                         #     rowDict["days"] = queryRow["days"]
                         # if rowDict:
