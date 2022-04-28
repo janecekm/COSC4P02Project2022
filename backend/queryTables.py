@@ -7,7 +7,6 @@ def doQueries(keywords):
     print("Keywords received from botNLP: ")
     print(keywords)
     #Builing table
-    
     if 'buildingCode' in keywords:
         try:
             print(keywords)
@@ -105,18 +104,22 @@ def doQueries(keywords):
                                     if keywords['formatNum'] == queryRow['formatNum']:
                                         rowDict[key] = queryRow[key]
                                         rowDict['days'] = queryRow['days']
+                                        rowDict['duration'] = queryRow['duration']
                                 else:
                                     rowDict[key] = queryRow[key]
                                     rowDict['days'] = queryRow['days']
                                     rowDict['formatNum'] = queryRow['formatNum']
+                                    rowDict['duration'] = queryRow['duration']
                         elif queryRow['format'] == 'LEC' or queryRow['format'] == 'SYN' or queryRow['format'] == 'ASY' or queryRow['format'] == 'BLD' or queryRow['format'] == 'HYF' or queryRow['format'] == 'PRO' or queryRow['format'] == 'INT' or queryRow['format'] == 'LEC2':
                             if key == 'time':
                                 rowDict[key] = queryRow[key]
                                 rowDict['days'] = queryRow["days"]
+                                rowDict['duration'] = queryRow['duration']
                             else:
                                 rowDict[key] = queryRow[key]
                                 if 'location' in keywords.keys():
                                     rowDict["days"] = queryRow["days"]
+                                    rowDict['duration'] = queryRow['duration']
                         # if 'location' in keywords.keys():
                         #     rowDict["days"] = queryRow["days"]
                         # if rowDict:

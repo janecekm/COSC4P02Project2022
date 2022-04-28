@@ -49,10 +49,12 @@ def spellcheck(question):
     Return: 
         The spellcorrected user query as a string
     '''
+    import re
+    question = re.sub('[?|,|.|/|;|:|<|>|!|@|#|$|%|^|&|*|(|)|_|-|+|=|[|]|{|}|\"|\'|\\]','',question)
     questionPieces = question.split(" ")
     merge = ''
     for q in questionPieces:
-        suggestion = sym_spell.lookup(q.lower(),Verbosity.TOP,max_edit_distance = 2,ignore_token= "[!@£#$%^&*();,.?:{}/|<>1234567890]")
+        suggestion = sym_spell.lookup(q.lower(),Verbosity.TOP,max_edit_distance = 2,ignore_token= "[1234567890]")
         if suggestion:
             merge += suggestion[0].term + " "
         else:
@@ -159,11 +161,11 @@ def processQ(question, flag=0):
     '''
     global matcher, phrase_matcher, formResponse, localflag
     if flag == 0 and localflag!=flag: # we need to deconstruct the matcher each time to match the chat bot we are using
-        from brockMatcher import matcher
+        from brockMatcher import matcher,phrase_matcher
         from brockMatcher import formResponse
         localflag = flag
     elif flag == 1 and localflag != flag:
-        from canadaMatcher import matcher
+        from canadaMatcher import matcher,phrase_matcher
         from canadaMatcher import formResponse # this function is abstracted so that the rules to define when we see a particular unknown case, we send them the link
         localflag = flag # this is done so that, if we build canada games matcher, we shouldn't be building it again
     matches, doc = extractKeywords(question)

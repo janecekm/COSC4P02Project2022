@@ -3,7 +3,7 @@
 
 import json
 
-f = open("buildingCodes.txt","r")
+f = open("buildingCodesCleaned.txt","r")
 file = json.load(f)
 flag = False
 for key in file.keys():

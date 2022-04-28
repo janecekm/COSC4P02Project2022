@@ -134,6 +134,8 @@ def offering_populate(db='buchatbot.db'):
             location = JSONDecodedRow.get('loc') or ""
             if not location == "":
                 location = ' & '.join(location)
+            else:
+                location = room1
             # if not room1 == "":
             #     if not room2 == "":
             #         location = room1 + ' & ' + room2

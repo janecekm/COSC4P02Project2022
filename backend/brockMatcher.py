@@ -334,34 +334,34 @@ def formResponse(database_answer, keys):
         # return string
         from queryTables import compressList
         database_answer = compressList(database_answer)
-        temp = Template("$c is taught by $i")
+        temp = Template("$c Duration $d is taught by $i")
         if database_answer["instructor"] == '':
             return "There are no listed instructors for this course"
-        return temp.substitute({'c':database_answer["code"], 'i':database_answer["instructor"]})
+        return temp.substitute({'c':database_answer["code"], 'i':database_answer["instructor"], 'd':database_answer["duration"]})
     if isinstance(database_answer,list) and "time" in database_answer[0]:
         string = ''
-        temp = Template("$c is at $t on $d")
-        temp2 = Template("$c $f $fn is at $t on $d")
+        temp = Template("$c Duration $du is at $t on $d")
+        temp2 = Template("$c $f $fn Duration $du is at $t on $d")
         for r in database_answer:
             if not r["time"] == '':
                 if "formatNum" in r:
-                    string += temp2.substitute({'c':r["code"], 't':r["time"], 'd':r["days"], 'f':r["format"], 'fn':r["formatNum"]}) + '\n'
+                    string += temp2.substitute({'c':r["code"], 't':r["time"], 'd':r["days"], 'f':r["format"], 'fn':r["formatNum"], 'du':r["duration"]}) + '\n'
                 else:
-                    string += temp.substitute({'c':r["code"], 't':r["time"], 'd':r["days"]}) + '\n'
+                    string += temp.substitute({'c':r["code"], 't':r["time"], 'd':r["days"], 'du':r["duration"]}) + '\n'
         return string
     
         # temp = Template("$c is at $t on $d")
         # return temp.substitute({'c':database_answer["code"], 't':database_answer["time"], 'd':database_answer["days"]})
     if isinstance(database_answer,list) and "location" in database_answer[0]:
         string = ''
-        temp = Template("$c is in room $l on $d")
-        temp2 = Template("$c $f $fn is in room $l on $d")
+        temp = Template("$c Duration $du is in room $l on $d")
+        temp2 = Template("$c $f $fn Duration $du is in room $l on $d")
         for r in database_answer:
             # if not r["location"] == '':
             if "formatNum" in r:
-                string += temp2.substitute({'c':r["code"], 'l':r["location"], 'd':r["days"], 'f':r["format"], 'fn':r["formatNum"]}) + '\n'
+                string += temp2.substitute({'c':r["code"], 'l':r["location"], 'd':r["days"], 'f':r["format"], 'fn':r["formatNum"], 'du':r["duration"]}) + '\n'
             else:
-                string += temp.substitute({'c':r["code"], 'l':r["location"], 'd':r["days"]}) + '\n'
+                string += temp.substitute({'c':r["code"], 'l':r["location"], 'd':r["days"], 'du':r["duration"]}) + '\n'
         print(string)
         return string
         # return temp.substitute({'c':database_answer["code"], 'l':database_answer["location"]})
