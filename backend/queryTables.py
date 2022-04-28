@@ -6,7 +6,25 @@ def doQueries(keywords):
     print("Keywords received from botNLP: ")
     print(keywords)
     #Builing table
-    if 'buildingCode' in keywords:
+    if 'programName' in keywords:
+        try:
+            print(keywords.get('programName').capitalize())
+            temp = models.Program.query.filter_by(program=keywords.get('programName').capitalize()).first()
+            print(temp)
+            queryReturn = {}
+            if temp:
+                queryRow = to_dict(temp)
+                queryReturn["programName"] = queryRow["program"]
+                queryReturn["link"] = queryRow["link"]
+            else:
+                return None
+            print('Query Returned to botNLP: ')
+            print(queryReturn)
+            return queryReturn
+        except Exception as e:
+            print(e)
+            return None
+    elif 'buildingCode' in keywords:
         try:
             print(keywords)
             keywords['code'] = filterInputs(keywords, 'buildingCode')
@@ -80,7 +98,6 @@ def doQueries(keywords):
             if 'code' in keywords:
                 keywords['code'] = filterInputs(keywords, 'code')
                 temp = models.Offering.query.filter_by(code=keywords.get('code')).all()
-                print(models.Program.query.all())
                 # temp = models.Offering.query.filter_by(code=keywords.get('code')).first()
                 print(temp)
                 queryReturn = {}
@@ -147,8 +164,16 @@ def cgQueries(keywords):
         for row in temp:
             queryRow = to_dict(row)
             rowDict = {}
+            rowDict[""] = queryRow[""]
         return None
     if "location" in keywords:
+        temp = models.Schedule.query.filter_by(sport="Athletics").all()
+        print(temp)
+        rowsList = []
+        for row in temp:
+            queryRow = to_dict(row)
+            rowDict = {}
+            rowDict["venue"] = queryRow["venue"]
         return None
     return None
 
