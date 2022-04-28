@@ -7,13 +7,7 @@ from string import Template
 matcher = Matcher(nlp.vocab)
 phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 
-def filepath():
-    if os.path.basename(os.getcwd()) =="backend":# we are in COSC4p02Project2022/backend
-        return "./nlp-resources/"
-    elif os.path.basename(os.getcwd())=="cosc4p02Project2022":# we are in cosc4p02Project2022
-        return "./backend/nlp-resources/"
-    else:
-        return "./nlp-resources"
+from botNLP import filepath
 
 ###################################
 # PhraseMatcher initialization
