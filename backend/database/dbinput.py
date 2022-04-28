@@ -34,6 +34,20 @@ def populate_building_codes(db='buchatbot.db'):
     #         else:
     #             flag=False
 
+def program_populate(db='buchatbot.db'):
+    with open('./cleandata/program.txt', 'r') as f:
+            codes = f.readlines()
+    with sqlite3.connect(db) as connection:
+        cursor = connection.cursor()
+        for line in codes:
+            JSONDecodedRow = json.loads(line)
+            program = list(JSONDecodedRow.keys())[0] or ""
+            link = JSONDecodedRow.get(program) or ""
+            program = program.replace('\'', '`')
+            link = link.replace('\'', '`')
+            cursor.execute('INSERT OR IGNORE INTO program(program, link) VALUES (\''+program+'\', \''+link+'\')')
+
+
 def course_populate(db='buchatbot.db'):
     with open('./cleandata/course.txt', 'r') as f:
             codes = f.readlines()
@@ -136,3 +150,4 @@ offering_populate()
 course_populate()
 exam_populate()
 populate_building_codes()
+program_populate()

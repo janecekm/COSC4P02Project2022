@@ -235,6 +235,26 @@ class Building(db.Model):
     def __repr__(self):
         return '\nCode '+self.code+'\n Name'+self.name
 
+class Program(db.Model):
+    __tablename__ = 'program'
+    program = db.Column(
+        db.String(30),
+        primary_key = True,
+        index = True,
+        unique = True,
+        nullable = False
+    )
+
+    link = db.Column (
+        db.String(60),
+        index = False,
+        unique = True,
+        nullable = False
+    )
+
+    def __repr__(self):
+        return '\nProgram '+self.program+'\n Link '+self.link
+
 '''
 	sport VARCHAR(25) PRIMARY KEY,
 	month VARCHAR(12),

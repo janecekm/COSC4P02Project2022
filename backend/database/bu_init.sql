@@ -41,4 +41,11 @@ CREATE TABLE building (
 	PRIMARY KEY(code)
 );
 
+DROP TABLE IF EXISTS program;
+CREATE TABLE program (
+	program VARCHAR(20),
+	link VARCHAR(60),
+	PRIMARY KEY(program)
+);
+
 -- INSERT INTO course VALUES ('COSC4P03', 'this is a description', 'COSC3P03', 'COSC3P03');

@@ -80,6 +80,7 @@ def doQueries(keywords):
             if 'code' in keywords:
                 keywords['code'] = filterInputs(keywords, 'code')
                 temp = models.Offering.query.filter_by(code=keywords.get('code')).all()
+                print(models.Program.query.all())
                 # temp = models.Offering.query.filter_by(code=keywords.get('code')).first()
                 print(temp)
                 queryReturn = {}
@@ -140,8 +141,12 @@ def doQueries(keywords):
 def cgQueries(keywords):
     print(keywords)
     if "time" in keywords:
-        temp = models.Schedule.query.filter_by(sport=keywords.get('sport')).all()
+        temp = models.Schedule.query.filter_by(sport="Athletics").all()
         print(temp)
+        rowsList = []
+        for row in temp:
+            queryRow = to_dict(row)
+            rowDict = {}
         return None
     if "location" in keywords:
         return None
