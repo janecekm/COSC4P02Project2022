@@ -62,7 +62,7 @@ def testing_processing_time_courses_lab():
 def testing_processing_building():
     matches, doc = botNLP.extractKeywords("where is MCJ")
     temp = botNLP.processKeywords(matches,doc)
-    assert temp["location"] == "where" and temp["buildingCode"] == "mcj"
+    assert temp["buildingCode"] == "mcj"
     matches, doc = botNLP.extractKeywords("How can I get to MCD")
     temp = botNLP.processKeywords(matches,doc)
     assert temp["buildingCode"] == "mcd"
@@ -73,3 +73,10 @@ def testing_processing_building():
     temp = botNLP.processKeywords(matches,doc)
     assert temp["buildingCode"] == "mcd"
 
+def testing_programName():
+    matches, doc = botNLP.extractKeywords("tell me more about accounting")
+    temp = botNLP.processKeywords(matches,doc)
+    assert temp["programName"] == "accounting"
+    matches, doc = botNLP.extractKeywords("tell me about Mathematics program at brock")
+    temp = botNLP.processKeywords(matches, doc)
+    assert temp["programName"] == "mathematics"

@@ -21,7 +21,9 @@ def testing_exams_response():
 
 def testing_locations_response():
     temp = getQueries("where is econ 2p30")
-    assert "SYNC" in temp or "STH 207" in temp
+    assert "SYNC" in temp or "STH 204" in temp
+    temp = getQueries("where is econ 2p30 lec")
+    assert "SYNC" in temp or "STH 204" in temp
     temp = getQueries("where is clas 1p97")
     assert "THSOS" in temp
 
@@ -39,7 +41,7 @@ def testing_instructor_response():
     temp = getQueries("who teaches PHIL 2p17")
     assert "Lightbody Brian" in temp
     temp = getQueries("who teaches BIOL 4p06?")
-    assert "Liang Ping" in temp
+    assert "Ping" in temp
 
 def testing_crosslisting_response():
     temp = getQueries("what crosslisted as COSC 4p61")

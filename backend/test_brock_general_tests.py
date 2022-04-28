@@ -18,9 +18,9 @@ def testing_valid_more_misspelled_input_ProcessQ():
 def testing_misspelled_wat_input_ProcessQ():
     assert 'COSC 1P02' in botNLP.processQ('Wat is prereqs for COSC 1P03')['message'] 
 def testing_attempt_SQL_injection1_ProcessQ():
-    assert (botNLP.processQ('What are the prereqs for *’-- 1P02')['message'] == error_message_1) or (botNLP.processQ('What are the prereqs for *’-- 1P02')['message'] == error_message_2)
+    assert  "undergrad/" in (botNLP.processQ('What are the prereqs for *’-- 1P02')['message']) 
 def testing_attempt_SQL_injection2_ProcessQ():
-    assert (botNLP.processQ('What are the prereqs for /**/ *’--')['message'] == error_message_1) or (botNLP.processQ('What are the prereqs for /**/ *’--')['message'] == error_message_2) 
+    assert "undergrad/" in botNLP.processQ('What are the prereqs for /**/ *’--')['message']
 def testing_single_hello_processQ():
     assert botNLP.processQ('Hello Hello')['message']== "Hello! What can I help you with today?"
 

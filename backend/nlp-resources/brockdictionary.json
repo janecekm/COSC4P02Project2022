@@ -11,5 +11,8 @@
     "tut":"tut",
     "section":"sec",
     "sections":"sec",
-    "sec":"sec"
+    "sec":"sec",
+    "lecture":"lec",
+    "lec":"lec",
+    "lectures":"lec"
 }
