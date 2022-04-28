@@ -8,8 +8,8 @@ def doQueries(keywords):
     #Builing table
     if 'programName' in keywords:
         try:
-            print(keywords.get('programName').capitalize())
-            temp = models.Program.query.filter_by(program=keywords.get('programName').capitalize()).first()
+            print(keywords.get('programName'))
+            temp = models.Program.query.filter_by(program=keywords.get('programName')).first()
             print(temp)
             queryReturn = {}
             if temp:
@@ -49,16 +49,17 @@ def doQueries(keywords):
     #Course table, code must be in keywords
     elif 'prereq' in keywords or 'description' in keywords or 'xlist' in keywords:
         try:
-            keywords['code'] = filterInputs(keywords, 'code')
-            temp = models.Course.query.filter_by(code=keywords.get('code')).first()
-            queryRow = to_dict(temp)
-            queryReturn = {}
-            for key in (keywords.keys() & queryRow.keys()):
-                if key == 'description': queryReturn['title'] = queryRow['title']
-                queryReturn[key] = queryRow[key]
-            print('Query Returned to botNLP: ')
-            print(queryReturn)
-            return queryReturn
+            if 'code' in keywords:
+                keywords['code'] = filterInputs(keywords, 'code')
+                temp = models.Course.query.filter_by(code=keywords.get('code')).first()
+                queryRow = to_dict(temp)
+                queryReturn = {}
+                for key in (keywords.keys() & queryRow.keys()):
+                    if key == 'description': queryReturn['title'] = queryRow['title']
+                    queryReturn[key] = queryRow[key]
+                print('Query Returned to botNLP: ')
+                print(queryReturn)
+                return queryReturn
         except AttributeError as a:
             print(a)
             print(keywords)

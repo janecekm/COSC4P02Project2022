@@ -43,7 +43,7 @@ def program_populate(db='buchatbot.db'):
             JSONDecodedRow = json.loads(line)
             program = list(JSONDecodedRow.keys())[0] or ""
             link = JSONDecodedRow.get(program) or ""
-            program = program.replace('\'', '`')
+            program = program.replace('\'', '`').lower()
             link = link.replace('\'', '`')
             cursor.execute('INSERT OR IGNORE INTO program(program, link) VALUES (\''+program+'\', \''+link+'\')')
 
