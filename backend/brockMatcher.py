@@ -221,7 +221,7 @@ admission = [[{'LEMMA':'apply'}],
 matcher.add("admission", admission, on_match=assignPriority)
 
 # store
-store = [[{'LOWER':'store'}], [{'LEMMA':'textbook'}], [{'LEMMA':'booklist'}]]
+store = [[{'LOWER':'store'}], [{'LEMMA':'textbook'}], [{'LEMMA':'booklist'}], [{'LOWER': 'text'}, {'LEMMA': 'book'}]]
 matcher.add("store", store, on_match=assignPriority)
 
 # end of Matcher pattern defintions
