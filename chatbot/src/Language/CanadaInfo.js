@@ -5,7 +5,7 @@ const values = {
         "message":"Hello! Welcome to the Canada Games ChatBot! What can I help you with today?",
         "inputmessage":"Type a query here...",
         "disclaimer":"All information taken from Canada games websites",
-        "help":"This website is primarily used for knowing what different courses are at Brock University, with prerequisites. \n In addition to that, during exams you can ask if where the exams are occuring.",
+        "helptext":"You can ask questions about where to find tickets \n you can ask about where the events are and when they occur \n the chatbot will give you the appropriate links to the website.",
         "disclaimermenu":"Disclaimer",
         "disclaimertext":"The Info you have available here is scraped from Canada Games official websites",
         "helpmenu":"Help",
