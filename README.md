@@ -1,3 +1,5 @@
+
+![badgerimage](chatbot/public/anotherbadger.png)
 # COSC 4P02 Project 2022
 A group project for Brock University's COSC 4P02 (Software Engineering 2).
 
