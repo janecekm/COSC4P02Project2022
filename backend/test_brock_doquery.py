@@ -1,7 +1,11 @@
 from queryTables import doQueries
 import botNLP
+import brockMatcher
+from brockMatcher import matcher,phrase_matcher
 #queryTables.doQuery testing. 
 
+botNLP.matcher = matcher
+botNLP.phrase_matcher = phrase_matcher
 #Course code comparisons are being weird
 def testing_doQuery_description():
      matches, doc = botNLP.extractKeywords("What is COSC 1P03?")
@@ -33,22 +37,22 @@ def testing_doQuery_examMoreInfo():
      matches, doc = botNLP.extractKeywords("When is COSC exam")
      temp = botNLP.processKeywords(matches,doc)
      dict = doQueries(temp)
-     assert dict == 'more info required' or dict == 'placeholder return'
+     assert not dict
 
 def testing_doQuery_loc():
     matches, doc = botNLP.extractKeywords("where is MCJ")
     temp = botNLP.processKeywords(matches,doc)
     dict = doQueries(temp)
-    assert "Mackenzie Chown" in dict
+    assert "Mackenzie Chown" in dict['name']
 
 def testing_doQuery_component():
     matches, doc = botNLP.extractKeywords("when is econ 2p30 lab")
     temp = botNLP.processKeywords(matches,doc)
     dict = doQueries(temp)
-    assert dict["code"] == "ECON 2P30" and dict["course component"] == "lab" and dict["time"] != None
+    assert len(dict)==0 # there is no lab
     
 def testing_doQuery_instructor():
     matches, doc = botNLP.extractKeywords("who teaches math 1p66?")
     temp = botNLP.processKeywords(matches, doc)
     dict = doQueries(temp)
-    assert dict["instructor"] != (" " or None)
+    assert dict[0]["instructor"] != (" " or None)

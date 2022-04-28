@@ -84,6 +84,7 @@
   margin-left: auto;
   margin-right: 5px;
   caret-color: transparent;
+  user-select: none;
 }
 
 .response{
@@ -102,7 +103,17 @@
   margin-bottom:5px;
   margin-left: 5px;
   caret-color: transparent;
+  white-space: pre-wrap;
+  user-select: none;
 }
+
+.response a { 
+  color: #fff5f4;
+}
+.response a:visited{
+  color: purple;
+}
+
 .contextmenu{
   position: absolute;
   list-style: none;
@@ -130,8 +141,7 @@
     height: 75vh;
     background-color: #FFFFFF;
     /* -ms-overflow-style: none; */
-    /* overflow:hidden; */
-    scrollbar-width: none;
+    overflow:scroll;
     font-size: var(--text-size);
     border-radius: 10px;
 }
@@ -139,7 +149,6 @@
   ::-webkit-scrollbar {
     width: 1px;
     right: 1px;
-    visibility: hidden;
     border-radius: 25px;
   }
   

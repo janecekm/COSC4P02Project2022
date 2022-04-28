@@ -6,6 +6,9 @@ import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database/buchatbot.db'
+app.config['SQLALCHEMY_BINDS'] = {
+    'canada':   'sqlite:///database/cgchatbot.db'
+}
 db = SQLAlchemy(app)
 # db = sqlite3.connect('sqlite:///database/buchatbot.db')
 
@@ -43,19 +46,27 @@ db = SQLAlchemy(app)
 def canadafront():
     return render_template("index.html")
 
+
 @app.route("/brock",methods = ['GET'])
 def brockfront():
     return render_template("index.html")
 
 @app.route("/brock", methods = ['POST'])
 def brockpost():
-    print(json.loads(request.data)['message'])
-    return bN.processQ(json.loads(request.data)['message'])
+    # print(bN.processQ(json.loads(request.data)['message']))
+    try:
+        return bN.processQ(json.loads(request.data)['message'])
+    except Exception as e:
+        # return {'message':"I am not quite sure what you're asking. Could you rephrase that?"}
+        return {'message':str(e)}
+    
 
 @app.route("/canada", methods = ['POST'])
 def canadapost():
-    print(json.loads(request.data)['message'])
-    return bN.processQ(json.loads(request.data)['message'])
+    try:
+        return bN.processQ(json.loads(request.data)['message'],1)
+    except:
+        return {'message':"something horrible has happened"}
 
 @app.route("/",methods=['GET'])
 def splashart():

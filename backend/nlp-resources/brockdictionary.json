@@ -1,0 +1,18 @@
+{
+    "seminar":"sem", 
+    "seminars":"sem",
+    "sems":"sem",
+    "sem":"sem",
+    "labs":"lab",
+    "lab":"lab",
+    "tuts":"tut",
+    "tutorials":"tut",
+    "tutorial":"tut",
+    "tut":"tut",
+    "section":"sec",
+    "sections":"sec",
+    "sec":"sec",
+    "lecture":"lec",
+    "lec":"lec",
+    "lectures":"lec"
+}

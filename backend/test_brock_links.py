@@ -1,8 +1,14 @@
+from brockMatcher import getLink
 import botNLP
+import brockMatcher
+from brockMatcher import matcher,phrase_matcher
+
+botNLP.matcher = matcher
+botNLP.phrase_matcher = phrase_matcher
 
 def getQueries(question):
     matches, doc = botNLP.extractKeywords(question)
-    return botNLP.getLink(matches)
+    return getLink(matches)
 
 def testing_get_link_general():
     assert "https://brocku.ca/" in getQueries("what is prereq?")
@@ -56,4 +62,3 @@ def testing_get_directory():
 def testing_get_store():
     assert "https://campusstore.brocku.ca/" in getQueries("store")
     assert "https://campusstore.brocku.ca/" in getQueries("textbook")
-    assert "https://campusstore.brocku.ca/" in getQueries("booklist")

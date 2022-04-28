@@ -1,0 +1,71 @@
+{'buildingCode': 'AL', 'buildingName': "Alphie's Trough"}
+{'buildingCode': 'BAR_A', 'buildingName': 'BAR-A - Barn - A'}
+{'buildingCode': 'BAR_B', 'buildingName': 'BAR-B - Barn - B'}
+{'buildingCode': 'CAR', 'buildingName': 'CAR - Carpentry Shop'}
+{'buildingCode': 'CJD', 'buildingName': 'Brock Research and Innovation Centre "BRIC"'}
+{'buildingCode': 'CLS', 'buildingName': 'Concordia Lutheran Seminary'}
+{'buildingCode': 'CRN', 'buildingName': "Cairns' Family Health and Bioscience Research Complex"}
+{'buildingCode': 'CUB', 'buildingName': 'Central Utilities Building'}
+{'buildingCode': 'DEC', 'buildingName': 'Decew Residence'}
+{'buildingCode': 'DNLD', 'buildingName': "DNLD - McDonald's"}
+{'buildingCode': 'DOWNTOWN', 'buildingName': 'St. Catharines, Downtown Campus'}
+{'buildingCode': 'EA-1', 'buildingName': 'EA-1 - East Academic - Building 1'}
+{'buildingCode': 'EA-2', 'buildingName': 'EA-2 - East Academic - Building 2'}
+{'buildingCode': 'EA-3', 'buildingName': 'EA-3 - East Academic - Building 3'}
+{'buildingCode': 'EAST', 'buildingName': 'St. Catharines, East Academic'}
+{'buildingCode': 'ERP', 'buildingName': 'Alan Earp Residence'}
+{'buildingCode': 'GH', 'buildingName': 'GH - Alumni Greenhouse'}
+{'buildingCode': 'GLN_A', 'buildingName': 'GLN-A - 573 Glenridge'}
+{'buildingCode': 'GLN_B', 'buildingName': 'International Centre'}
+{'buildingCode': 'GSB', 'buildingName': 'Goodman School of Business'}
+{'buildingCode': 'GWY', 'buildingName': 'GWY - Gateway Residence'}
+{'buildingCode': 'HAM', 'buildingName': 'Hamilton Campus'}
+{'buildingCode': 'HH', 'buildingName': 'Harrison Hall'}
+{'buildingCode': 'HPP', 'buildingName': 'HPP - Heritage Place Plaza'}
+{'buildingCode': 'HRTN', 'buildingName': 'HRTN - Tim Hortons'}
+{'buildingCode': 'HS', 'buildingName': 'HS - 140 Lockhart'}
+{'buildingCode': 'IH', 'buildingName': 'Inniskillin Hall'}
+{'buildingCode': 'KC', 'buildingName': 'Kenmore Centre'}
+{'buildingCode': 'LOW', 'buildingName': 'Arnie Lowenberger Residence'}
+{'buildingCode': 'MAIN', 'buildingName': 'St. Catharines, Main Campus'}
+{'buildingCode': 'MCA', 'buildingName': 'MCA - Mackenzie Chown Block A'}
+{'buildingCode': 'MCB', 'buildingName': 'MCB - Mackenzie Chown Block B'}
+{'buildingCode': 'MCC', 'buildingName': 'MCC - Mackenzie Chown Block C'}
+{'buildingCode': 'MCD', 'buildingName': 'MCD - Mackenzie Chown Block D'}
+{'buildingCode': 'MCE', 'buildingName': 'MCE - Mackenzie Chown Block E'}
+{'buildingCode': 'MCF', 'buildingName': 'MCF - Mackenzie Chown Block F'}
+{'buildingCode': 'MCG', 'buildingName': 'MCG - Mackenzie Chown Block G'}
+{'buildingCode': 'MCH', 'buildingName': 'MCH - Mackenzie Chown Block H'}
+{'buildingCode': 'MCI', 'buildingName': 'Mackenzie Chown Block I'}
+{'buildingCode': 'MCJ', 'buildingName': 'MCJ - Mackenzie Chown Block J'}
+{'buildingCode': 'MWS', 'buildingName': 'Marilyn I. Walker School of Fine and Performing Arts'}
+{'buildingCode': 'ORM', 'buildingName': 'ORM - 106 Ormond St., Thorold'}
+{'buildingCode': 'PLZ', 'buildingName': 'Plaza Building'}
+{'buildingCode': 'QV_1', 'buildingName': 'QV-1 - Quarryview Residence - Block 1'}
+{'buildingCode': 'QV_2', 'buildingName': 'QV-2 - Quarryview Residence - Block 2'}
+{'buildingCode': 'QV_3', 'buildingName': 'QV-3 - Quarryview Residence - Block 3'}
+{'buildingCode': 'QV_4', 'buildingName': 'QV-4 - Quarryview Residence - Block 4'}
+{'buildingCode': 'QV_5', 'buildingName': 'QV-5 - Quarryview Residence - Block 5'}
+{'buildingCode': 'QV_6', 'buildingName': 'QV-6 - Quarryview Residence - Block 6'}
+{'buildingCode': 'RBC', 'buildingName': 'Rosalind Blauer Centre'}
+{'buildingCode': 'RFP', 'buildingName': 'Rankin Family Pavilion'}
+{'buildingCode': 'RH', 'buildingName': 'Rodman Hall'}
+{'buildingCode': 'SBH', 'buildingName': 'Scotiabank Hall'}
+{'buildingCode': 'SC', 'buildingName': 'Student - Alumni Centre'}
+{'buildingCode': 'SH', 'buildingName': 'Theal House'}
+{'buildingCode': 'SITE', 'buildingName': 'SITE - Grounds & Roads'}
+{'buildingCode': 'ST', 'buildingName': 'Arthur Schmon Tower'}
+{'buildingCode': 'STH', 'buildingName': 'South Block'}
+{'buildingCode': 'TA', 'buildingName': 'Taro Hall'}
+{'buildingCode': 'TH', 'buildingName': 'Thistle Complex'}
+{'buildingCode': 'TRL', 'buildingName': 'TRL - Trillium Lane'}
+{'buildingCode': 'VAL', 'buildingName': 'Gordon/Betty Vallee Residence'}
+{'buildingCode': 'VIL_A', 'buildingName': 'VIL-A - Village Residence (Courts 1 û 6)'}
+{'buildingCode': 'VIL_B', 'buildingName': 'VIL-B - Village Residence (Courts 7 - 9)'}
+{'buildingCode': 'VIL_C', 'buildingName': 'VIL-C - Village Residence (Courts 10 - 12)'}
+{'buildingCode': 'VILL', 'buildingName': 'VILL - All Village Locations'}
+{'buildingCode': 'WC_A', 'buildingName': 'WC-A - Walker Complex - Physical Education Centre'}
+{'buildingCode': 'WC_B', 'buildingName': 'WC-B - Walker Complex - Eleanor Misener Aquatic Centre'}
+{'buildingCode': 'WC_C', 'buildingName': 'WC-C - Walker Complex - Storage Bldg. (at Ball Diamonds)'}
+{'buildingCode': 'WC_D', 'buildingName': 'WC-D - Walker Complex - Field House'}
+{'buildingCode': 'WH', 'buildingName': 'Robert S.K. Welch Hall'}

@@ -1,36 +1,43 @@
 <html>
     <head>
         <title>Chatbot</title>
-        <link rel="icon" href="icon.png">
+        <link rel="icon" href="/static/react/anotherbadger.png">
         <link rel="stylesheet" href="/static/splash.css">
-    
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
     </head>
     <body class = "background" display = "flex">
-
+        <img class="badger" src="/static/react/anotherbadger.png" >
         <div class="runner">
             <div class="title">
                 <h1>Welcome to Chatbot</h1>
             </div>
+            
             <table class="splashtable">
                 <tr class="context">
                    <td class="image">
                     <img style="width: 100%; "src="https://brocku.ca/brock-news/wp-content/uploads/2020/04/IMG_6885-RS-1600x1067.jpg?x70330"/>
                    </td> 
                    <td class="text">
-                    <h3>Brock University Chatbot</h3>
+                    <h3 class="texttitle">Brock University Chatbot</h3>
                     <div class="info">
-                        This chat bot offers the users to ask questions pretaining to brock.
+                        This Chat bot helps you by answering Brock University related questions, such as where is your courses, when are the courses, information regarding locations, general information about where to find resources regarding programs and so on.
                     </div>
-                    <button class="brockbutton" onclick="window.location.href=window.location.href+'brock'">Open chat</button>
+                    <div class="button"><button class="brockbutton" onclick="window.location.href=window.location.href+'brock'">Open chat</button></div>
+                    
                    </td>
                 </tr>
                 <tr class="context">
                     <td class="text" >
-                        <h3> Canada Game Chatbot</h3>
+                        <h3 class="texttitle"> Canada Game Chatbot</h3>
                         <div class="info">
-                            text goes here
+                            This Chat bot helps by answering questions regarding Niagara games, and you can ask questsion such as, where to find certain locations, when is a sporting event occuring, where it is occuring, who is taking part it it and so on.
                         </div>
-                        <button class="canadabutton" onclick="window.location.href=window.location.href+'canada'">Open chat</button>
+                        <div class="button">
+                            <button class="canadabutton" onclick="window.location.href=window.location.href+'canada'">Open chat</button>
+                        </div>
+                        
                     </td>
                     <td class="image">
                         <img style="width: 100%;" src="https://niagara2022games.ca/assets/img/n21-hero-cgp-lg.jpg" />
@@ -38,7 +45,9 @@
                 </tr>
             </table>
         </div>
-
+        <footer>
+            This project was done as part of the COSC 4p02 Course at Brock. If you encounter any issues or discrepancy with the information available, please raise an issue at our github repo at https://github.com/janecekm/COSC4P02Project2022/issues. 
+        </footer>
     </body>
 </html>
 

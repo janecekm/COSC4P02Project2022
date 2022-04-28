@@ -9,7 +9,6 @@
     padding-top: 20px;
     caret-color: transparent;
 }
-
 .BurgerMenu{
     flex: 1;
     text-align: right;
@@ -18,7 +17,8 @@
     flex: 1;
 }
 .ChatbotName{
-    flex:4;
+    flex:2;
+    display: inline-block;
     text-align: center;
     color: snow;
     size: var(--text-size)+"px";
