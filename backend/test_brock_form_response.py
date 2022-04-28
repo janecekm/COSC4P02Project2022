@@ -2,7 +2,10 @@ from queryTables import doQueries
 import botNLP
 import brockMatcher
 from brockMatcher import formResponse
+from brockMatcher import matcher,phrase_matcher
 
+botNLP.matcher = matcher
+botNLP.phrase_matcher = phrase_matcher
 ## formQuery testing     #####
 
 def getQueries(question):

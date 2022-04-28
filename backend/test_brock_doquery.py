@@ -1,8 +1,11 @@
 from queryTables import doQueries
 import botNLP
 import brockMatcher
+from brockMatcher import matcher,phrase_matcher
 #queryTables.doQuery testing. 
 
+botNLP.matcher = matcher
+botNLP.phrase_matcher = phrase_matcher
 #Course code comparisons are being weird
 def testing_doQuery_description():
      matches, doc = botNLP.extractKeywords("What is COSC 1P03?")

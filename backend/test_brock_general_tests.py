@@ -3,6 +3,10 @@ from py import process
 import botNLP
 from brockMatcher import getLink
 import os
+from brockMatcher import matcher,phrase_matcher
+
+botNLP.matcher = matcher
+botNLP.phrase_matcher = phrase_matcher
 
 error_message_1 = "I'm sorry, I wasn't able to find what you were looking for. However, you might be able to find more information at: https://brocku.ca/"
 error_message_2 = "I am not quite sure what you're asking. Could you rephrase that?"

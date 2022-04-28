@@ -1,5 +1,8 @@
 import botNLP
+from brockMatcher import matcher,phrase_matcher
 
+botNLP.matcher = matcher
+botNLP.phrase_matcher = phrase_matcher
 def askQuestion(question):
     return botNLP.processQ(question)["message"]
 
