@@ -165,7 +165,7 @@ def processQ(question, flag=0):
               0 (default) indicates the Brock chat bot
               1 indicates Canada Games chat bot 
     Return: 
-        a response string to be output to the user
+        a dictionary with key "message" containing the response string
     '''
     '''
     matcher: the matcher that is used for NLP pipeline, and this is build by the appropriate file, i.e. brockMatcher and canadaMatcher
