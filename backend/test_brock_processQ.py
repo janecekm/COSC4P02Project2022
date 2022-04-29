@@ -30,7 +30,7 @@ def test_links():
     assert "registration process" in askQuestion("How do I register for courses?")
     assert "Mackenzie Chown Block" in askQuestion("where is mcj 205?")
     assert "Machenzie Chown Block" in askQuestion("where is mcj205")
-    assert "undergra/" in askQuestion("what are the prereqs")
+    assert "undergrad/" in askQuestion("what are the prereqs")
 
 def test_rest_of_links():
     assert "exams" in askQuestion("where is my exam?")

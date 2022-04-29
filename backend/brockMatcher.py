@@ -4,11 +4,7 @@ import json
 from botNLP import nlp
 from spacy.matcher import Matcher,PhraseMatcher
 from string import Template
-def filepath():
-    if os.path.basename(os.getcwd()) =="backend":# we are in COSC4p02Project2022/backend
-        return "./nlp-resources/"
-    else:# we are in cosc4p02Project2022
-        return "./backend/nlp-resources/"
+from botNLP import filepath
 matcher = Matcher(nlp.vocab)
 phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 ###########################
@@ -221,7 +217,7 @@ admission = [[{'LEMMA':'apply'}],
 matcher.add("admission", admission, on_match=assignPriority)
 
 # store
-store = [[{'LOWER':'store'}], [{'LEMMA':'textbook'}], [{'LEMMA':'booklist'}]]
+store = [[{'LOWER':'store'}], [{'LEMMA':'textbook'}], [{'LEMMA':'booklist'}], [{'LOWER': 'text'}, {'LEMMA': 'book'}]]
 matcher.add("store", store, on_match=assignPriority)
 
 # end of Matcher pattern defintions
