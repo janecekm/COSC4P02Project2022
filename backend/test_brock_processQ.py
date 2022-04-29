@@ -29,7 +29,7 @@ def test_links():
     assert "public transportation" in askQuestion("how do I get to brock campus")
     assert "registration process" in askQuestion("How do I register for courses?")
     assert "Mackenzie Chown Block" in askQuestion("where is mcj 205?")
-    assert "Machenzie Chown Block" in askQuestion("where is mcj205")
+    assert "Mackenzie Chown Block" in askQuestion("where is mcj205")
     assert "undergrad/" in askQuestion("what are the prereqs")
 
 def test_rest_of_links():
