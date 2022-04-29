@@ -12,7 +12,7 @@ error_message_1 = "I'm sorry, I wasn't able to find what you were looking for. H
 error_message_2 = "I am not quite sure what you're asking. Could you rephrase that?"
 #botNLP.ProcessQ
 def testing_invalid_input_ProcessQ():
-    assert (botNLP.processQ('raietweiaweeiiwnaeiugwe')['message'] == error_message_1) or (botNLP.processQ('raietweiaweeiiwnaeiugwe')['message'] == error_message_2)
+    assert "I'm sorry," in botNLP.processQ('raietweiaweeiiwnaeiugwe')['message']
 def testing_valid_input_ProcessQ():
     assert 'COSC 1P02' in botNLP.processQ('What is the prereqs for COSC 1P03')['message']
 def testing_valid_misspelled_input_ProcessQ():
@@ -39,6 +39,4 @@ def testing_prereq_getLink():
 from botNLP import filepath
 
 def testing_filegrabber():
-    assert open(filepath()+"buildingCodesClean.txt","r")
-    os.chdir("..")
     assert open(filepath()+"buildingCodesClean.txt","r")

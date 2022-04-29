@@ -54,8 +54,19 @@ def spellcheck(question):
     import re
     question = re.sub('[?|,|.|/|;|:|<|>|!|@|#|$|%|^|&|*|(|)|_|-|+|=|[|]|{|}|\"|\'|\\]','',question)
     questionPieces = question.split(" ")
+    bookkeeper = [] # this is used to keep track of the changes to questionsPieces
+    for q in range(len(questionPieces)):
+        if re.fullmatch(r"[a-zA-Z]+[0-9]+",questionPieces[q]): # we are matching with any substring of question that has letters followed by number without whitespace
+            templist = re.findall(r"[0-9]+",questionPieces[q]) # this gets the number part of the substring that we are spliting
+            tempname = re.sub(r"[0-9]",'',questionPieces[q]) # this gets the letters that are part of the substring that we are splitting
+            bookkeeper.append(tempname)
+            bookkeeper.append(templist[0])
+            continue # continues
+        bookkeeper.append(questionPieces[q])
+    questionPieces = bookkeeper
     merge = ''
     for q in questionPieces:
+        
         suggestion = sym_spell.lookup(q.lower(),Verbosity.TOP,max_edit_distance = 2,ignore_token= "[1234567890]")
         if suggestion:
             merge += suggestion[0].term + " "
@@ -136,6 +147,7 @@ def processKeywords(matches, doc):
                     comp += match_text[i].text
             processedMatches['format'] = comp.strip()
             processedMatches['formatNum'] = num
+
             
     # use the NER to extract the people names from document
     for ent in doc.ents:

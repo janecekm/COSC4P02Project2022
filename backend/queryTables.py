@@ -28,7 +28,7 @@ def doQueries(keywords):
         except Exception as e:
             print(e)
             print('building not found')
-            return None
+            # return None
     #Course table, code must be in keywords
     elif 'prereq' in keywords or 'description' in keywords or 'xlist' in keywords:
         try:
@@ -46,10 +46,10 @@ def doQueries(keywords):
         except AttributeError as a:
             print(a)
             print(keywords)
-            return None
+            # return None
         except Exception as e:
             print(e)
-            return None
+            # return None
     #Exam table
     elif 'exam' in keywords:
         try:
@@ -75,7 +75,7 @@ def doQueries(keywords):
         except Exception as e:
             print(e)
             print('exam not found')
-            return None
+            # return None
     #Offering table
     elif 'location' in keywords or 'instructor' in keywords or 'time' in keywords or 'format' in keywords:
         try:
@@ -143,11 +143,11 @@ def doQueries(keywords):
                 return rowsList
             else:
                 print('more info required')
-                return None
+                # return None
         except Exception as e:
             print(e)
-            return None
-    elif 'programName' in keywords:
+            # return None
+    if 'programName' in keywords:
                 try:
                     temp = models.Program.query.filter_by(program=keywords.get('programName')).first()
                     queryReturn = {}
@@ -162,7 +162,7 @@ def doQueries(keywords):
                     return queryReturn
                 except Exception as e:
                     print(e)
-                    return None
+                    # return None
     return None
 
 def cgQueries(keywords):
