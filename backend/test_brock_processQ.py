@@ -29,7 +29,7 @@ def test_links():
     assert "public transportation" in askQuestion("how do I get to brock campus")
     assert "registration process" in askQuestion("How do I register for courses?")
     assert "Mackenzie Chown Block" in askQuestion("where is mcj 205?")
-    assert "Machenzie Chown Block" in askQuestion("where is mcj205")
+    assert "Mackenzie Chown Block" in askQuestion("where is mcj205")
     assert "undergrad/" in askQuestion("what are the prereqs")
 
 def test_rest_of_links():
@@ -45,7 +45,7 @@ def test_invalid_class():
 
 def test_component_grabber():
     assert "STH 204" in askQuestion("where is math 1p66 lec")
-    assert "No lab" in askQuestion("when is clas 1p97 lab")
+    assert "timetables/" in askQuestion("when is clas 1p97 lab")
     assert "11:00-13:00" in askQuestion("when is clas 1p97 lec")
 
 def test_program_links():
