@@ -15,6 +15,8 @@ def schedule_populate(db='cgchatbot.db'):
         for line in codes:
             JSONDecodedRow = json.loads(line)
             sport = JSONDecodedRow.get('sports') or ""
+            if not sport == "":
+                sport = sport.lower()
             month = JSONDecodedRow.get('month') or ""
             date = JSONDecodedRow.get('date') or ""
             day = JSONDecodedRow.get('day') or ""

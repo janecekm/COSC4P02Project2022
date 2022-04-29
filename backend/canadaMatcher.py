@@ -157,6 +157,18 @@ def formResponse(database_answer, keys):#this function needs to be filled out fo
     '''
     if not database_answer:
         return getLink(keys)
+    if isinstance(database_answer,list) and "location" in database_answer[0]:
+        from queryTables import compressList
+        database_answer = compressList(database_answer)
+        temp = Template("$s is hosted at $v")
+        return temp.substitute({'s':database_answer["sport"].capitalize(), 'v':database_answer["venue"]})
+    if isinstance(database_answer,list) and "time" in database_answer[0]:
+        string = ''
+        temp = Template("$g $s is at $t on $m $d at $v")
+        for r in database_answer:
+            string += temp.substitute({'s':r["sport"], 'm':r["month"], 'd':r["date"], 't':r["time"], 'g':r["gender"], 'v':r["venue"]}) + '\n'
+        return string
+    
     return None
 
 

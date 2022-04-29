@@ -166,25 +166,38 @@ def doQueries(keywords):
     return None
 
 def cgQueries(keywords):
-    print(keywords)
-    if "time" in keywords:
-        temp = models.Schedule.query.filter_by(sport="Athletics").all()
-        print(temp)
-        rowsList = []
-        for row in temp:
-            queryRow = to_dict(row)
-            rowDict = {}
-            rowDict[""] = queryRow[""]
+    try:
+        print(keywords)
+        if "time" in keywords:
+            temp = models.Schedule.query.filter_by(sport=keywords.get('sport').lower()).all()
+            print(temp)
+            rowsList = []
+            for row in temp:
+                queryRow = to_dict(row)
+                rowDict = {}
+                rowDict["month"] = queryRow["month"]
+                rowDict["date"] = queryRow["date"]
+                rowDict["time"] = queryRow["time"]
+                rowDict["gender"] = queryRow["gender"]
+                rowDict["sport"] = queryRow["sport"].capitalize()
+                rowDict["venue"] = queryRow["venue"]
+                rowsList.append(rowDict)
+            return rowsList
+        if "location" in keywords:
+            temp = models.Schedule.query.filter_by(sport=keywords.get('sport').lower()).all()
+            print(temp)
+            rowsList = []
+            for row in temp:
+                queryRow = to_dict(row)
+                rowDict = {}
+                rowDict["venue"] = queryRow["venue"]
+                rowDict["sport"] = queryRow["sport"].capitalize()
+                rowDict["location"] = keywords["location"]
+                rowsList.append(rowDict)
+            return rowsList
         return None
-    if "location" in keywords:
-        temp = models.Schedule.query.filter_by(sport="Athletics").all()
-        print(temp)
-        rowsList = []
-        for row in temp:
-            queryRow = to_dict(row)
-            rowDict = {}
-            rowDict["venue"] = queryRow["venue"]
-        return None
+    except Exception as e:
+        print(e)
     return None
 
 # filter to match database formatting
