@@ -45,7 +45,7 @@ def test_invalid_class():
 
 def test_component_grabber():
     assert "STH 204" in askQuestion("where is math 1p66 lec")
-    assert "No lab" in askQuestion("when is clas 1p97 lab")
+    assert "timetables/" in askQuestion("when is clas 1p97 lab")
     assert "11:00-13:00" in askQuestion("when is clas 1p97 lec")
 
 def test_program_links():
