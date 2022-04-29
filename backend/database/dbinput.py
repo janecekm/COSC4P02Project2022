@@ -123,6 +123,8 @@ def offering_populate(db='buchatbot.db'):
             JSONDecodedRow = json.loads(line)
             code = JSONDecodedRow.get('courseCode')
             format = JSONDecodedRow.get('format') or ""
+            # if format == 'BLD' or format == 'SYN' or format == 'ASY':
+            #     format == 'LEC'
             formatNum = JSONDecodedRow.get('formatNum') or ""
             duration = JSONDecodedRow.get('duration') or ""
             sec = JSONDecodedRow.get('sec') or ""
