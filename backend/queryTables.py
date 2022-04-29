@@ -28,7 +28,7 @@ def doQueries(keywords):
         except Exception as e:
             print(e)
             print('building not found')
-            return None
+            # return None
     #Course table, code must be in keywords
     elif 'prereq' in keywords or 'description' in keywords or 'xlist' in keywords:
         try:
@@ -46,10 +46,10 @@ def doQueries(keywords):
         except AttributeError as a:
             print(a)
             print(keywords)
-            return None
+            # return None
         except Exception as e:
             print(e)
-            return None
+            # return None
     #Exam table
     elif 'exam' in keywords:
         try:
@@ -75,7 +75,7 @@ def doQueries(keywords):
         except Exception as e:
             print(e)
             print('exam not found')
-            return None
+            # return None
     #Offering table
     elif 'location' in keywords or 'instructor' in keywords or 'time' in keywords or 'format' in keywords:
         try:
@@ -117,9 +117,9 @@ def doQueries(keywords):
                                 rowDict['duration'] = queryRow['duration']
                             else:
                                 rowDict[key] = queryRow[key]
+                                rowDict['duration'] = queryRow['duration']
                                 if 'location' in keywords.keys():
                                     rowDict["days"] = queryRow["days"]
-                                    rowDict['duration'] = queryRow['duration']
                         # if 'location' in keywords.keys():
                         #     rowDict["days"] = queryRow["days"]
                         # if rowDict:
@@ -143,11 +143,11 @@ def doQueries(keywords):
                 return rowsList
             else:
                 print('more info required')
-                return None
+                # return None
         except Exception as e:
             print(e)
-            return None
-    elif 'programName' in keywords:
+            # return None
+    if 'programName' in keywords:
                 try:
                     temp = models.Program.query.filter_by(program=keywords.get('programName')).first()
                     queryReturn = {}
@@ -162,29 +162,42 @@ def doQueries(keywords):
                     return queryReturn
                 except Exception as e:
                     print(e)
-                    return None
+                    # return None
     return None
 
 def cgQueries(keywords):
-    print(keywords)
-    if "time" in keywords:
-        temp = models.Schedule.query.filter_by(sport="Athletics").all()
-        print(temp)
-        rowsList = []
-        for row in temp:
-            queryRow = to_dict(row)
-            rowDict = {}
-            rowDict[""] = queryRow[""]
+    try:
+        print(keywords)
+        if "time" in keywords:
+            temp = models.Schedule.query.filter_by(sport=keywords.get('sport').lower()).all()
+            print(temp)
+            rowsList = []
+            for row in temp:
+                queryRow = to_dict(row)
+                rowDict = {}
+                rowDict["month"] = queryRow["month"]
+                rowDict["date"] = queryRow["date"]
+                rowDict["time"] = queryRow["time"]
+                rowDict["gender"] = queryRow["gender"]
+                rowDict["sport"] = queryRow["sport"].capitalize()
+                rowDict["venue"] = queryRow["venue"]
+                rowsList.append(rowDict)
+            return rowsList
+        if "location" in keywords:
+            temp = models.Schedule.query.filter_by(sport=keywords.get('sport').lower()).all()
+            print(temp)
+            rowsList = []
+            for row in temp:
+                queryRow = to_dict(row)
+                rowDict = {}
+                rowDict["venue"] = queryRow["venue"]
+                rowDict["sport"] = queryRow["sport"].capitalize()
+                rowDict["location"] = keywords["location"]
+                rowsList.append(rowDict)
+            return rowsList
         return None
-    if "location" in keywords:
-        temp = models.Schedule.query.filter_by(sport="Athletics").all()
-        print(temp)
-        rowsList = []
-        for row in temp:
-            queryRow = to_dict(row)
-            rowDict = {}
-            rowDict["venue"] = queryRow["venue"]
-        return None
+    except Exception as e:
+        print(e)
     return None
 
 # filter to match database formatting

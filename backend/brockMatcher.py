@@ -217,7 +217,7 @@ admission = [[{'LEMMA':'apply'}],
 matcher.add("admission", admission, on_match=assignPriority)
 
 # store
-store = [[{'LOWER':'store'}], [{'LEMMA':'textbook'}], [{'LEMMA':'booklist'}]]
+store = [[{'LOWER':'store'}], [{'LEMMA':'textbook'}], [{'LEMMA':'booklist'}], [{'LOWER': 'text'}, {'LEMMA': 'book'}]]
 matcher.add("store", store, on_match=assignPriority)
 
 # end of Matcher pattern defintions
@@ -330,10 +330,10 @@ def formResponse(database_answer, keys):
         # return string
         from queryTables import compressList
         database_answer = compressList(database_answer)
-        temp = Template("$c Duration $d is taught by $i")
+        temp = Template("$c is taught by $i")
         if database_answer["instructor"] == '':
             return "There are no listed instructors for this course"
-        return temp.substitute({'c':database_answer["code"], 'i':database_answer["instructor"], 'd':database_answer["duration"]})
+        return temp.substitute({'c':database_answer["code"], 'i':database_answer["instructor"]})
     if isinstance(database_answer,list) and "time" in database_answer[0]:
         string = ''
         temp = Template("$c Duration $du is at $t on $d")
