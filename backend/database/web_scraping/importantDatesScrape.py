@@ -13,8 +13,8 @@ Returns json that looks like:
 I had to do this because the source doesn't have attribute fields, wtf.
 '''
 
-def getDates():
-	driver = webdriver.Chrome()
+def run(driver):
+	# driver = webdriver.Chrome()
 	driver.get("https://brocku.ca/important-dates/all/")
 
 	items = driver.find_elements(By.XPATH, '//table[@class="gsheets"]/tbody/tr/td')
@@ -36,7 +36,4 @@ def getDates():
 
 
 def main():
-	getDates()
-
-
-main()
+	run()

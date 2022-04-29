@@ -3,9 +3,8 @@ import json
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-def scrapeBuildingCodes():
+def run(driver):
 	# if you're running the Chrome driver, change this line!
-	driver = webdriver.Chrome()
 	driver.get("https://brocku.ca/directory/building-codes/")
 
 	# format CODE, BUILDING
@@ -25,6 +24,4 @@ def scrapeBuildingCodes():
 def main():
 	# print(scrapeBuildingCodes())
 	with open('buildingCodes.txt', 'w+') as f:
-		f.writelines(scrapeBuildingCodes())
-
-main()
+		f.writelines(run())

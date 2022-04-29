@@ -6,7 +6,6 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 import re
 
-driver = webdriver.Chrome()
 '''
 Returns the specified course data in JSON format.
 
@@ -15,7 +14,7 @@ RECOMMENDED USAGE (if you do this, you'll get an output file!): python3 scrapeCo
 >> appends, > overwrites
 '''
 #add session and type options in a formatted url
-def scrapeCourseInfo(courseName, session, typ, driver):
+def scrapedata(courseName, session, typ, driver):
 
 
 	
@@ -78,8 +77,7 @@ def scrapeCourseInfo(courseName, session, typ, driver):
 		print(json.dumps(dict))
 	
 
-def main():
-
+def run(driver):
 	sessions = ['FW', 'SP', 'SU']
 	types = ['UG', 'GR', 'IS', 'PS', 'AD']
 
@@ -100,8 +98,7 @@ def main():
 				subjects.append(tag.get_attribute("data-program"))
 			# print(subjects)
 			for course in subjects:
-				scrapeCourseInfo(course,sess,t,driver)
+				scrapedata(course,sess,t,driver)
 			
 	
 	driver.close()
-main()
