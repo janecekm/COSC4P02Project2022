@@ -1,5 +1,6 @@
 
-![badgerimage](chatbot/public/anotherbadger.png)
+<img src="chatbot/public/anotherbadger.png" alt="Barley Mendex" width="100"/>
+
 # COSC 4P02 Project 2022
 A group project for Brock University's COSC 4P02 (Software Engineering 2).
 
