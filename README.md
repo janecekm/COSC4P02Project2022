@@ -4,7 +4,27 @@
 A group project for Brock University's COSC 4P02 (Software Engineering 2).
 
 ### Chat Bot Application for Brock University and Canada Games
-The goal of this project to develop a web-based chatbot application. This chatbot will ideally have a flexible design that accomodates two distinct modes; one for Brock University and one for Canada Games. 
+This project we developed is a web-based chatbot application that accomodates two distinct modes; One for Brock University and the other for Canada Games. We wanted to be able to provide a single website, where the user can ask questions that they have regarding that particular domain, i.e. Brock University or Canada Games, and be provided with meaningful answers. This maybe a link to the resource or an actual answer so that the user doesn't need to hunt for that information. 
+
+## Tech Stack
+For this project the primary technologies we used were:
+
+| Technology | usage |
+| -------- | --------- |
+| [Python](https://www.python.org/) | [Backend](./backend/), [Datacleaning](./backend/database/datapreprocessingcode/) |
+| [Selenium](https://www.selenium.dev/) | [Webscraping](./backend/web-scraping) |
+| [React/javascript](https://reactjs.org/) | [Frontend](./chatbot/src) |
+| [Node Package Manager](https://www.npmjs.com/) | [Frontend](./chatbot/)|
+| [Flask](https://flask.palletsprojects.com/en/2.1.x/) | [Server](./backend/server.py) |
+| [SpaCy](https://spacy.io/) | [NLP](./backend/botNLP.py) |
+| [SQLite](https://www.sqlite.org/index.html) | [Database](./backend/models.py) |
+| [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/_) | [Querying Database](./backend/queryTables.py) |
+| [PyTest](https://docs.pytest.org/en/7.1.x/) | [Testing](./backend/) |
+| [Coverage](https://coverage.readthedocs.io/en/6.3.2/) | [Coverage](./backend) |
+| [Docker](https://www.docker.com/) | [containerization](./Dockerfile) |
+| [Heroku](https://developer.salesforce.com/) | [Deployment](./heroku.yml) |
+
+In addition to that, other installs that is required to run the project is in the [requirements.txt](./backend/requirements.txt) file.
 
 ### Team Members:
 - Greg Pogue 4583993 (Team Leader)
