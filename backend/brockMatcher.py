@@ -11,7 +11,7 @@ phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 # This section defines patterns and callback functions for the PhraseMatcher
 buildings = []
 buildingNames =[]
-with open(filepath()+"buildingCodesClean.txt", encoding="utf8") as f: 
+with open(filepath()+"building-list.txt", encoding="utf8") as f: 
     for line in f:
         obj = json.loads(line)
         buildings.append(obj["buildingCode"])
@@ -40,7 +40,7 @@ def disambiguateProgram(matcher, doc, i, matches):
         idx += 1      
 
 programNames = []
-with open(filepath()+"program-links.txt", encoding="utf8") as f:
+with open(filepath()+"program-list.txt", encoding="utf8") as f:
     for line in f: 
         obj = json.loads(line)
         programNames.append((list(obj.keys())[0]))
