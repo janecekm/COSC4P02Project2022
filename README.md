@@ -9,19 +9,19 @@ This project we developed is a web-based chatbot application that accomodates tw
 ## Tech Stack
 For this project the primary technologies we used were:
 
-| Technology | usage |
+| Technology | Usage |
 | -------- | --------- |
-| [Python](https://www.python.org/) | [Backend](./backend/), [Datacleaning](./backend/database/datapreprocessingcode/) |
-| [Selenium](https://www.selenium.dev/) | [Webscraping](./backend/web-scraping) |
-| [React/javascript](https://reactjs.org/) | [Frontend](./chatbot/src) |
-| [Node Package Manager](https://www.npmjs.com/) | [Frontend](./chatbot/)|
+| [Python](https://www.python.org/) | [Backend](./backend/), [Data Cleaning](./backend/database/datapreprocessingcode/) |
+| [Selenium](https://www.selenium.dev/) | [Web Scraping](./backend/web-scraping) |
+| [React/javascript](https://reactjs.org/) | [Front end](./chatbot/src) |
+| [Node Package Manager](https://www.npmjs.com/) | [Front end](./chatbot/)|
 | [Flask](https://flask.palletsprojects.com/en/2.1.x/) | [Server](./backend/server.py) |
 | [SpaCy](https://spacy.io/) | [NLP](./backend/botNLP.py) |
 | [SQLite](https://www.sqlite.org/index.html) | [Database](./backend/models.py) |
 | [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/_) | [Querying Database](./backend/queryTables.py) |
 | [PyTest](https://docs.pytest.org/en/7.1.x/) | [Testing](./backend/) |
 | [Coverage](https://coverage.readthedocs.io/en/6.3.2/) | [Coverage](./backend) |
-| [Docker](https://www.docker.com/) | [containerization](./Dockerfile) |
+| [Docker](https://www.docker.com/) | [Containerization](./Dockerfile) |
 | [Heroku](https://developer.salesforce.com/) | [Deployment](./heroku.yml) |
 
 In addition to that, other installs that is required to run the project is in the [requirements.txt](./backend/requirements.txt) file.
