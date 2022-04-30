@@ -77,7 +77,7 @@ To handle the unique terminology required by the Brock chatbot (like course and 
 
 ### General Structure 
 
-The main entry point into processing user questions is in [botNLP.py](botNLP.py). botNLP recieves the user query string and loads the appropriate matcher information based on the flag provided from the server. The user query is spellcorrected using Symspell and then processed through the NLP pipeline and the appropriate matchers to generate the list of keywords. These keywords are then processed so they can be used to query the database using the `doQueries()` function for the Brock chatbot or the `cgQueries()` function for the Canada Games chatbot from [queryTables.py](queryTables.py). 
+The main entry point into processing user questions is in [botNLP.py](botNLP.py). botNLP receives the user query string and loads the appropriate matcher information based on the flag provided from the server. The user query is spellcorrected using Symspell and then processed through the NLP pipeline and the appropriate matchers to generate the list of keywords. These keywords are then processed so they can be used to query the database using the `doQueries()` function for the Brock chatbot or the `cgQueries()` function for the Canada Games chatbot from [queryTables.py](queryTables.py). 
 
 Once data is returned from the database, we form a response based on the extracted keywords and the database response (what data we received, if any), using `formResponse()`. Since the types of responses are dependent upon which chatbot being used, there `brockMatcher.py` and `canadaMatcher.py` each have a unique implementation of this function.  
 

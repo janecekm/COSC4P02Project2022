@@ -39,4 +39,4 @@ def testing_prereq_getLink():
 from botNLP import filepath
 
 def testing_filegrabber():
-    assert open(filepath()+"buildingCodesClean.txt","r")
+    assert open(filepath()+"building-list.txt","r")
