@@ -263,9 +263,9 @@ def getLink(matchedKeys):
     if "prereq" in matches:
         return temp.substitute({'x': links["prereqs"]})
     elif "a_washrooms" in matches:
-        return temp2.substitute({'y' : "the accesible washrooms at Brock", 'x': links["a_washrooms"]})
+        return temp2.substitute({'y' : "the accessible washrooms at Brock", 'x': links["a_washrooms"]})
     elif "admission" in matches:
-        return temp2.substitute({'y' : "the Brock admissions", 'x': links["store"]})
+        return temp2.substitute({'y' : "the Brock admissions", 'x': links["admission"]})
     elif "store" in matches:
         return temp2.substitute({'y' : "the Brock Campus Store", 'x': links["store"]})
     elif "masters" in matches:
