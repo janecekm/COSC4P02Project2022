@@ -1,11 +1,10 @@
 from spacy.tokens import Span
-import os
 from botNLP import nlp
 from spacy.matcher import Matcher,PhraseMatcher
 from string import Template
 
 matcher = Matcher(nlp.vocab)
-phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
+phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER") # case insensitive phrase matching
 
 from botNLP import filepath
 
@@ -38,7 +37,6 @@ with open(filepath()+"town-list.txt",encoding="utf-8") as t:
 if not Span.has_extension("prio"): 
     Span.set_extension("prio", default=100)
 
-# not currently used for CanadaGames?? 
 def assignPriority(matcher, doc, i, matches): 
     '''Assigns priorities to matched spans based on component importantance. 
     Lower prio values correspond to higher priorities. 
@@ -47,12 +45,6 @@ def assignPriority(matcher, doc, i, matches):
     if match_id == nlp.vocab.strings["openerGreet"]\
         or match_id == nlp.vocab.strings["question"]:
         doc[start:end]._.prio = 3
-    # elif match_id == nlp.vocab.strings["code"] \
-    #     or match_id == nlp.vocab.strings["format"] \
-    #     or match_id == nlp.vocab.strings["buildingCode"] :
-    #     doc[start:end]._.prio = 2
-    # elif match_id == nlp.vocab.strings["description"]: 
-    #     doc[start:end]._.prio = 1
     else: # every other question term is more specific so it is highest prio
         doc[start:end]._.prio = 0
 
@@ -76,12 +68,9 @@ matcher.add("time", when, greedy="LONGEST", on_match=assignPriority)
 
 # which sports are happening at venue?
 # which sports are happening in town? 
-# this is a rudimentary approach 
 which = [[{'LOWER': 'which'}, 
          {'LEMMA': 'sport'}]]
 matcher.add("which_sport", which, greedy="LONGEST")
-
-# is sport at venue?
 
 # tickets
 ticket = [[{'LEMMA':'ticket'}]]
@@ -98,8 +87,7 @@ transport = [[{'LEMMA':'transit'}],[{'LEMMA':'travel'}],[{'LEMMA':'bus'}],[{'LEM
                   {'LEMMA': 'get'},
                   {'LEMMA': 'to'}]]
 matcher.add("transport", transport, on_match=assignPriority)
-
-
+####################################
 
 # link table for questions that should give link responses
 links = {
@@ -130,7 +118,6 @@ def getLink(matchedKeys):
 
     matches = []
     for match_id, start, end in matchedKeys:
-        print(nlp.vocab.strings[match_id])
         matches.append(nlp.vocab.strings[match_id])
 
     if "ticket" in matches:
@@ -145,9 +132,9 @@ def getLink(matchedKeys):
         return temp2.substitute({'y' : "local public transportation", 'x': links["transit"]})
     else: 
         return temp.substitute({'x': links["default"]})
-# dictionary updates: fonthill -> foothills, NOTL -> not 
 
-def formResponse(database_answer, keys):#this function needs to be filled out for the chatbot to know how to form response.
+# this function needs to be filled out for the chatbot to know how to form response.
+def formResponse(database_answer, keys):
     '''A method to form a response 
     Args: 
         database_answer: response from the database, will be of type dictionary, list or None if no response from database
@@ -168,7 +155,4 @@ def formResponse(database_answer, keys):#this function needs to be filled out fo
         for r in database_answer:
             string += temp.substitute({'s':r["sport"], 'm':r["month"], 'd':r["date"], 't':r["time"], 'g':r["gender"], 'v':r["venue"]}) + '\n'
         return string
-    
     return None
-
-

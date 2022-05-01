@@ -1,9 +1,6 @@
-from numpy import extract
-from py import process
 import botNLP
 from brockMatcher import getLink
-import os
-from brockMatcher import matcher,phrase_matcher
+from brockMatcher import matcher, phrase_matcher
 
 botNLP.matcher = matcher
 botNLP.phrase_matcher = phrase_matcher
@@ -32,7 +29,6 @@ def testing_spacefor_course():
     assert 'MATH 1P66' in botNLP.processQ("what are prereq for math1p67")['message']
 
 #botNLP.getLink 
-#FAILED testingFiles/general_tests.py::testing_prereq_getLink - ValueError: not enough values to unpack (expected 3, got 1)
 def testing_prereq_getLink():
     assert 'https://brocku.ca/webcal/undergrad/' in getLink(botNLP.extractKeywords("what are the prereqs for")[0])
 
