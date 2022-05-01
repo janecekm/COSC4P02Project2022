@@ -1,4 +1,3 @@
-
 <img src="chatbot/public/anotherbadger.png" alt="Barley Mendex" width="100"/>
 
 # COSC 4P02 Project 2022
@@ -6,6 +5,9 @@ A group project for Brock University's COSC 4P02 (Software Engineering 2).
 
 ### Chat Bot Application for Brock University and Canada Games
 This project we developed is a web-based chatbot application that accomodates two distinct modes: one for Brock University and the other for Canada Games. We wanted to be able to provide a single website, where the user can ask questions that they have regarding that particular domain, i.e. Brock University or Canada Games, and be provided with meaningful answers. This may be a link to the resource or an actual answer so that the user doesn't need to hunt for that information. 
+
+### Hosted Link
+https://chatbot4p02.herokuapp.com/
 
 ## Tech Stack
 For this project the primary technologies we used were:
