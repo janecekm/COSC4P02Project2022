@@ -3,14 +3,6 @@
 # COSC 4P02 Project 2022
 A group project for Brock University's COSC 4P02 (Software Engineering 2).
 
-### Team Members:
-- Greg Pogue 4583993 (Team Leader)
-- Joel Jacob 6603245
-- Madeline Janecek 6436620
-- Sam Langdon 6180137
-- Brendan Park 6541288
-- Kylee Schram 6131726
-
 ### Chat Bot Application for Brock University and Canada Games
 This project we developed is a web-based chatbot application that accomodates two distinct modes: one for Brock University and the other for Canada Games. We wanted to be able to provide a single website, where the user can ask questions that they have regarding that particular domain, i.e. Brock University or Canada Games, and be provided with meaningful answers. This may be a link to the resource or an actual answer so that the user doesn't need to hunt for that information. 
 
@@ -36,6 +28,14 @@ For this project the primary technologies we used were:
 | [Heroku](https://developer.salesforce.com/) | [Deployment](./heroku.yml) |
 
 Other installs that are required to run the project can be found in the [requirements.txt](./backend/requirements.txt) file.
+
+### Team Members:
+- Greg Pogue 4583993 (Team Leader)
+- Joel Jacob 6603245
+- Madeline Janecek 6436620
+- Sam Langdon 6180137
+- Brendan Park 6541288
+- Kylee Schram 6131726
 
 ### Backend
 The backend folder of this project consists of the following folders.
@@ -70,4 +70,3 @@ This folder contains every piece of documentation for the chatbot project.
     * This file is used to build the container for our project so that it can be hosted via Heroku.
 - Heroku.yml
     * This file is used to define which file is run when we host our project.
-

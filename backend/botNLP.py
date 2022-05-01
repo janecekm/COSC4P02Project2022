@@ -3,11 +3,13 @@ import os
 import spacy
 from spacy.matcher import Matcher
 from spacy.matcher import PhraseMatcher
+
 # load spaCy + create Matcher and PhraseMatcher objects
 nlp = spacy.load("en_core_web_md")
 matcher = Matcher(nlp.vocab)
 phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
-#setting up path for various nlp-resources such as autocorrect dictionary
+
+# setting up path for various nlp-resources such as autocorrect dictionary
 localflag = 10
 def filepath():
     if os.path.basename(os.getcwd()) =="backend":# we are in COSC4p02Project2022/backend
@@ -86,9 +88,7 @@ def extractKeywords(question):
             end is the end index of the matched span (set of tokens)
         doc: the user input, processed by the NLP pipeline (output as a spaCy Doc object https://spacy.io/api/doc)
     '''
-    print("Prior to correction:", question)
     question = spellcheck(question)
-    print("Post correction:", question)
     doc = nlp(question)
     matches = matcher(doc)
     # get the phrase_matches and add them to the match list
@@ -119,13 +119,6 @@ def processKeywords(matches, doc):
                 comp = ''
                 num = ''
                 barred = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-                print(match_text.text)
-                # for i in range(len(match_text)):
-                #     if match_text[i].text in range(20):
-                #         num += match_text[i].text
-                #         print(num)
-                #     elif not i == " ":
-                #         comp += match_text[i].text
                 temp = match_text.text.split(' ')
                 processedMatches['format'] = temp[0]
                 if len(temp) > 1:
@@ -134,7 +127,6 @@ def processKeywords(matches, doc):
                 processedMatches[match_label] = match_text.text
             if doc[start:end]._.prio == 0: 
                 high_prio = True
-            print("Match:", match_label, "\tMatch priority:", doc[start:end]._.prio)
         elif match_label == 'format':
             comp = ''
             num = ''
@@ -148,7 +140,6 @@ def processKeywords(matches, doc):
             processedMatches['format'] = comp.strip()
             processedMatches['formatNum'] = num
 
-            
     # use the NER to extract the people names from document
     for ent in doc.ents:
         if (ent.label_ == "PERSON"):
@@ -165,7 +156,7 @@ def processQ(question, flag=0):
               0 (default) indicates the Brock chat bot
               1 indicates Canada Games chat bot 
     Return: 
-        a response string to be output to the user
+        a dictionary with key "message" containing the response string
     '''
     '''
     matcher: the matcher that is used for NLP pipeline, and this is build by the appropriate file, i.e. brockMatcher and canadaMatcher

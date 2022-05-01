@@ -1,17 +1,17 @@
 from spacy.tokens import Span
-import os
 import json
 from botNLP import nlp
 from spacy.matcher import Matcher,PhraseMatcher
 from string import Template
 from botNLP import filepath
 matcher = Matcher(nlp.vocab)
-phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
+phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER") # case insensitive phrase matching
+
 ###########################
 # This section defines patterns and callback functions for the PhraseMatcher
 buildings = []
 buildingNames =[]
-with open(filepath()+"buildingCodesClean.txt", encoding="utf8") as f: 
+with open(filepath()+"building-list.txt", encoding="utf8") as f: 
     for line in f:
         obj = json.loads(line)
         buildings.append(obj["buildingCode"])
@@ -28,7 +28,6 @@ def disambiguateProgram(matcher, doc, i, matches):
     max_len_match = (-1, -1) # idx, len
     idx = 0
     for match_id, start, end in matches:
-        print(idx, nlp.vocab.strings[match_id], doc[start:end]) 
         if nlp.vocab.strings[match_id] == "programName": 
             l = end - start
             if l > max_len_match[1]: 
@@ -40,7 +39,7 @@ def disambiguateProgram(matcher, doc, i, matches):
         idx += 1      
 
 programNames = []
-with open(filepath()+"program-links.txt", encoding="utf8") as f:
+with open(filepath()+"program-list.txt", encoding="utf8") as f:
     for line in f: 
         obj = json.loads(line)
         programNames.append((list(obj.keys())[0]))
@@ -221,6 +220,7 @@ store = [[{'LOWER':'store'}], [{'LEMMA':'textbook'}], [{'LEMMA':'booklist'}], [{
 matcher.add("store", store, on_match=assignPriority)
 
 # end of Matcher pattern defintions
+###################################
 
 links = {
     "a_washrooms":"https://brocku.ca/blogs/campus-map/category/brock-university/accessibility/accessibility-washrooms",
@@ -259,7 +259,6 @@ def getLink(matchedKeys):
 
     matches = []
     for match_id, start, end in matchedKeys:
-        print(nlp.vocab.strings[match_id])
         matches.append(nlp.vocab.strings[match_id])
     if "prereq" in matches:
         return temp.substitute({'x': links["prereqs"]})
@@ -324,10 +323,6 @@ def formResponse(database_answer, keys):
             temp = Template("There are no crosslistings for $c")
             return temp.substitute({'c': database_answer["code"]})
     if isinstance(database_answer,list) and "instructor" in database_answer[0]:
-        # string = database_answer[0]["code"] + " is taught by "
-        # for r in database_answer:
-        #     string += r["instructor"] + " "
-        # return string
         from queryTables import compressList
         database_answer = compressList(database_answer)
         temp = Template("$c is taught by $i")
@@ -345,23 +340,17 @@ def formResponse(database_answer, keys):
                 else:
                     string += temp.substitute({'c':r["code"], 't':r["time"], 'd':r["days"], 'du':r["duration"]}) + '\n'
         return string
-    
-        # temp = Template("$c is at $t on $d")
-        # return temp.substitute({'c':database_answer["code"], 't':database_answer["time"], 'd':database_answer["days"]})
     if isinstance(database_answer,list) and "location" in database_answer[0]:
         string = ''
         temp = Template("$c Duration $du is in room $l on $d")
         temp2 = Template("$c $f $fn Duration $du is in room $l on $d")
         for r in database_answer:
-            # if not r["location"] == '':
             if "formatNum" in r:
                 string += temp2.substitute({'c':r["code"], 'l':r["location"], 'd':r["days"], 'f':r["format"], 'fn':r["formatNum"], 'du':r["duration"]}) + '\n'
             else:
                 string += temp.substitute({'c':r["code"], 'l':r["location"], 'd':r["days"], 'du':r["duration"]}) + '\n'
-        print(string)
         return string
-        # return temp.substitute({'c':database_answer["code"], 'l':database_answer["location"]})
-    # response for prereqs (not great for single course prereqs or multi part questions?)
+    # response for prereqs 
     if "prereq" in database_answer: 
         if database_answer["prereq"] != "": 
             temp = Template("The prerequisites for $c are $p" )
